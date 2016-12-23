@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'RChain Architecture'
-copyright = u'2016, Ede Eykholt, Lucius Gregory Meredith, Joseph Denman'
+copyright = u'2016, RChain Co-op'
 author = u'Ede Eykholt, Lucius Gregory Meredith, Joseph Denman'
 
 # The version info for the project you're documenting, acts as replacement for

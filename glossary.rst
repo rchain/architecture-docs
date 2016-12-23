@@ -16,8 +16,7 @@ Glossary
    concurrency
      The composition of independently operating processes
 
-   contract : contract
-   smart contract : contract
+   smart contract
      Loosely referred to as *contract*, a smart contract is a process, with a discrete
      state value, that resides at an address (i.e., a specific name) on RChain.
      Important to remember is that the term *contract* may refer to an atomic operation,

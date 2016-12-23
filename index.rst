@@ -19,9 +19,6 @@ community.
 developers who want to help see this vision realized, and for others who want to
 support these efforts.
 
-Contents
-========
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
