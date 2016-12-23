@@ -27,4 +27,7 @@ Contents
    :caption: Contents:
 
    introduction/index.rst
+   contracts/index.rst
+   namespaces/index.rst
+   storage-and-query/index.rst
    glossary.rst
