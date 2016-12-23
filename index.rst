@@ -27,3 +27,4 @@ Contents
    :caption: Contents:
 
    introduction/index.rst
+   glossary.rst
