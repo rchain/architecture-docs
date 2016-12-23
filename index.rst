@@ -6,6 +6,9 @@
 Welcome to RChain's Architecture documentation!
 ===============================================
 
+.. note::
+  UNPUBLISHED DRAFT. NOT FOR RELEASE
+
 The RChain platform architecture description provides a high-level blueprint to
 build a decentralized, economically sustainable public compute infrastructure.
 The design results from the inspirations of earlier blockchains and builds on top

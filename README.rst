@@ -1,3 +1,5 @@
+UNPUBLISHED DRAFT. NOT FOR RELEASE
+
 *****************************
 RChain-Architecture
 *****************************
