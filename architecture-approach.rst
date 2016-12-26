@@ -1,4 +1,4 @@
-.. _approach:
+.. _architecture-approach:
 
 ################################################################################
 Architectural Approach

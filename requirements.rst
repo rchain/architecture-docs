@@ -27,3 +27,8 @@ required of the platform itself in order to achieve those requirements.
 * Peer-to-peer and discoverable nodes
 * Consensus protocol that is computationally efficient and not resource-intensive
 
+**Non-Requirements**
+
+* There is a long list of items the architecture will not address, but let’s list a few to dispel what might otherwise be common misperceptions. For example, the architecture will not address:
+* Compatibility with smart contracts or scripts written on other blockchain technologies
+* Automated coin conversion within the platform, since this can be better handled at the application level

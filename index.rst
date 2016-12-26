@@ -3,20 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to RChain's Architecture documentation!
+###############################################
+RChain Platform Architecture
+###############################################
+
+Abstract
 ===============================================
 
-.. note::
-  UNPUBLISHED DRAFT. NOT FOR RELEASE
-
-The RChain platform architecture description provides a high-level blueprint to
-build a decentralized, economically sustainable public compute infrastructure.
-The design results from the inspirations of earlier blockchains and builds on top
-of the shoulders of giants in the disciplines of mathematics and programming
-language design. This document provides a broad overview of how the whole system
-will work together. Links throughout the document provide pointers specific detail.
-The Call for Participation section invites you to engage directly with the project
-community.
+RChain’s platform architecture is a decentralized, economically sustainable
+public compute infrastructure. The platform design results from the inspirations
+of earlier blockchains and builds on top of the shoulders of giants in the
+disciplines of mathematics and programming language design.
 
 **Intended audience:** This document is written primarily for software designers and
 developers who want to help see this vision realized, and for others who want to
@@ -26,8 +23,21 @@ support these efforts.
    :maxdepth: 2
    :caption: Contents:
 
-   introduction/index.rst
-   contracts/index.rst
-   namespaces/index.rst
-   storage-and-query/index.rst
-   glossary.rst
+   introduction.rst
+   comparison-of-blockchains.rst
+   architecture-overview.rst
+   requirements.rst
+   architecture-approach.rst
+   pseudonymous-identity.rst
+   blockchain-data.rst
+   contracts.rst
+   p2p-node-communications.rst
+   special-k.rst
+   content-delivery-network.rst
+   attention-and-reputation-economy.rst
+   applications.rst
+   contract-development-and-deployment.rst
+   governance.rst
+   implementation-roadmap.rst
+   call-for-participation.rst
+   licence.rst

@@ -1,5 +1,3 @@
-UNPUBLISHED DRAFT. NOT FOR RELEASE
-
 *****************************
 RChain-Architecture
 *****************************
@@ -29,7 +27,7 @@ For Windows users:
 
 Get source code
 --------------------------------------------------------------------------------
-* git clone: https://github.com/ethereum/homestead-guide.git
+* git clone: https://github.com/rchain/architecture-docs.git
 
 Build and view html
 --------------------------------------------------------------------------------
