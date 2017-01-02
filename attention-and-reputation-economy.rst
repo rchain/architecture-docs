@@ -10,8 +10,12 @@ For more information, see the original whitepaper, `RChain - The Decentralized a
 Distributed Social Network`_. The latest thinking about Attention & Reputation Economy
 will be described in Slack discussions and blog posts.
 
-.. image:: img/attention-economy.png
-  :width: 400px
-  :align: center
+.. figure:: img/attention-economy.png
+    :width: 400px
+    :figclass: align-center
+
+    3economiesvenn.png [#f1]_
+
+.. [#f1] Croll, Alistair (2009) - http://human20.com/free-reputation-for-everyone-the-three-non-traditional-economies/
 
 .. _RChain - The Decentralized and Distributed Social Network: http://www.synereo.com/whitepapers/synereo.pdf
