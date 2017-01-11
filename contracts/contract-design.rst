@@ -1,21 +1,9 @@
 .. _contract-design:
 
 ################################################################################
-Contract Design
+CONTRACT DESIGN
 ################################################################################
 
-An RChain contract is a well-specified, well-behaved, and formally verified program
-that interacts with other well-specified, well-behaved, and formally verified programs.
+An RChain contract is a well-specified, well-behaved, and formally verified program that interacts with other well-specified, well-behaved, and formally verified programs.
 
-Contracts are triggered by agent requests, where an agent may be a user requesting a
-service through command line/GUI, or an agent may be another contract. Clients engage
-with contracts via signed transactions. Contracts engage with each other via messages.
-
-.. note::
-
-  Alternatively, describe linear resources (contracts in which the previous state is
-  input for execution) vs. non-linear resources (processes with no persistent state).
-
-.. image:: ../img/contract-design.png
-    :width: 600px
-    :align: center
+In this section on contract design, we cover contract interaction through the production of Rholang. To begin, we give an overview of contract interaction on the RChain platform. Afterwards, we describe the core formalism RChain uses to achieve formal verification and to model concurrency on many of RChain’s system layers. Then, we explore how that core model extends to accomodate best-in-industry surface-language standards such as reflection, parallelism, asynchronicity, reactive data streams, and compile-time security-type checks. Finally, we give an application for a nested and composable resource addressing structure to partition transactional environments across RChain.
