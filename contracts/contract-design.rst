@@ -1,7 +1,7 @@
 .. _contract-design:
 
 ******************************************************************
-CONTRACT DESIGN
+Contract Design
 ******************************************************************
 
 An RChain contract is a well-specified, well-behaved, and formally verified program that interacts with other well-specified, well-behaved, and formally verified programs.
