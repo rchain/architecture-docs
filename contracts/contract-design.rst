@@ -164,6 +164,8 @@ The rho-calculus assumes internal structure on names, which  is preserved as the
 
 Rho-calculus also gives a single, reduction (substitution) rule to realize computation, known as the “COMM” rule. Reductions are atomic; they either happen, or they don’t. It is the only rule which directly reduces a rho-calculus term:
 
+.. code-block:: none
+
   for( ptrn <- x ).P | x!(@Q).R -> P{ @Q/ptrn } | R //Reduction Rule
 
 The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship i.e one process is listening on channel, x, while the other process is sending on channel, x.
