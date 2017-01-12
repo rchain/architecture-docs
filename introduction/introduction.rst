@@ -1,11 +1,10 @@
-####################################
+#######################################
 Introduction
-######################################3
+######################################
 
 The open source RChain project is building a public, Sybil-resistant and censorship-resistant computing infrastructure based on decentralized blockchain concept. Ultimately, RChain will host and execute the blockchain programs popularly referred to as "smart contracts". 
 
 Using smart contracts, a broad array of fully-scalable decentralized applications (dApps) can be built on the top of this platform. DApps may address areas such as identity, tokens, financial servers, monetized content delivery, Decentralized Autonomous Organizations (DAOs), exchanges, reputation, private social networks, marketplaces, and many more.
-
 
 
 Figure - High-level RChain Architecture
