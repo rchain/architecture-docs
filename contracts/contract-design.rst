@@ -33,21 +33,21 @@ There is no restriction barring a contract from sending and receiving messages t
 
 Two contracts sending and receiving a message on the channel named ‘Address’: 
 
-.. figure:: 
+.. image:: /img/57444266.png
    :height: 170px
    :width: 844px
    :align: center
-   :scale: 50 %
+   :scale: 50
 
-This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially. 
+This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially.
 
 Note that, this model assumes that at least the sender possesses the address of Contract\ :sub:`2`. Also note that, after it sends v, Contract\ :sub:`1` has been run to termination, thus it is incapable of sending anything else unless prompted. Similarly, after it invokes a continuation, Contract\ :sub:`2` has been run to termination, thus it is incapable of listening for any other messages.
 
 RChain contracts enjoy fine-grain, internal concurrency, which means that these processes, and any processes that are not co-dependent, may be placed in parallel composition. So, we amend our notation:
 
-.. figure:: https://github.com/rchain/architecture-docs/blob/develop/img/82846984.png
+.. image:: /img/82846984.png
    :align: center
-   :scale: 80 %
+   :scale: 80
 
 Executing in parallel with a number of other processes, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. If Contract1 has no value to send, then the process is inert. If Contract\ :sub:`2` has not received a value, then its continuation is not triggered and it is inert. Thus, Contract\ :sub:`1` and Contract\ :sub:`2` may execute asynchronously and in parallel. Additionally, message passing is an atomic operation. Either a message is transmitted, or it is not.
 
@@ -60,13 +60,17 @@ Messages themselves are virtual objects, but the pre-state and post-state of a c
 
 Only the successful transmission of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when a resource is transferred from one agent to another, even in larger systems, there is record of when and where it went. This implementation is consistent with an interpretation of data as a linear resource.
 
-.. image:: https://github.com/rchain/architecture-docs/blob/develop/img/10156345.png
-
+.. image:: img/10156345.png
+   :align: center
+   :scale: 50
+   
 This model of transaction favorably lends itself to information flow analysis and optimization between addresses. The ability to place a message at either end of a channel before and after the message is sent, and therefore to view the serialized form of messages, is an attribute specific to RChain. Additionally, by stating successful messages as transactions, all messages, whether from external user to contract or between contracts, are accounted for. Thus, we balance the extensible autonomy of contracts with accountability.
 
 For an example of how this model is adaptable to industry trends in reactive programming, observe the following two contracts, which model interaction over “live” data streams:
 
-.. image:: https://github.com/rchain/architecture-docs/blob/develop/img/21300107.png
+.. image:: img/21300107.png
+   :align: center
+   :scale: 50
 
 Executing in parallel composition with a number of other processes, Contract\ :sub:`1` is prompted to send a set of  values, v\ :sub:`N`, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. In this scenario, the reader will notice Contract\ :sub:`2` as a thread which takes a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. As each value is received, a continuation is invoked with the value as an argument. While the interaction between Contract\  :sub:`1` and Contract\ :sub:`2` is asynchronous, the “receive” and “continuation” operations of Contract\ :sub:`2` are necessarily sequential. Thus, asynchronicity is preserved. 
 
