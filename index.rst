@@ -23,21 +23,8 @@ support these efforts.
    :maxdepth: 2
    :caption: Contents:
 
-   introduction.rst
-   comparison-of-blockchains.rst
-   architecture-overview.rst
-   requirements.rst
-   architecture-approach.rst
-   pseudonymous-identity.rst
-   blockchain-data.rst
-   contracts.rst
-   p2p-node-communications.rst
-   special-k.rst
-   content-delivery-network.rst
-   attention-and-reputation-economy.rst
-   applications.rst
-   contract-development-and-deployment.rst
-   governance.rst
-   implementation-roadmap.rst
-   call-for-participation.rst
-   licence.rst
+   introduction/motivation.rst
+   introduction/introduction.rst
+   introduction/comparison-of-blockchains.rst
+   introduction/architecture-overview.rst
+   contracts/contract-design.rst
