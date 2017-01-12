@@ -40,7 +40,6 @@ Two contracts sending and receiving a message on the channel named ‘Address’
    :align: center
    :scale: 80
 
-   Figure: Basic Contract Message-Passing
 
 
 This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially.
@@ -56,7 +55,6 @@ RChain contracts enjoy fine-grain, internal concurrency, which means that these 
    :height: 124
    :scale: 80
 
-   Figure: Contracts Executing Concurrently
 
 
 Executing in parallel with a number of other processes, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. If Contract1 has no value to send, then the process is inert. If Contract\ :sub:`2` has not received a value, then its continuation is not triggered and it is inert. Thus, Contract\ :sub:`1` and Contract\ :sub:`2` may execute asynchronously and in parallel. Additionally, message passing is an atomic operation. Either a message is transmitted, or it is not.
@@ -77,8 +75,6 @@ Only the successful transmission of a message qualifies as a verifiable transact
    :height: 460
    :scale: 80
 
-   Figure: Contracts Passing Messages Over Channels
-
 
 This model of transaction favorably lends itself to information flow analysis and optimization between addresses. The ability to place a message at either end of a channel before and after the message is sent, and therefore to view the serialized form of messages, is an attribute specific to RChain. Additionally, by stating successful messages as transactions, all messages, whether from external user to contract or between contracts, are accounted for. Thus, we balance the extensible autonomy of contracts with accountability.
 
@@ -89,9 +85,7 @@ For an example of how this model is adaptable to industry trends in reactive pro
    :width: 1014
    :height: 142
    :align: center
-   :scale: 50
-
-   Figure: Basic Reactive API
+   :scale: 80
 
 
 Executing in parallel composition with a number of other processes, Contract\ :sub:`1` is prompted to send a set of  values, v\ :sub:`N`, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. In this scenario, the reader will notice Contract\ :sub:`2` as a thread which takes a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. As each value is received, a continuation is invoked with the value as an argument. While the interaction between Contract\  :sub:`1` and Contract\ :sub:`2` is asynchronous, the “receive” and “continuation” operations of Contract\ :sub:`2` are necessarily sequential. Thus, asynchronicity is preserved.
@@ -140,9 +134,9 @@ Rho-calculus builds the following basic terms to describe interaction among proc
 
 The first three terms denote I/O, describing the actions of message passing:
 
-* **0** is the form of the inert or stopped process that is the ground of the model.
+* :code:`0` is the form of the inert or stopped process that is the ground of the model.
 
-* The input term, **for( ptrn1 <- x1; … ; ptrnN <- xN )P**, is the form of an input-guarded process, P, listening for a set of patterns, ptrnN, on a set of channels, xN. On receiving such a pattern, continuation P is invoked [#]_. Scala programmers will notice the “for-comprehension” as syntactic sugar for treating channel access monadically [#]_. The result is that all input-channels are subject to pattern matching, which constructs an input-guard of sorts.
+* The input term, :code:`for( ptrn1 <- x1; … ; ptrnN <- xN )P`, is the form of an input-guarded process, P, listening for a set of patterns, ptrnN, on a set of channels, xN. On receiving such a pattern, continuation P is invoked [#]_. Scala programmers will notice the “for-comprehension” as syntactic sugar for treating channel access monadically [#]_. The result is that all input-channels are subject to pattern matching, which constructs an input-guard of sorts.
 
 .. [#] See Scala Documentation: For-Comprehensions
 .. [#] See Scala Documentation: Delimited Continuations
