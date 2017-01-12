@@ -12,7 +12,7 @@ Abstract
 
 The RChain platform architecture description provides a high-level blueprint to build a decentralized, economically sustainable public compute infrastructure. While the RChain design is inspired by that of earlier blockchains, it alone realizes decades of research across the fields of concurrent and distributed computation, mathematics, and programming language design. The platform boasts a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility. 
 
-**This document expounds on basic contract interaction beginning at the core computational model of the RChain platform and ending at a description of the concurrent blockchain language, "Rholang". It does not explore the Rho Virtual Machine or database and query implemention. However, those sections will be added in the weeks following.**
+**This document expounds on basic contract interaction beginning at the core computational model of the RChain platform and ending at a description of the concurrent blockchain language, "Rholang". It does not explore the Rho Virtual Machine or database and query implemention. Those sections will be added in the weeks following.**
 
 **Intended audience:** This document is written primarily for software designers and
 developers who want to help see this vision realized, and for others who want to
