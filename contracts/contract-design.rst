@@ -33,9 +33,11 @@ There is no restriction barring a contract from sending and receiving messages t
 
 Two contracts sending and receiving a message on the channel named ‘Address’: 
 
-.. image:: https://github.com/rchain/architecture-docs/blob/develop/img/57444266.png
+.. figure:: 
+   :height: 170px
+   :width: 844px
    :align: center
-   :scale: 80 %
+   :scale: 50 %
 
 This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially. 
 
@@ -43,7 +45,7 @@ Note that, this model assumes that at least the sender possesses the address of 
 
 RChain contracts enjoy fine-grain, internal concurrency, which means that these processes, and any processes that are not co-dependent, may be placed in parallel composition. So, we amend our notation:
 
-.. image:: https://github.com/rchain/architecture-docs/blob/develop/img/82846984.png
+.. figure:: https://github.com/rchain/architecture-docs/blob/develop/img/82846984.png
    :align: center
    :scale: 80 %
 
@@ -79,7 +81,10 @@ Formal verification is de facto standard for many mission-critical technologies.
 
 Though an understanding of the π-calculus isn’t necessary for the purposes of this document, those unfamiliar with the π-calculus are strongly encouraged to explore it. The π-calculus is the first formal system to successfully model networks where nodes may regularly join and drop from the network. It assumes fine-grained concurrency and process communication i.e two processes may be introduced by a third process. The rho-calculus extension inherits all of those features and adds reflection.
 
-For more information, see LINKS
+For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category Models of the Pi-Calculus`_.
+
+.. _The Polyadic Pi-Calculus: http://www.lfcs.inf.ed.ac.uk/reports/91/ECS-LFCS-91-180/
+.. _Higher Category Models of the Pi-Calculus: https://arxiv.org/abs/1504.04311
 
 Reflection
 -----------------------------------------------------------------------
@@ -139,10 +144,10 @@ One process sends the quoted process, Q, on channel, x, and then invokes the con
 
 The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable. 
 
-Another implication of being able to investigate the internal structure of a name is that channels may encapsulate yet more channels. Though they are very light in an atomic sense, when channels possess internal structure, they may function as data stores, data structures, and provably unbounded queues of arbitrary depth. In fact, in almost all implementations, a contract’s persistent storage will consist of state value stored in a :code:`state` channel which takes requests to :code:`set` and :code:`get` a :code:`newValue`. We will demonstrate the wide-sweeping implications of internal structure on channels in the section on namespaces.
+Another implication of being able to investigate the internal structure of a name is that channels may encapsulate yet more channels. Though they are very light in an atomic sense, when channels possess internal structure, they may function as data stores, data structures, and provably unbounded queues of arbitrary depth. In fact, in almost all implementations, a contract’s persistent storage will consist of state value stored in a :code:`state` channel which takes requests to :code:`set` and :code:`get` a :code:`newValue`. We will demonstrate the wide-sweeping implications of internal structure on channels in the section on namespaces. For further details, see `A Reflective Higher-Order Calculus`_ and `Namespace Logic - A Logic for a Reflective Higher-Order Calculus`_.
 
-For details, see A Reflective Higher-Order Calculus and Namespace Logic: A Logic for a Reflective Higher-Order Calculus.
-
+.. _A Reflective Higher-Order Calculus: http://www.sciencedirect.com/science/article/pii/S1571066105051893
+.. _Namespace Logic - A Logic for a Reflective Higher-Order Calculus: http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.95.9601
 
 Behavioral Types
 ----------------------------------------------------
@@ -155,7 +160,9 @@ The Rholang behavioral type system will iteratively decorate terms with modal lo
 
 The behavioral type systems Rholang will support make it possible to evaluate collections of contracts against how their code is shaped and how it behaves. As such, Rholang contracts elevate semantics to a type-level vantage point, where we are able to scope how entire protocols can safely interface.
 
-In their seminal paper, Logic as a Distributive Law, Mike Stay & Gregory Meredith, develop an algorithm to iteratively generate a spatial-behavioral logic from any monadic data structure.
+In their seminal paper, `Logic as a Distributive Law`_, Mike Stay & Gregory Meredith, develop an algorithm to iteratively generate a spatial-behavioral logic from any monadic data structure.
+
+.. _Logic as a Distributive Law: https://arxiv.org/pdf/1610.02247v3.pdf
 
 Significance
 =================================================
