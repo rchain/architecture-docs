@@ -1,7 +1,7 @@
 .. _contract-design:
 
 ******************************************************************
-CONTRACT DESIGN
+Contract Design
 ******************************************************************
 
 An RChain contract is a well-specified, well-behaved, and formally verified program that interacts with other well-specified, well-behaved, and formally verified programs.
@@ -10,7 +10,7 @@ In this section on contract design, we cover contract interaction through the pr
 
 Contract Overview
 ======================================================================================
-Used loosely as ‘contract’, **a smart contract is a process with:** 
+Used loosely as ‘contract’, **a smart contract is a process with:**
 
 1. Persistent state
 2. Associated code
@@ -31,17 +31,17 @@ There is no restriction barring a contract from sending and receiving messages t
 
 **Agents send and receive messages on named communication links known as ‘named channels’.** A contract may send and receive on multiple channels. **A blockchain address is a named channel** i.e a location(s) where an agent may be reached.
 
-Two contracts sending and receiving a message on the channel named ‘Address’: 
+Two contracts sending and receiving a message on the channel named ‘Address’:
 
 
-.. figure:: img/57444266.png
+.. figure:: ../img/57444266.png
    :height: 170
    :width: 844
    :align: center
    :scale: 80
-   
+
    Figure: Basic Contract Message-Passing
-   
+
 
 This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially.
 
@@ -50,15 +50,15 @@ Note that, this model assumes that at least the sender possesses the address of 
 RChain contracts enjoy fine-grain, internal concurrency, which means that these processes, and any processes that are not co-dependent, may be placed in parallel composition. So, we amend our notation:
 
 
-.. figure:: img/82846984.png
+.. figure:: ../img/82846984.png
    :align: center
-   :width: 142
-   :height: 926
+   :width: 926
+   :height: 142
    :scale: 80
-   
+
    Figure: Contracts Executing Concurrently
-   
-   
+
+
 Executing in parallel with a number of other processes, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. If Contract1 has no value to send, then the process is inert. If Contract\ :sub:`2` has not received a value, then its continuation is not triggered and it is inert. Thus, Contract\ :sub:`1` and Contract\ :sub:`2` may execute asynchronously and in parallel. Additionally, message passing is an atomic operation. Either a message is transmitted, or it is not.
 
 Transactions
@@ -71,21 +71,21 @@ Messages themselves are virtual objects, but the pre-state and post-state of a c
 Only the successful transmission of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when a resource is transferred from one agent to another, even in larger systems, there is record of when and where it went. This implementation is consistent with an interpretation of data as a linear resource.
 
 
-.. figure:: img/10156345.png
+.. figure:: ../img/10156345.png
    :align: center
    :width: 918
    :height: 460
    :scale: 80
-   
+
    Figure: Contracts Passing Messages Over Channels
-   
-   
+
+
 This model of transaction favorably lends itself to information flow analysis and optimization between addresses. The ability to place a message at either end of a channel before and after the message is sent, and therefore to view the serialized form of messages, is an attribute specific to RChain. Additionally, by stating successful messages as transactions, all messages, whether from external user to contract or between contracts, are accounted for. Thus, we balance the extensible autonomy of contracts with accountability.
 
 For an example of how this model is adaptable to industry trends in reactive programming, observe the following two contracts, which model interaction over “live” data streams:
 
 
-.. figure:: img/21300107.png
+.. figure:: ../img/21300107.png
    :width: 1014
    :height: 142
    :align: center
@@ -94,7 +94,7 @@ For an example of how this model is adaptable to industry trends in reactive pro
    Figure: Basic Reactive API
 
 
-Executing in parallel composition with a number of other processes, Contract\ :sub:`1` is prompted to send a set of  values, v\ :sub:`N`, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. In this scenario, the reader will notice Contract\ :sub:`2` as a thread which takes a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. As each value is received, a continuation is invoked with the value as an argument. While the interaction between Contract\  :sub:`1` and Contract\ :sub:`2` is asynchronous, the “receive” and “continuation” operations of Contract\ :sub:`2` are necessarily sequential. Thus, asynchronicity is preserved. 
+Executing in parallel composition with a number of other processes, Contract\ :sub:`1` is prompted to send a set of  values, v\ :sub:`N`, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. In this scenario, the reader will notice Contract\ :sub:`2` as a thread which takes a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. As each value is received, a continuation is invoked with the value as an argument. While the interaction between Contract\  :sub:`1` and Contract\ :sub:`2` is asynchronous, the “receive” and “continuation” operations of Contract\ :sub:`2` are necessarily sequential. Thus, asynchronicity is preserved.
 
 We have presented a very basic depiction of concurrent contract interaction on the RChain platform to include contracts, addresses i.e channels of communication, and transactions i.e the successful transmission of a message. Next, we outline the core system which formally models these constructs.
 
@@ -121,23 +121,23 @@ Reflection is now widely recognized as a key feature of practical programming la
 
 Syntax and Semantics
 --------------------------------------------------------------------------
-The rho-calculus constructs “names” and “processes”. Similar to the π-calculus, **a name may be a channel of communication or a variable. However, with the rho-calculus addition of ‘reflection’, a name may also be a ‘quoted’ process, where a quoted process is the code of a process.** The genericity of names will become important in the coming sections. 
+The rho-calculus constructs “names” and “processes”. Similar to the π-calculus, **a name may be a channel of communication or a variable. However, with the rho-calculus addition of ‘reflection’, a name may also be a ‘quoted’ process, where a quoted process is the code of a process.** The genericity of names will become important in the coming sections.
 From the notion of names and processes, the calculus builds a few basic “processes”. A process may have persistent state but does not assume it. The term “process” is the more general term for “smart contract”. Hence, every contract is a process but not every process is smart contract.
 
 Rho-calculus builds the following basic terms to describe interaction among processes:
 
 ::
 
-                       P,Q,R ::= 0              // nil or stopped process
-                       
-                                    |   for( ptrn1 <- x1; … ; ptrnN <- xN ).P // input guarded agent
-                                    |   x!( ptrn )     // output
-                                    |   \*x\           // dereferenced or unquoted name
-                                    |   P|Q            // parallel composition
-                                    
-                       x,ptrn ::= @P            // name or quoted process
-                       
-                       
+   P,Q,R ::= 0                      // nil or stopped process
+
+             | for( ptrn1 <- x1; … ; ptrnN <- xN ).P // input guarded agent
+             | x!( ptrn )           // output
+             |   \*x\               // dereferenced or unquoted name
+             |   P|Q                // parallel composition
+
+   x,ptrn ::= @P                    // name or quoted process
+
+
 The first three terms denote I/O, describing the actions of message passing:
 
 * **0** is the form of the inert or stopped process that is the ground of the model.
@@ -160,7 +160,7 @@ Two additional terms are introduced to provide reflection:
 * **\x\*** , the “Reify” term, allows a quoted process to be deserialized from a channel.
 
 This syntax gives the basic term language that will comprise the Rholang  type system primitives.
-The rho-calculus assumes internal structure on names, which  is preserved as they’re passed between processes. One result of being able to investigate the internal structure of a name is that processes may be serialized to a channel and then deserialized upon being received, which means that processes may not only communicate signals to one another, they may communicate full-form processes to one another. Hence, the higher-order extension. 
+The rho-calculus assumes internal structure on names, which  is preserved as they’re passed between processes. One result of being able to investigate the internal structure of a name is that processes may be serialized to a channel and then deserialized upon being received, which means that processes may not only communicate signals to one another, they may communicate full-form processes to one another. Hence, the higher-order extension.
 
 Rho-calculus also gives a single, reduction (substitution) rule to realize computation, known as the “COMM” rule. Reductions are atomic; they either happen, or they don’t. It is the only rule which directly reduces a rho-calculus term:
 
@@ -173,7 +173,7 @@ Rho-calculus also gives a single, reduction (substitution) rule to realize compu
 The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship i.e one process is listening on channel, x, while the other process is sending on channel, x.
 One process sends the quoted process, Q, on channel, x, and then invokes the continuation R. In parallel, the other process listens for an arbitrary pattern, ptrn, on channel, x. Upon matching the pattern, it executes continuation P. After reduction, the simplified term denotes that P executes concurrently with the process, R, and will execute in an environment where the quoted process Q is bound to the pattern, ptrn. That is, Q is substituted for every occurrence of the pattern, ptrn,  in P.
 
-The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable. 
+The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable.
 
 Another implication of being able to investigate the internal structure of a name is that channels may encapsulate yet more channels. Though they are very light in an atomic sense, when channels possess internal structure, they may function as data stores, data structures, and provably unbounded queues of arbitrary depth. In fact, in almost all implementations, a contract’s persistent storage will consist of state value stored in a :code:`state` channel which takes requests to :code:`set` and :code:`get` a :code:`newValue`. We will demonstrate the wide-sweeping implications of internal structure on channels in the section on namespaces. For further details, see `A Reflective Higher-Order Calculus`_ and `Namespace Logic - A Logic for a Reflective Higher-Order Calculus`_.
 
@@ -220,25 +220,25 @@ To get a taste of Rholang, here’s a contract named :code:`Cell` that holds a v
 .. code-block:: none
 
    contract Cell( get, set, state ) = {
-         select {
-                 case rtn <- get; v <- state => {
-                           rtn!( *v ) | state!( *v ) | Cell( get, set, state )
-                  }
-                  
-                 case newValue <- set; v <- state => {
-                           state!( *newValue ) | Cell( get, set, state )
-                  }
-         }
+     select {
+       case rtn <- get; v <- state => {
+         rtn!( *v ) | state!( *v ) | Cell( get, set, state )
+       }
+
+       case newValue <- set; v <- state => {
+         state!( *newValue ) | Cell( get, set, state )
+       }
+     }
    }
-   
+
 
 This contract takes a channel for :code:`get` requests, a channel for :code:`set` requests, and a :code:`state` channel where we will hold a the data resource. It waits on the :code:`get` and :code:`set` channels for client requests. Client requests are pattern matched via :code:`case` class [#]_.
 
 .. [#] See Scala Documentation: Case Classes
 
-Upon receiving a request, the contract joins :code:`;` an incoming client with a request against the :code:`state` channel. This join does two things. Firstly, it removes the internal :code:`state` from access while this, in turn, sequentializes :code:`get` and :code:`set` actions, so that they are always operating against a single consistent copy of the resource - simultaneously providing a data resource synchronization mechanism and a memory of accesses and updates against the :code:`state`. 
+Upon receiving a request, the contract joins :code:`;` an incoming client with a request against the :code:`state` channel. This join does two things. Firstly, it removes the internal :code:`state` from access while this, in turn, sequentializes :code:`get` and :code:`set` actions, so that they are always operating against a single consistent copy of the resource - simultaneously providing a data resource synchronization mechanism and a memory of accesses and updates against the :code:`state`.
 
-In the case of :code:`get`, a request comes in with a :code:`rtn` address where the value, :code:`v`, in :code:`state` will be sent. Since :code:`v` has been taken from the :code:`state` channel, it is put back, and the :code:`Cell` behavior is recursively invoked. 
+In the case of :code:`get`, a request comes in with a :code:`rtn` address where the value, :code:`v`, in :code:`state` will be sent. Since :code:`v` has been taken from the :code:`state` channel, it is put back, and the :code:`Cell` behavior is recursively invoked.
 
 In the case of :code:`set`, a request comes in with a :code:`newValue`, which is published to the :code:`state` channel (the old value having been stolen by the join). Meanwhile, the :code:`Cell` behavior is recursively invoked.
 

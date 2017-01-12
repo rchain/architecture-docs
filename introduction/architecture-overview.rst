@@ -4,12 +4,13 @@ Architecture Overview
 The primary components of the architecture are depicted below:
 
 
-.. figure:: 9852463.png
+.. figure:: ../img/9852463.png
    :scale: 50
    :align: center
-   
+   :width: 600
+
    Figure - The RChain Architecture
-   
+
 
 Introducing this from the bottom-up:
 
@@ -30,7 +31,7 @@ We'll detail these components in the sections below, from the bottom-up.
 
 Concurrency
 ----------------------------------------
-It is of the utmost importance that the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not exclusively referring to the simultaneous execution of multiple processes. That is parallelism. 
+It is of the utmost importance that the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not exclusively referring to the simultaneous execution of multiple processes. That is parallelism.
 
 **Concurrency is a structural property which allows independent processes to communicate and compose into complex processes. Processes are considered independent if they do not compete for resources.**
 

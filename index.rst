@@ -26,8 +26,8 @@ support these efforts.
    :maxdepth: 2
    :caption: Contents:
 
-   introduction/index.rst
-   contracts/index.rst
-   namespaces/index.rst
-   storage-and-query/index.rst
-   glossary.rst
+   introduction/motivation.rst
+   introduction/introduction.rst
+   introduction/comparison-of-blockchains.rst
+   introduction/architecture-overview.rst
+   contracts/contract-design.rst
