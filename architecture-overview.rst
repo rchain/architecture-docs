@@ -3,7 +3,8 @@ Architecture Overview
 ###################################
 The primary components of the architecture are depicted below:
 
-IMG
+.. figure:: img/9852463.png
+   :scale: 50
 
 Introducing this from the bottom-up:
 
