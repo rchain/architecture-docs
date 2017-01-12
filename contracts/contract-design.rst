@@ -93,21 +93,18 @@ From the notion of names and processes, the calculus builds a few basic “proce
 
 Rho-calculus builds the following basic terms to describe interaction among processes:
 
-..code-block:: none
+::
 
                        P,Q,R ::= 0              // nil or stopped process
-
+                       
                                     |   for( ptrn1 <- x1; … ; ptrnN <- xN ).P // input guarded agent
-
                                     |   x!( ptrn )     // output
-
                                     |   \*x\           // dereferenced or unquoted name
-
                                     |   P|Q            // parallel composition
                                     
                        x,ptrn ::= @P            // name or quoted process
                        
-
+                       
 The first three terms denote I/O, describing the actions of message passing:
 
 * **0** is the form of the inert or stopped process that is the ground of the model.
@@ -131,18 +128,18 @@ The rho-calculus assumes internal structure on names, which  is preserved as the
 
 Rho-calculus also gives a single, reduction (substitution) rule to realize computation, known as the “COMM” rule. Reductions are atomic; they either happen, or they don’t. It is the only rule which directly reduces a rho-calculus term:
 
-..code-block:: none
+::
 
- for( ptrn <- x ).P | x!(@Q).R -> P{ @Q/ptrn } | R //Reduction Rule
- 
-..code-block:: none
+   for( ptrn <- x ).P | x!(@Q).R -> P{ @Q/ptrn } | R //Reduction Rule
+
+::
 
 The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship i.e one process is listening on channel, x, while the other process is sending on channel, x.
 One process sends the quoted process, Q, on channel, x, and then invokes the continuation R. In parallel, the other process listens for an arbitrary pattern, ptrn, on channel, x. Upon matching the pattern, it executes continuation P. After reduction, the simplified term denotes that P executes concurrently with the process, R, and will execute in an environment where the quoted process Q is bound to the pattern, ptrn. That is, Q is substituted for every occurrence of the pattern, ptrn,  in P.
 
 The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable. 
 
-Another implication of being able to investigate the internal structure of a name is that channels may encapsulate yet more channels. Though they are very light in an atomic sense, when channels possess internal structure, they may function as data stores, data structures, and provably unbounded queues of arbitrary depth. In fact, in almost all implementations, a contract’s persistent storage will consist of state value stored in a :code:`state` channel which takes requests to :code:`set` and :code:`get` a :code:`newValue. We will demonstrate the wide-sweeping implications of internal structure on channels in the section on namespaces.
+Another implication of being able to investigate the internal structure of a name is that channels may encapsulate yet more channels. Though they are very light in an atomic sense, when channels possess internal structure, they may function as data stores, data structures, and provably unbounded queues of arbitrary depth. In fact, in almost all implementations, a contract’s persistent storage will consist of state value stored in a :code:`state` channel which takes requests to :code:`set` and :code:`get` a :code:`newValue`. We will demonstrate the wide-sweeping implications of internal structure on channels in the section on namespaces.
 
 For details, see A Reflective Higher-Order Calculus and Namespace Logic: A Logic for a Reflective Higher-Order Calculus.
 
@@ -176,7 +173,7 @@ To summarize, the rho-calculus formalism is the first computational model to:
 RhoLang - A Concurrent Blockchain Language
 =========================================================
 
-Rholang is a fully featured, general purpose, Turing complete programming language built from the rho-calculus. It is a behaviorally typed, reflective, higher-order process language, and the official smart contracting language of RChain - it’s purpose is to concretize fine-grained,  programmatic concurrency.
+Rholang is a fully featured, general purpose, Turing complete programming language built from the rho-calculus. It is a behaviorally typed, **r**eflective, **h**igher-**o**rder process language and the official smart contracting language of RChain. It’s purpose is to concretize fine-grained,  programmatic concurrency.
 
 Necessarily, the language is concurrency-oriented, with a focus on message-passing through input-guarded channels. Channels are statically typed and can be used as single message-pipes, streams, or data stores. Similar to typed functional languages, Rholang will support immutable data structures.
 
@@ -196,13 +193,12 @@ To get a taste of Rholang, here’s a contract named :code:`Cell` that holds a v
          }
    }
    
-::
 
 This contract takes a channel for :code:`get` requests, a channel for :code:`set` requests, and a :code:`state` channel where we will hold a the data resource. It waits on the :code:`get` and :code:`set` channels for client requests. Client requests are pattern matched via :code:`case` class.
 
-Upon receiving a request, the contract joins :code:`;` an incoming client with a request against the :code:`state` channel. This join does two things. Firstly, it removes the internal :code:`state` from access while this, in turn, serializes :code:`get` and :code:`set` actions, so that they are always operating against a single consistent copy of the resource - simultaneously providing a data resource synchronization mechanism and a memory of accesses and updates against the :code:`state`. 
+Upon receiving a request, the contract joins :code:`;` an incoming client with a request against the :code:`state` channel. This join does two things. Firstly, it removes the internal :code:`state` from access while this, in turn, sequentializes :code:`get` and :code:`set` actions, so that they are always operating against a single consistent copy of the resource - simultaneously providing a data resource synchronization mechanism and a memory of accesses and updates against the :code:`state`. 
 
-In the case of :code:`get`, a request comes in with a :code:`rtn` address where the value, :code:`v`, in :code:`state` will be sent. Since :code:`v` has been taken from the :code:`state` channel, it is put back, and the :code:`Cell behavior is recursively invoked. 
+In the case of :code:`get`, a request comes in with a :code:`rtn` address where the value, :code:`v`, in :code:`state` will be sent. Since :code:`v` has been taken from the :code:`state` channel, it is put back, and the :code:`Cell` behavior is recursively invoked. 
 
 In the case of :code:`set`, a request comes in with a :code:`newValue`, which is published to the :code:`state` channel (the old value having been stolen by the join). Meanwhile, the :code:`Cell` behavior is recursively invoked.
 
