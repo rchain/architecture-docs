@@ -33,7 +33,7 @@ There is no restriction barring a contract from sending and receiving messages t
 
 Two contracts sending and receiving a message on the channel named ‘Address’: 
 
-.. figure:: architecture-docs/img/57444266.png
+.. figure:: img/57444266.png
    :align: center
 
 This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially. 
