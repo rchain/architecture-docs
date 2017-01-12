@@ -19,3 +19,22 @@ We began by admitting the following minimal requirements:
 * Dynamic and responsive node-to-node communication.
 
 * Computationally non-intensive consensus/validation protocol.
+
+Approach
+==================================================================
+
+Building quality software is challenging. It is easier to build clever software; however, the resulting software is often of poor quality, riddled with bugs, difficult to maintain, and difficult to evolve. Inheriting and working on such software can be hellish for development teams. When building an open-source system to support a mission-critical economy, we reject a minimal-success mindset in favor of end-to-end correctness. 
+
+Therefore, to accomplish the requirements given above, our design approach is committed to:
+
+* A computational model that assumes fine grained concurrency and dynamic network topology.
+
+* A composable and dynamic resource addressing scheme.
+
+* The functional programming paradigm as it more naturally accommodates distributed and parallel processing.
+
+* Formally verified, correct-by-construction protocols which leverage model checking and theorem proving.
+
+* The principles of intension and compositionality.
+
+Together with the blockchain industry, we are still at the dawn of this decentralized movement. Now is the time to lay down a solid architectural foundation. The journey ahead for those who share this ambitious vision is as challenging as it is worthwhile, and this document summarizes that vision and how we seek to accomplish it.
