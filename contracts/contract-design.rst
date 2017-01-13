@@ -109,9 +109,8 @@ For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category Model
 Reflection
 -----------------------------------------------------------------------
 
-Reflection is now widely recognized as a key feature of practical programming languages. Reflection is a disciplined way to turn programs into data that programs can operate on and then turn the modified data back into new programs. Java, C#, and Scala eventually adopted reflection as a core feature, and even OCaml and Haskell have ultimately developed reflective versions [#]_. The reason is simple: at industrial scale, programmers use programs to write programs. Without that computational leverage, it would take too long to write advanced industrial scale programs.
+Reflection is now widely recognized as a key feature of practical programming languages. Reflection is a disciplined way to turn programs into data that programs can operate on and then turn the modified data back into new programs. Java, C#, and Scala eventually adopted reflection as a core feature, and even OCaml and Haskell have ultimately developed reflective versions [#f1]_. The reason is simple: at industrial scale, programmers use programs to write programs. Without that computational leverage, it would take too long to write advanced industrial scale programs.
 
-.. [#] See Scala Documentation: Reflection.
 
 Syntax and Semantics
 --------------------------------------------------------------------------
@@ -134,14 +133,20 @@ Rho-calculus builds the following basic terms to describe interaction among proc
 
 The first three terms denote I/O, describing the actions of message passing:
 
-* :code:`0` is the form of the inert or stopped process that is the ground of the model.
+* :code:`0` is the form of the inert or stopped process that is the ground of the
+  model.
 
-* The input term, :code:`for( ptrn1 <- x1; … ; ptrnN <- xN )P`, is the form of an input-guarded process, P, listening for a set of patterns, ptrnN, on a set of channels, xN. On receiving such a pattern, continuation P is invoked [#]_. Scala programmers will notice the “for-comprehension” as syntactic sugar for treating channel access monadically [#]_. The result is that all input-channels are subject to pattern matching, which constructs an input-guard of sorts.
+* The input term, :code:`for( ptrn1 <- x1; … ; ptrnN <- xN )P`, is the form of an
+  input-guarded process, :code:`P`, listening for a set of patterns, :code:`ptrnN`,
+  on a set of channels, :code:`xN`. On receiving such a pattern, continuation P
+  is invoked [#f2]_. Scala programmers will notice the 'for-comprehension' as
+  syntactic sugar for treating channel access monadically [#f3]_. The result is
+  that all input-channels are subject to pattern matching, which constructs an
+  input-guard of sorts.
 
-.. [#] See Scala Documentation: For-Comprehensions
-.. [#] See Scala Documentation: Delimited Continuations
-
-* The output term, :code:`x!( y )`, sends some name, y, on channel, x. Hence, y may be a variable, a channel, a quoted process, @P, or a pattern.
+* The output term, :code:`x!( y )`, sends some name, :code:`y`, on channel, :code:`x`.
+  Hence, :code:`y` may be a variable, a channel, a quoted process, :code:`@P`, or
+  a pattern.
 
 The next term is structural, describing concurrency:
 
@@ -226,9 +231,8 @@ To get a taste of Rholang, here’s a contract named :code:`Cell` that holds a v
      }
    }
 
-This contract takes a channel for :code:`get` requests, a channel for :code:`set` requests, and a :code:`state` channel where we will hold a the data resource. It waits on the :code:`get` and :code:`set` channels for client requests. Client requests are pattern matched via :code:`case` class [#]_.
+This contract takes a channel for :code:`get` requests, a channel for :code:`set` requests, and a :code:`state` channel where we will hold a the data resource. It waits on the :code:`get` and :code:`set` channels for client requests. Client requests are pattern matched via :code:`case` class [#f4]_.
 
-.. [#] See Scala Documentation: Case Classes
 
 Upon receiving a request, the contract joins :code:`;` an incoming client with a request against the :code:`state` channel. This join does two things. Firstly, it removes the internal :code:`state` from access while this, in turn, sequentializes :code:`get` and :code:`set` actions, so that they are always operating against a single consistent copy of the resource - simultaneously providing a data resource synchronization mechanism and a memory of accesses and updates against the :code:`state`.
 
@@ -241,3 +245,8 @@ Confirmed by :code:`select`, only one of the threads in :code:`Cell` can respond
 For a more complete historical narrative leading up to Rholang, see `Mobile Process Calculi for Programming the Blockchain`_.
 
 .. _Mobile Process Calculi for Programming the Blockchain: https://docs.google.com/document/d/1lAbB_ssUvUkJ1D6_16WEp4FzsH0poEqZYCi-FBKanuY
+
+.. [#f1] See Scala Documentation: Reflection.
+.. [#f2] See Scala Documentation: For-Comprehensions
+.. [#f3] See Scala Documentation: Delimited Continuations
+.. [#f4] See Scala Documentation: Case Classes
