@@ -4,7 +4,7 @@ Architecture Overview
 The primary components of the architecture are depicted below:
 
 
-.. figure:: ../img/Node.png
+.. figure:: ../img/9852463.png
    :scale: 50
    :align: center
    :width: 600
