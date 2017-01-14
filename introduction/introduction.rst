@@ -10,7 +10,7 @@ Using smart contracts, a broad array of fully-scalable decentralized application
 .. figure:: ../img/architecture-overview.png
    :align: center
    :width: 1050
-   :scale: 50
+   :scale: 80
 
    Figure: High-level RChain Architecture
 
