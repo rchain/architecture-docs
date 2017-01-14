@@ -7,9 +7,10 @@ The open source RChain project is building a public, Sybil-resistant and censors
 Using smart contracts, a broad array of fully-scalable decentralized applications (dApps) can be built on the top of this platform. DApps may address areas such as identity, tokens, financial servers, monetized content delivery, Decentralized Autonomous Organizations (DAOs), exchanges, reputation, private social networks, marketplaces, and many more.
 
 
-.. figure:: ../img/overview-diagram.png
+.. figure:: ../img/architecture-overview.png
    :align: center
-   :width: 1043
+   :width: 1050
+   :scale: 50
 
    Figure: High-level RChain Architecture
 
