@@ -36,7 +36,7 @@ For protocols which compete for resources, this level of nondeterminism is unavo
                         x!(@Q1) | for(ptrn <- x){P} |u!(@Q2) → P{ @Q1/ptrn } | u!(@Q2)
                             
                             
-In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they are now communicating over two distinct, named channels. In other words, they are in separate namespaces. Additionally, names are provably unguessable, so they can only be aquired when a discretionary external process gives them. Because a name is unguessable, a resource is only visible to the processes/contracts that have knowledge of that name [5]_. Hence, sets of processes that execute over non-conflicting sets of named channels i.e sets of transactions that execute in separate namespaces, may execute in parallel, as demonstrated below:
+In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they are now communicating over two distinct, named channels. In other words, they are in separate namespaces. Additionally, names are provably unguessable, so they can only be acquired when a discretionary external process gives them. Because a name is unguessable, a resource is only visible to the processes/contracts that have knowledge of that name [5]_. Hence, sets of processes that execute over non-conflicting sets of named channels i.e sets of transactions that execute in separate namespaces, may execute in parallel, as demonstrated below:
 
 ::
 
@@ -45,7 +45,7 @@ In both cases, the channel, and the data resource being communicated, is no long
  | for(ptrn1;...;ptrnn <- v1;...;vn){P} | v1;...;vn!(@Q1;...;@Qn) → P{ @Q1;...;@Qn/ptrn1;...;ptrnn } 
 
 
-The asynchronous set of transactions occurring in the namespace :code:`x`, and the asynchronous set of transactions occurring in the namespace :code:`v`, are double-blind; they are anonymous to each other unless introduced by an auxillary process. This mechanism to isolate sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel with one another.
+The asynchronous set of transactions occurring in the namespace :code:`x`, and the asynchronous set of transactions occurring in the namespace :code:`v`, are double-blind; they are anonymous to each other unless introduced by an auxillary process. This approach to isolating sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel with one another.
 
 
 .. figure:: .. /img/blocks-by-namespace.png
