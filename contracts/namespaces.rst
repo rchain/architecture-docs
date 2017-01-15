@@ -1,5 +1,6 @@
+**************************************************
 Namespace Logic
-=======================================
+***************************************************
 For a blockchain solution of internet scale to be realizable, it, like the internet, must possess an logic to reason about the “location” of a resource i.e who can access a resource and under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
 
 It has been established that two processes must share a named channel to communicate. What if multiple processes communicate over a single channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
@@ -68,6 +69,7 @@ A name satisfies a definition, or it does not; it functions, or it does not. The
     
     Figure - A Namespace Definition Implemented as an ‘If-conditional’
     
+    
 
 1. A set of contracts, :code:`contract1...contractn` , are sent to the set of channels (namespace) :code:`address1...addressn`.
 
@@ -130,7 +132,7 @@ The top expression denotes output - place the resource address :code:`a(b(c,d)` 
 .. figure:: .. /img/namespaces-as-trees.png
     :align: center
     :width: 567
-    :scale: 80
+    :scale: 60
     
     Figure - URL Scheme as Nested Channels in Tree Structure
     
