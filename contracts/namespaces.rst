@@ -32,22 +32,22 @@ A certain level of nondeterminism is unavoidable. It is the blessing that concur
                         x!(@Q\:sub:`1`) | for(ptrn <- x){P} |u!(@Q\:sub:`2`) → P{@Q\:sub:`1`/ptrn} | u!(@Q\:sub:`2`)
                             
                             
-In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they now have different names - they are in separate namespaces. And because names are unguessable, resources are only (possibly) visible to process/contracts that can communicate with the namespace. CITATION Hence, sets of processes that occur over non-conflicting sets of named channels i.e sets of transactions in separate namespaces, may execute in parallel, as demonstrated below:
+In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they now have different names - they are in separate namespaces. And because names are unguessable, resources are only (possibly) visible to process/contracts that have knowledge of the name [5]_ Hence, sets of processes that occur over non-conflicting sets of named channels i.e sets of transactions in separate namespaces, may execute in parallel, as demonstrated below:
 
 ::
 
-for(ptrn\:sub:`1`; … ;ptrn\:sub:`n` <- x\:sub:`1`; … ;x\:sub:`n`){P} | x\:sub:`1`; … ;x\:sub:`n`!(@Q\:sub:`1`; … ;@Q\:sub:`n`) → P{@Q\:sub:`1`; … ;@Q\:sub:`n`/ptrn\:sub:`1`; … ;ptrn:sub:`n`}
+ for(ptrn\:sub:`1`; … ;ptrn\:sub:`n` <- x\:sub:`1`; … ;x\:sub:`n`){P} | x\:sub:`1`; … ;x\:sub:`n`!(@Q\:sub:`1`; … ;@Q\:sub:`n`) → P{@Q\:sub:`1`; … ;@Q\:sub:`n`/ptrn\:sub:`1`; … ;ptrn:sub:`n`}
+
+ | for(ptrn\:sub:`1`; … ;ptrn\:sub:`n` <- v\:sub:`1`; … ;v\:sub:`n`){P} | v\:sub:`1`; … ;v\:sub:`n`!!(@Q\:sub:`1`; … ;@Q\:sub:`n`) → P{@Q\:sub:`1`; … ;@Q\:sub:`n`/ptrn\:sub:`1`;… ;ptrn:sub:`n`}
 
 
-| for(ptrn\:sub:`1`; … ;ptrn\:sub:`n` <- v\:sub:`1`; … ;v\:sub:`n`){P} | v\:sub:`1`; … ;v\:sub:`n`!!(@Q\:sub:`1`; … ;@Q\:sub:`n`) → P{@Q\:sub:`1`; … ;@Q\:sub:`n`/ptrn\:sub:`1`;… ;ptrn:sub:`n`}
+The asynchronous set of transactions occurring over the named channel, :code:`x`, and the asynchronous set of transactions occurring over named channel, :code:`v`, are double-blind; they are anonymous to each other unless introduced by a third process. This mechanism to isolate sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments each of which are internally concurrent and may execute in parallel with one another.
 
 
-The asynchronous set of transactions occurring over the named channel, :code:`x`, and the asynchronous set of transactions occurring over named channel, :code:`v`, are double-blind; they are anonymous to each other unless introduced by a third process. This mechanism to isolate sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments each of which are internally concurrent and may execute in parallel.
-
-
-.. figure:: ../img/blocks-by-namespace.png
+.. figure:: .. /img/blocks-by-namespace.png
     :align: center
     :width: 1950
+    :scale: 80
     
     Figure - Namespaces as Isolated Transactional Environments
     
@@ -61,11 +61,12 @@ Namespace Definitions
 A name satisfies a definition, or it does not; it functions, or it does not. The following namespace definition is implemented as an ‘if conditional’ in the interaction which depicts a set of processes sending a set of contracts to set of named addresses that comprise a namespace:
 
 
-.. figure:: ../img/namespace-definitions
+.. figure:: .. /img/namespace-definitions.png
     :align: center
     :width: 2659
+    :scale: 80
     
-    Figure - A Namespace Definition  Implemented as an ‘If-conditional’
+    Figure - A Namespace Definition Implemented as an ‘If-conditional’
     
 
 1. A set of contracts, contract\:sub:`1` … contract\:sub:`n` , are sent to the namespace address\:sub:`1` … address\:sub:`n`.
@@ -98,32 +99,38 @@ A namespace can be thought of as a URI (Uniform Resource Identifier), while the 
 
 Observe, however, that URL paths do not always compose. Take :code:`scheme://a/b/c` and :code:`scheme://a/b/d`. In a traditional URL scheme, the two do not compose to yield a path. However, every flat path is automatically a tree path, and, as trees, these *do* compose to yield a new tree :code:`scheme://a/b/c+d`. Therefore, trees afford a composable model for resource addressing.
 
-.. figure:: .. img/namespaces-as-tree-paths.png
+
+.. figure:: .. /img/namespaces-as-tree-paths.png
     :align: center
     :width: 1617
+    :scale: 80
     
-     Figure - Composable Tree Paths
+    Figure - Composable Tree Paths
+    
     
 Above, unification works as a natural algorithm for matching and decomposing trees, and unification-based matching and decomposition provides the basis of query. To explore this claim let us rewrite our path/tree syntax in this form:
 
 ::
 
-scheme://a/b/c+d ↦ s: a(b(c,d))
+ scheme://a/b/c+d ↦ s: a(b(c,d))
+
 
 Then adapt syntax to the I/O actions of the rho-calculus:
 
 ::
 
-                     s!( a(b(c,d)) )
+                                                               s!( a(b(c,d)) )
 
-          for( a(b(c,d) <- s; if cond ){ P }
+                                                      for( a(b(c,d) <- s; if cond ){ P }
           
           
-The top expression denotes output - the resource address :code:`a(b(c,d)` at the named channel :code:`s`. The bottom expression denotes input. For the pattern that matches the form :code:`a(b(c,d))`, coming in on channel :code:`s`, if some precondition is met, execute continuation :code:`P`, with the address :code:`a(b(c,d)` as an argument. Of course, this expression implicates :code:`s`, as a named channel. So the adapted channel structure is represented:
+The top expression denotes output - place the resource address :code:`a(b(c,d)` at the named channel :code:`s`. The bottom expression denotes input. For the pattern that matches the form :code:`a(b(c,d))`, coming in on channel :code:`s`, if some precondition is met, execute continuation :code:`P`, with the address :code:`a(b(c,d)` as an argument. Of course, this expression implicates :code:`s`, as a named channel. So the adapted channel structure is represented:
 
-.. figure:: .. img/namespaces-as-trees
+
+.. figure:: .. /img/namespaces-as-tree-paths.png
     :align: center
     :width: 567
+    :scale: 80
     
     Figure - URL Scheme as Nested Channels in Tree Structure
     
@@ -132,26 +139,31 @@ Given an existing address structure, and namespace access, a client may query fo
 
 ::
 
-for( a(b(c,d) ) <- s; if cond){ P } | s!( a(b(@Q,@R)) )
+                                            for( a(b(c,d) ) <- s; if cond){ P } | s!( a(b(@Q,@R)) )
 
 
 The evaluation step is written symbolically:
 
 ::
 
-for( a(b(c,d)) <- s; if cond ){ P } | s!( a(b(@Q,@R)) ) → P{ @Q/c, @R/d }
+                                   for( a(b(c,d)) <- s; if cond ){ P } | s!( a(b(@Q,@R)) ) → P{ @Q/c, @R/d }
 
 
 That is, :code:`P` is executed in an environment in which :code:`c` is substituted for :code:`@Q`, and :code:`d` is substituted for :code:`@R`. The updated tree structure is represented as follows:
 
-.. figure:: .. img/tree-structure-substituted.png
+
+.. figure:: .. /img/tree-structure-substituted.png
     :align: center
     :width: 1688
+    :scale: 80
     
     Figure - Placing Processes at Channels
 
 
-Note that every channel with sub-structure is a namespace and, therefore, has an unguessable name and (possibly) imposes a namespace definition to manage access to itself and it's sub-structure. This "address" realizes a namespace as the named channel :code:`s` with minimal internal structure. In practice, the internal structure of a named channel is an n-ary tree of arbitrary depth and complexity, and the "top" channel, in this case :code:`s`, is but one of :code: `s\ :sup:`n`` names within the "top-level" namespace :code:`s`. Nevertheless, this structure represents a step-by-step adaptation to what is, arguably, the most widely used internet addressing standard in history. RChain achieves the compositional address space necessary for private, public, and consortium visibility by way of namespaces. However, the obvious use-case addresses scalability. Not by chance, and not surprisingly, namespaces offer the framework for RChain’s sharding solution.
+In addition to a flat set of channels e.g :code:`s\ :sub:`n`` qualifying as a namespace, every channel with internal structure is, in itself, a namespace. Therefore, :code:`s`, :code:`a`, and :code:`b` may incrementally impose individual namespace definitions analogous to those given by a flat namespace. In practice, the internal structure of a named channel is an n-ary tree of arbitrary depth and complexity where the "top" channel, in this case :code:`s`, is but one of many possible names in :code: `s\ :sub:`n`` that witness internal structure.
+
+This resource addressing framework represents a step-by-step adaptation to what is the most widely used internet addressing standard in history. RChain achieves the compositional address space necessary for private, public, and consortium visibility by way of namespaces, but the obvious use-case addresses scalability. Not by chance, and not surprisingly, namespaces also offer a framework for RChain’s sharding solution.
 
 
+.. [5] Namespace Logic - A Logic for a Reflective Higher-Order Calculus.
 
