@@ -27,3 +27,4 @@ support these efforts.
    introduction/comparison-of-blockchains.rst
    introduction/architecture-overview.rst
    contracts/contract-design.rst
+   contracts/namespaces.rst
