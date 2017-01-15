@@ -1,11 +1,12 @@
 .. _namespaces:
 
-**************************************************
+*****************************************************************
 Namespace Logic
-***************************************************
+*****************************************************************
+
 For a blockchain solution of internet scale to be realizable, it, like the internet, must possess an logic to reason about the “location” of a resource i.e who can access a resource and under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
 
-It has been established that two processes must share a named channel to communicate. What if multiple processes communicate over a single channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
+We have established that two processes must share a named channel to communicate, but what if multiple processes share the same channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
 
 ::
 
@@ -58,7 +59,7 @@ The asynchronous set of transactions occurring in the namespace :code:`x`, and t
 Still, in this representation, the fact remains that resources are visible to processes/contracts which know the name of a channel and satisfy a pattern match. After partitioning the address space into a multiplex of isolated transactional environments, how do we further refine the type of process/contract that can interact with a resource in a similar environment? -- under what conditions, and to what extent, may it do so? For that we turn to definitions.
 
 Namespace Definitions
-=======================================================
+============================================================
 **A namespace definition is a formulaic description of the minimum conditions required for a process/contract to function in a namespace.** In point of fact, the consistency of a namespace is immediately and exclusively dependent on how that space defines a name, which may vary greatly depending on the intended function of the contracts the namespace definition describes.
 
 A name satisfies a definition, or it does not; it functions, or it does not. The following namespace definition is implemented as an ‘if conditional’ in the interaction which depicts a set of processes sending a set of contracts to set of named addresses that comprise a namespace:
