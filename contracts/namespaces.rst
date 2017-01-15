@@ -127,7 +127,7 @@ Then adapt syntax to the I/O actions of the rho-calculus:
 The top expression denotes output - place the resource address :code:`a(b(c,d)` at the named channel :code:`s`. The bottom expression denotes input. For the pattern that matches the form :code:`a(b(c,d))`, coming in on channel :code:`s`, if some precondition is met, execute continuation :code:`P`, with the address :code:`a(b(c,d)` as an argument. Of course, this expression implicates :code:`s`, as a named channel. So the adapted channel structure is represented:
 
 
-.. figure:: .. /img/namespaces-as-tree-paths.png
+.. figure:: .. /img/namespaces-as-trees.png
     :align: center
     :width: 567
     :scale: 80
