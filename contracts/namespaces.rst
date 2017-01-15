@@ -69,8 +69,7 @@ A name satisfies a definition, or it does not; it functions, or it does not. The
     Figure - A Namespace Definition Implemented as an ‘If-conditional’
     
 
-1. A set of contracts, :code:`contract1...contractn` , are sent to the namespace :code:`address1...address`.
-FORMAT
+1. A set of contracts, :code:`contract1...contractn` , are sent to the set of channels (namespace) :code:`address1...addressn`.
 
 2. In parallel, a process listens for input on every channel in the :code:`address` namespace. 
 
