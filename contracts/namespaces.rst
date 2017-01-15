@@ -1,47 +1,47 @@
 Namespace Logic
 =======================================
-For a blockchain solution of internet scale to be realizable, it, like the internet, must possess an logic to reason about the “location” of a resource i.e who can access a resource and under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a range of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
+For a blockchain solution of internet scale to be realizable, it, like the internet, must possess an logic to reason about the “location” of a resource i.e who can access a resource and under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
 
 It has been established that two processes must share a named channel to communicate. What if multiple processes communicate over a single channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
 
 ::
 
-                                    for(ptrn <- x){P\ :sub:`1`} | x!(@Q) | for(ptrn <- x){P\ :sub:`2`} 
+                                    for(ptrn <- x){P1} | x!(@Q) | for(ptrn <- x){P2} 
 
 
-The first race condition occurs when multiple clients in parallel composition compete to *receive* a data resource on a named channel. In this case P\ :sub:`1` and P\ :sub:`2` , are waiting, on the named channel, :code:`x`,  for the resource, :code:`@Q`, being sent on the channel, :code:`x`, by another process. The clients will execute their continuations if and only if the correct value is witnessed at that location. In other cases where many clients are competing, many reductions may be possible, but, in this case, only one of two may result. One where :code:`P\ :sub:`1`` receives :code:`@Q` first and one where :code:`P2` receives :code:`@Q` first, both of which (possibly) return different results when, :code:`@Q` is substituted into their respective continuations. The simple question remains, “ to which channel is the sender referring?”.
-
-::
-
-                                          x!(@Q\ :sub:`1`) | for(ptrn <- x){P} | x!(@Q\ :sub:`2`)
-                                          
-                                          
-The second race condition occurs when two clients compete to send a data resource on a named channel. In this case, two clients are each competing to send a data resource, :code:`@Q`, to the client at the named channel, :code:`x`, but only one of two transactions may occur - one where the receiving client receives :code:`@Q\ :sub:`1`` first and one where it receives :code:`@Q\ :sub:`2`` first, both of which (possibly) return different results when substituted in continuation, :code:`P`.
-
-A certain level of nondeterminism is unavoidable. It is the blessing that concurrency affords and accommodates. Later, in the section on consensus, we will describe how the consensus algorithm maintains replicated state by converging on one of the many possible transaction occurrences in a nondeterministic process. For now, observe how simply redefining a name constrains reduction in the first race condition:
+The first race condition occurs when multiple clients in parallel composition compete to *receive* a data resource on a named channel. In this case :code:`P1` and :code:`P2` , are waiting, on the named channel :code:`x`,  for the resource :code:`@Q` being sent on :code:`x` by another process. The clients will execute their continuations if and only if the correct value is witnessed at that location. In other cases where many clients are competing, many reductions may be possible, but, in this case, only one of two may result. One where :code:`P1` receives :code:`@Q` first and one where :code:`P2` receives :code:`@Q` first, both of which may return different results when :code:`@Q` is substituted into their respective protocol bodies. The simple question remains, “to which channel is the sender referring?”.
 
 ::
 
-          for(ptrn <- v){P\:sub:`1`} | x!(@Q) | for(ptrn <- x){P\:sub:`2`} → P\:sub:`2`{@Q/ptrn} | for(ptrn <- v){P\:sub:`1`}
+                                          x!(@Q1) | for(ptrn <- x){P} | x!(@Q2)
+                                          
+                                          
+The second race condition occurs when two clients compete to *send* a data resource on a named channel. In this case, two clients are each competing to send a data resource :code:`@Q` to the client at the named channel :code:`x`, but only one of two transactions may occur - one where the receiving client receives :code:`@Q1` first and one where it receives :code:`@Q2` first, both of which may return different results when substituted into the protocol body of :code:`P`.
+
+For protocols which compete for resources, this level of nondeterminism is unavoidable. Later, in the section on consensus, we will describe how the consensus algorithm maintains replicated state by converging on one of the many possible transaction occurrences in a nondeterministic process. For now, observe how simply redefining a name constrains reduction in the first race condition:
+
+::
+
+            for(ptrn <- x){P1} | x!(@Q) |  for(ptrn <- v){P2} → P1{ @Q/ptrn } | for(ptrn <- v){P2}
 
 
 --and the second race condition:
 
 ::
 
-                        x!(@Q\:sub:`1`) | for(ptrn <- x){P} |u!(@Q\:sub:`2`) → P{@Q\:sub:`1`/ptrn} | u!(@Q\:sub:`2`)
+                        x!(@Q1) | for(ptrn <- x){P} |u!(@Q2) → P{ @Q1/ptrn } | u!(@Q2)
                             
                             
-In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they now have different names - they are in separate namespaces. And because names are unguessable, resources are only (possibly) visible to process/contracts that have knowledge of the name [5]_ Hence, sets of processes that occur over non-conflicting sets of named channels i.e sets of transactions in separate namespaces, may execute in parallel, as demonstrated below:
+In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they are now communicating over two distinct, named channels. In other words, they are in separate namespaces. Additionally, names are provably unguessable, so they can only be aquired when a discretionary external process gives them. Because a name is unguessable, a resource is only visible to the processes/contracts that have knowledge of that name [5]_. Hence, sets of processes that execute over non-conflicting sets of named channels i.e sets of transactions that execute in separate namespaces, may execute in parallel, as demonstrated below:
 
 ::
 
- for(ptrn\:sub:`1`; … ;ptrn\:sub:`n` <- x\:sub:`1`; … ;x\:sub:`n`){P} | x\:sub:`1`; … ;x\:sub:`n`!(@Q\:sub:`1`; … ;@Q\:sub:`n`) → P{@Q\:sub:`1`; … ;@Q\:sub:`n`/ptrn\:sub:`1`; … ;ptrn:sub:`n`}
+   for(ptrn1;...;ptrnn <- x1;...;xn){P} | x1;...;xn!(@Q1;...;@Qn) → P{ @Q1;...;@Qn/ptrn1;...;ptrnn }
 
- | for(ptrn\:sub:`1`; … ;ptrn\:sub:`n` <- v\:sub:`1`; … ;v\:sub:`n`){P} | v\:sub:`1`; … ;v\:sub:`n`!!(@Q\:sub:`1`; … ;@Q\:sub:`n`) → P{@Q\:sub:`1`; … ;@Q\:sub:`n`/ptrn\:sub:`1`;… ;ptrn:sub:`n`}
+ | for(ptrn1;...;ptrnn <- v1;...;vn){P} | v1;...;vn!(@Q1;...;@Qn) → P{ @Q1;...;@Qn/ptrn1;...;ptrnn } 
 
 
-The asynchronous set of transactions occurring over the named channel, :code:`x`, and the asynchronous set of transactions occurring over named channel, :code:`v`, are double-blind; they are anonymous to each other unless introduced by a third process. This mechanism to isolate sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments each of which are internally concurrent and may execute in parallel with one another.
+The asynchronous set of transactions occurring in the namespace :code:`x`, and the asynchronous set of transactions occurring in the namespace :code:`v`, are double-blind; they are anonymous to each other unless introduced by an auxillary process. This mechanism to isolate sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel with one another.
 
 
 .. figure:: .. /img/blocks-by-namespace.png
@@ -52,7 +52,7 @@ The asynchronous set of transactions occurring over the named channel, :code:`x`
     Figure - Namespaces as Isolated Transactional Environments
     
 
-Still, in this representation, the fact remains that resources are visible to processes/contracts which know the name of a channel and satisfy a pattern match. After partitioning the structure of transactional environments, how do we further refine what type of contract can interact with a resource if it belongs to the same namespace? - and the extent to which it may do so? For that we turn to definitions.
+Still, in this representation, the fact remains that resources are visible to processes/contracts which know the name of a channel and satisfy a pattern match. After partitioning the address space into a multiplex of isolated transactional environments, how do we further refine the type of process/contract that can interact with a resource in a similar environment? -- under what conditions, and to what extent, may it do so? For that we turn to definitions.
 
 Namespace Definitions
 =======================================================
@@ -69,13 +69,14 @@ A name satisfies a definition, or it does not; it functions, or it does not. The
     Figure - A Namespace Definition Implemented as an ‘If-conditional’
     
 
-1. A set of contracts, contract\:sub:`1` … contract\:sub:`n` , are sent to the namespace address\:sub:`1` … address\:sub:`n`.
+1. A set of contracts, :code:`contract1...contractn` , are sent to the namespace :code:`address1...address`.
+FORMAT
 
-2. In parallel, a process listens for the input, contract, on every channel in the, :code:`address`, namespace. 
+2. In parallel, a process listens for input on every channel in the :code:`address` namespace. 
 
-3. When a contract is received on any one of the channels, it is supplied to, :code:`if cond.`, which checks the namespace origin, the address of sender, the behavior of the contract, the structure of the contract, as well as the size of data the contract carries. 
+3. When a contract is received on any one of the channels, it is supplied to :code:`if cond.`, which checks the namespace origin, the address of sender, the behavior of the contract, the structure of the contract, as well as the size of data the contract carries. 
 
-4. If those properties are consistent with those denoted by the, :code:`address`, namespace definition, continuation, :code:`P`, is executed with, :code:`contract`, as its argument.
+4. If those properties are consistent with those denoted by the, :code:`address`, namespace definition, continuation :code:`P` is executed with :code:`contract` as its argument.
 
 A namespace definition effectively bounds the types of interactions that may occur in a namespace - with every contract existing in the space demonstrating a common and predictable behavior. That is, the state alterations invoked by a contract residing in a namespace are necessarily authorized, defined, and correct for that namespace. This design choice makes fast datalog-style queries against namespaces very convenient and exceedingly useful.
 
@@ -119,7 +120,7 @@ Then adapt syntax to the I/O actions of the rho-calculus:
 
 ::
 
-                                                               s!( a(b(c,d)) )
+                                                      s!( a(b(c,d)) )
 
                                                       for( a(b(c,d) <- s; if cond ){ P }
           
@@ -146,7 +147,7 @@ The evaluation step is written symbolically:
 
 ::
 
-                                   for( a(b(c,d)) <- s; if cond ){ P } | s!( a(b(@Q,@R)) ) → P{ @Q/c, @R/d }
+                                   for( a(b(c,d)) <- s; if cond ){ P } | s!( a(b(@Q,@R)) ) → P{ @Q := c, @R := d }
 
 
 That is, :code:`P` is executed in an environment in which :code:`c` is substituted for :code:`@Q`, and :code:`d` is substituted for :code:`@R`. The updated tree structure is represented as follows:
@@ -160,7 +161,7 @@ That is, :code:`P` is executed in an environment in which :code:`c` is substitut
     Figure - Placing Processes at Channels
 
 
-In addition to a flat set of channels e.g :code:`s\ :sub:`n`` qualifying as a namespace, every channel with internal structure is, in itself, a namespace. Therefore, :code:`s`, :code:`a`, and :code:`b` may incrementally impose individual namespace definitions analogous to those given by a flat namespace. In practice, the internal structure of a named channel is an n-ary tree of arbitrary depth and complexity where the "top" channel, in this case :code:`s`, is but one of many possible names in :code: `s\ :sub:`n`` that witness internal structure.
+In addition to a flat set of channels e.g :code:`s1...sn` qualifying as a namespace, every channel with internal structure is, in itself, a namespace. Therefore, :code:`s`, :code:`a`, and :code:`b` may incrementally impose individual namespace definitions analogous to those given by a flat namespace. In practice, the internal structure of a named channel is an n-ary tree of arbitrary depth and complexity where the "top" channel, in this case :code:`s`, is but one of many possible names in :code:`s1...sn` that witness internal structure.
 
 This resource addressing framework represents a step-by-step adaptation to what is the most widely used internet addressing standard in history. RChain achieves the compositional address space necessary for private, public, and consortium visibility by way of namespaces, but the obvious use-case addresses scalability. Not by chance, and not surprisingly, namespaces also offer a framework for RChain’s sharding solution.
 
