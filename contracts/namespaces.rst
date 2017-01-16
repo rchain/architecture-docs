@@ -140,7 +140,7 @@ The top expression denotes output - place the resource address :code:`a(b(c,d)` 
     Figure - URL Scheme as Nested Channels in Tree Structure
     
     
-Given an existing address structure, and namespace access, a client may query for and send to names within that address structure. For example, when the I/O processes are placed in concurrent execution, the following expression denotes a function that places the quoted processes, (Q,R) at the location, a(b(c,d)):
+Given an existing address structure, and namespace access, a client may query for and send to names within that address structure. For example, when the rho-calculus I/O processes are placed in concurrent execution, the following expression denotes a function that places the quoted processes, :code:`(@Q,@R)` at the location, :code:`a(b(c,d))`:
 
 ::
 
