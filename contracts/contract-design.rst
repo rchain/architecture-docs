@@ -42,9 +42,9 @@ Two contracts sending and receiving a message on the channel named ‘Address’
 
 
 
-This model depicts two contracts, which both may receive and send messages. Eventually, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ which is the address of Contract\ :sub:`2`. Meanwhile, Contract\ :sub:`2` listens on its address channel for some value v. After it receives some value, v, Contract\ :sub:`2` invokes some process continuation with v as an argument. These last two steps occur sequentially.
+This model depicts two contracts, which both may receive and send messages. Eventually, :code:`Contract1` is prompted to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes some process continuation with :code:`v` as an argument. These last two steps occur sequentially.
 
-Note that, this model assumes that at least the sender possesses the address of Contract\ :sub:`2`. Also note that, after it sends v, Contract\ :sub:`1` has been run to termination, thus it is incapable of sending anything else unless prompted. Similarly, after it invokes a continuation, Contract\ :sub:`2` has been run to termination, thus it is incapable of listening for any other messages.
+Note that, this model assumes that at least the sender possesses the address of :code:`Contract2`. Also note that, after it sends :code:`v`, :code:`Contract1` has been run to termination, thus it is incapable of sending anything else unless prompted. Similarly, after it invokes its continuation, :code:`Contract2` has been run to termination, thus it is incapable of listening for any other messages.
 
 RChain contracts enjoy fine-grain, internal concurrency, which means that these processes, and any processes that are not co-dependent, may be placed in parallel composition. So, we amend our notation:
 
@@ -57,7 +57,7 @@ RChain contracts enjoy fine-grain, internal concurrency, which means that these 
 
 
 
-Executing in parallel with a number of other processes, Contract\ :sub:`1` is prompted to send a value, v, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. If Contract1 has no value to send, then the process is inert. If Contract\ :sub:`2` has not received a value, then its continuation is not triggered and it is inert. Thus, Contract\ :sub:`1` and Contract\ :sub:`2` may execute asynchronously and in parallel. Additionally, message passing is an atomic operation. Either a message is transmitted, or it is not.
+Executing in parallel with a number of other processes, :code:`Contract1` is prompted to send a value, :code:`v`, on the channel :code:`address` i.e the address of :code:`Contract2`. If :code:`Contract1` has no value to send, then it is blocked. If :code:`Contract2` has not received a value, then it is blocked and the continuation is not triggered. Thus, :code:`Contract1` and :code:`Contract2` may execute asynchronously and in parallel. 
 
 Transactions
 -------------------------------------------------------------
@@ -66,7 +66,7 @@ How do transaction semantics fit into our description of contracts? **From the p
 
 Messages themselves are virtual objects, but the pre-state and post-state of a contract, referring to the states before and after a message is sent by one agent and received by another, are verified and written to blockchain storage.
 
-Only the successful transmission of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when a resource is transferred from one agent to another, even in larger systems, there is record of when and where it went. This implementation is consistent with an interpretation of data as a linear resource.
+Message passing is an atomic operation. Either a message is transmitted, or it is not, and only the successful transmission of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when a resource is transferred from one agent to another, even in larger systems, there is record of when and where it went. This implementation is consistent with an interpretation of data as a linear resource.
 
 
 .. figure:: ../img/10156345.png
@@ -88,7 +88,7 @@ For an example of how this model is adaptable to industry trends in reactive pro
    :scale: 80
 
 
-Executing in parallel composition with a number of other processes, Contract\ :sub:`1` is prompted to send a set of  values, v\ :sub:`N`, on the channel ‘Address’ i.e the address of Contract\ :sub:`2`. In this scenario, the reader will notice Contract\ :sub:`2` as a thread which takes a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. As each value is received, a continuation is invoked with the value as an argument. While the interaction between Contract\  :sub:`1` and Contract\ :sub:`2` is asynchronous, the “receive” and “continuation” operations of Contract\ :sub:`2` are necessarily sequential. Thus, asynchronicity is preserved.
+Executing in parallel composition with a number of other processes, :code:`Contract1` is prompted to send a set of  values, :code:`vN`, on the channel :code:`address` i.e the address of :code:`Contract2`. In this scenario, the reader will notice :code:`Contract2` as a thread which listens for a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. When the set of values, :code:`v1...vN`, is witnessed at the channel, :code:`address`, a continuation is invoked with :code:`v1...vN` as an argument. While the interaction between :code:`Contract1` and :code:`Contract2` is asynchronous, the input operation i.e :code:`address?(v1...vN)` and :code:`Continuation(v)` of :code:`Contract2` are necessarily sequential. :code:`address?(v1...vN)` is said to "pre-fix" :code:`Continuation(v)` in every instance.
 
 We have presented a very basic depiction of concurrent contract interaction on the RChain platform to include contracts, addresses i.e channels of communication, and transactions i.e the successful transmission of a message. Next, we outline the core system which formally models these constructs.
 
