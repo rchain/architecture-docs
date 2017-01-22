@@ -40,12 +40,12 @@ In both cases, the channel, and the data resource being communicated, is no long
 
 ::
 
-   for(ptrn1;...;ptrnn <- x1;...;xn){P} | x1;...;xn!(@Q1;...;@Qn) → P{ @Q1;...;@Qn/ptrn1;...;ptrnn }
+   for(ptrn1 <- x1){P1} | x1!(@Q1) | ... | for(ptrnn <- xn){Pn} | xn!(@Qn) → P1{ @Q1/ptrn1} | ... | Pn{ @Qn/ptrnn }
 
- | for(ptrn1;...;ptrnn <- v1;...;vn){P} | v1;...;vn!(@Q1;...;@Qn) → P{ @Q1;...;@Qn/ptrn1;...;ptrnn } 
+ | for(ptrn1 <- v1){P1} | v1!(@Q1) | ... | for(ptrnn <- vn){Pn} | vn!(@Q1) → P1{ @Q1/ptrn1} | ... | Pn{ @Qn/ptrnn }
 
 
-The asynchronous set of transactions occurring in the namespace :code:`x`, and the asynchronous set of transactions occurring in the namespace :code:`v`, are double-blind; they are anonymous to each other unless introduced by an auxillary process. This approach to isolating sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel with one another.
+The set of transactions executing in parallel in the namespace :code:`x`, and the set of transactions executing in the namespace :code:`v`, are double-blind; they are anonymous to each other unless introduced by an auxillary process. Both sets of transactions are communicating the same resource, :code:`@Q`, and even requiring that :code:`@Q` meets the same :code:`ptrn`, yet no race conditions arise because each output has a single input counter-part, and the transactions occur in separate namespaces. This approach to isolating sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel with one another.
 
 
 .. figure:: .. /img/blocks-by-namespace.png
