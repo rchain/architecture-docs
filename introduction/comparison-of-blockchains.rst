@@ -6,9 +6,12 @@
 Comparison of Blockchains
 ################################################################################
 
+
 .. img:: ../img/comparison-table.png
     :align: center
     :width: 1304
+    
+    
 This document assumes the reader is familiar with the basics of Bitcoin and Ethereum.
 As one approach to introducing the architecture let’s compare the characteristics of
 Bitcoin, Ethereum, and RChain as currently planned.
