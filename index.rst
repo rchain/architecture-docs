@@ -37,3 +37,4 @@ support these efforts.
    introduction/architecture-overview.rst
    contracts/contract-design.rst
    contracts/namespaces.rst
+   references.rst
