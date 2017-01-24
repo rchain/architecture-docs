@@ -7,6 +7,15 @@
 RChain Platform Architecture
 ###############################################
 
+
+:Authors:`Ed Eykholt, Lucius Meredith, Joseph Denman`
+:Date: `1.13.2017`
+:Organization: RChain Cooperative
+:Copyright: `This document is licensed under a `Creative Commons Attribution 4.0 International (CC BY 4.0) License`_
+
+.. _Creative Commons Attribution 4.0 International (CC BY 4.0) License:https://creativecommons.org/licenses/by/4.0/
+
+
 Abstract
 ===============================================
 
