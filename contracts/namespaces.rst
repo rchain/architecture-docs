@@ -13,7 +13,7 @@ We have established that two processes must share a named channel to communicate
                                     for(ptrn <- x){P1} | x!(@Q) | for(ptrn <- x){P2} 
 
 
-The first race condition occurs when multiple clients in parallel composition compete to *receive* a data resource on a named channel. In this case :code:`P1` and :code:`P2` , are waiting, on the named channel :code:`x`,  for the resource :code:`@Q` being sent on :code:`x` by another process. The clients will execute their continuations if and only if the correct value is witnessed at that location. In other cases where many clients are competing, many reductions may be possible, but, in this case, only one of two may result. One where :code:`P1` receives :code:`@Q` first and one where :code:`P2` receives :code:`@Q` first, both of which may return different results when :code:`@Q` is substituted into their respective protocol bodies. The simple question remains, “to which channel is the sender referring?”.
+The first race condition occurs when multiple clients in parallel composition compete to *receive* a data resource on a named channel. In this case :code:`P1` and :code:`P2` , are waiting, on the named channel :code:`x`,  for the resource :code:`@Q` being sent on :code:`x` by another process. The clients will execute their continuations if and only if the correct value is witnessed at that location. In other cases where many clients are competing, many reductions may be possible, but, in this case, only one of two may result. One where :code:`P1` receives :code:`@Q` first and one where :code:`P2` receives :code:`@Q` first, both of which may return different results when :code:`@Q` is substituted into their respective protocol bodies.
 
 ::
 
