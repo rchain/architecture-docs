@@ -165,7 +165,7 @@ Rho-calculus also gives a single, reduction (substitution) rule to realize compu
 
 .. code-block:: none
 
-  for( ptrn <- x ).P | x!(@Q).R -> P{ @Q/ptrn } | R //Reduction Rule
+  for( ptrn <- x ).P | x!(@Q) -> P{ @Q/ptrn } //Reduction Rule
 
 The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship i.e one process is listening on channel, x, while the other process is sending on channel, x.
 One process sends the quoted process, Q, on channel, x, and then invokes the continuation R. In parallel, the other process listens for an arbitrary pattern, ptrn, on channel, x. Upon matching the pattern, it executes continuation P. After reduction, the simplified term denotes that P executes concurrently with the process, R, and will execute in an environment where the quoted process Q is bound to the pattern, ptrn. That is, Q is substituted for every occurrence of the pattern, ptrn,  in P.
