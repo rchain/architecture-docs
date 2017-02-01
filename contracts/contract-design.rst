@@ -114,7 +114,7 @@ Reflection is now widely recognized as a key feature of practical programming la
 
 Syntax and Semantics
 --------------------------------------------------------------------------
-The rho-calculus constructs “names” and “processes”. Similar to the π-calculus, **a name may be a channel of communication or a variable. However, with the rho-calculus addition of ‘reflection’, a name may also be a ‘quoted’ process, where a quoted process is the code of a process.** The genericity of names will become important in the coming sections.
+The rho-calculus constructs “names” and “processes”. Similar to the π-calculus, **a name may be a channel of communication or a value. However, with the rho-calculus addition of ‘reflection’, a name may also be a ‘quoted’ process, where a quoted process is the code of a process.** The genericity of names will become important in the coming sections.
 From the notion of names and processes, the calculus builds a few basic “processes”. A process may have persistent state but does not assume it. The term “process” is the more general term for “smart contract”. Hence, every contract is a process but not every process is smart contract.
 
 Rho-calculus builds the following basic terms to describe interaction among processes:
@@ -123,8 +123,8 @@ Rho-calculus builds the following basic terms to describe interaction among proc
 
   P,Q,R ::= 0                  // nil or stopped process
 
-            |   for( ptrn1 <- x1; … ; ptrnN <- xN ).P // input guarded agent
-            |   x!( ptrn )     // output
+            |   for( ptrn1 <- x1; … ; ptrnN <- xN ).P // input guarded process
+            |   x!( @Q )       // output
             |   \*x\           // dereferenced or unquoted name
             |   P|Q            // parallel composition
 
@@ -144,9 +144,7 @@ The first three terms denote I/O, describing the actions of message passing:
   that all input-channels are subject to pattern matching, which constructs an
   input-guard of sorts.
 
-* The output term, :code:`x!( y )`, sends some name, :code:`y`, on channel, :code:`x`.
-  Hence, :code:`y` may be a variable, a channel, a quoted process, :code:`@P`, or
-  a pattern.
+* The output term, :code:`x!( @Q )`, sends the name, :code:`@Q`, on channel, :code:`x`. Although the name being sent on :code:`x` may be a values, a channel, or a quoted process (which may itself contain many channels and values), our notation uses, :code:`@Q` to reiterate the expressiveness of names.
 
 The next term is structural, describing concurrency:
 
@@ -167,8 +165,7 @@ Rho-calculus also gives a single, reduction (substitution) rule to realize compu
 
   for( ptrn <- x ).P | x!(@Q) -> P{ @Q/ptrn } //Reduction Rule
 
-The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship i.e one process is listening on channel, x, while the other process is sending on channel, x.
-One process sends the quoted process, Q, on channel, x, and then invokes the continuation R. In parallel, the other process listens for an arbitrary pattern, ptrn, on channel, x. Upon matching the pattern, it executes continuation P. After reduction, the simplified term denotes that P executes concurrently with the process, R, and will execute in an environment where the quoted process Q is bound to the pattern, ptrn. That is, Q is substituted for every occurrence of the pattern, ptrn,  in P.
+The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship i.e one process is reading from channel, :code:`x`, while the other process is writing to the channel, :code:`x`. The two processes are said to "synchronize" at :code:`x`. The output process sends the quoted process, :code:`@Q`, on :code:`x`. In parallel, the input process waits for an arbitrary pattern, :code:`ptrn` to arrive on :code:`x`. Upon matching the pattern, it executes continuation :code:`P`. After reduction, the simplified term denotes :code:`P`, which will execute in an environment where :code:`@Q` is bound to :code:`ptrn`. That is, :code:`@Q` is substituted for every occurrence of the :code:`ptrn`,  in the body of :code:`P`.
 
 The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable.
 
