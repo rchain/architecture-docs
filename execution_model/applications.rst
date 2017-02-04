@@ -16,8 +16,6 @@ Any number and variety of applications can be built on top of the RChain Platfor
 * Social Networks
 * Marketplaces
 
-Several application providers are already committed to this platform, including `RChain`_ for its social product, `LivelyGig`_ for its marketplaces, `weWOWwe`_ for its sports-based social network, and `Nobex Radio`_ for a to-be-announced product.
-
 Contract Development & Deployment
 ================================================
 
@@ -30,8 +28,3 @@ For example, the following diagram depicts some of the possible development, tes
 
 
 We’ll collaborate with IDE tool vendors to integrate Rholang and validation tools. 
-
-Governance
------------------------------------------------
-
-Like other open source and decentralized projects, and especially those involving money and blockchains, the RChain Platform components will require they be created, tested, released, and evolved with great care. RChain’s leadership fully intends to help define these governance processes and to empower a public community to enforce them.
