@@ -10,6 +10,7 @@ In this section on contract design, we cover contract interaction through the pr
 
 Contract Overview
 ======================================================================================
+
 Used loosely as ‘contract’, **a smart contract is a process with:**
 
 1. Persistent state
@@ -95,7 +96,7 @@ We have presented a very basic depiction of concurrent contract interaction on t
 The Formalism: Rho-Calculus
 =================================================================
 
-Formal verification is the *de facto* standard for many mission-critical technologies. Some of the earliest formal verification methods were applied to the two-level shutdown systems of nuclear generators [#f1]_. Many ATM software solutions verify performance by deriving solutions from models of linear temporal logic. Many military information and decision systems invoke Hoare logic to verify crash tolerance. An indiscriminate smart-contracting utility that desires to host mission-critical contracts bears the same responsibility of verifiability to its users. Therefore, our design approach to the surface-language and execution model is based on a provably correct model of computation.
+Formal verification is the *de facto* standard for many mission-critical technologies. Some of the earliest formal verification methods were applied to the two-level shutdown systems of nuclear generators [#f1]_. Many ATM software solutions verify performance by deriving solutions from models of linear temporal logic. Many military information and decision systems invoke Hoare logic to verify crash tolerance. An indiscriminate smart-contracting utility that desires to host mission-critical contracts bears the same responsibility of verifiability to its users. Therefore, our design approach to the surface-language and execution model is based on a provably correct model of computation [#f2]_.
 
 At the same time, there are relatively few programming paradigms and languages that handle concurrent processes in their core model. Instead, they bolt some kind of threading-based concurrency model on the side to address being able to scale by doing more than one thing at a time. By contrast, the Mobile process calculi provide a fundamentally different notion of what computing is. In these models, computing arises primarily from the interaction of processes. The ability to formally verify an execution model, and to allow that execution model to be fundamentally concurrent, is why we have chosen a process calculus for RChain's model of computation.
 
@@ -111,7 +112,7 @@ For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category Model
 Reflection
 -----------------------------------------------------------------------
 
-Reflection is now widely recognized as a key feature of practical programming languages, known broadly as "meta-programming". Reflection is a disciplined way to turn programs into data that programs can operate on and then turn the modified data back into new programs. Java, C#, and Scala eventually adopted reflection as a core feature, and even OCaml and Haskell have ultimately developed reflective versions [#f2]_. The reason is simple: at industrial scale, programmers use programs to write programs. Without that computational leverage, it would take too long to write advanced industrial scale programs.
+Reflection is now widely recognized as a key feature of practical programming languages, known broadly as "meta-programming". Reflection is a disciplined way to turn programs into data that programs can operate on and then turn the modified data back into new programs. Java, C#, and Scala eventually adopted reflection as a core feature, and even OCaml and Haskell have ultimately developed reflective versions [#f3]_. The reason is simple: at industrial scale, programmers use programs to write programs. Without that computational leverage, it would take too long to write advanced industrial scale programs.
 
 
 Syntax and Semantics
@@ -142,8 +143,8 @@ The first three terms denote I/O, describing the actions of message passing:
 * The input term, :code:`for( ptrn1 <- x1; … ; ptrnN <- xN )P`, is the form of an
   input-guarded process, :code:`P`, listening for a set of patterns, :code:`ptrnN`,
   on a set of channels, :code:`xN`. On receiving such a pattern, continuation P
-  is invoked [#f3]_. Scala programmers will notice the 'for-comprehension' as
-  syntactic sugar for treating channel access monadically [#f4]_. The result is
+  is invoked [#f4]_. Scala programmers will notice the 'for-comprehension' as
+  syntactic sugar for treating channel access monadically [#f5]_. The result is
   that all input-channels are subject to pattern matching, which constructs an
   input-guard of sorts.
 
@@ -231,8 +232,7 @@ To get a taste of Rholang, here’s a contract named :code:`Cell` that holds a v
      }
    }
 
-This contract takes a channel for :code:`get` requests, a channel for :code:`set` requests, and a :code:`state` channel where we will hold a the data resource. It waits on the :code:`get` and :code:`set` channels for client requests. Client requests are pattern matched via :code:`case` class [#f5]_.
-
+This contract takes a channel for :code:`get` requests, a channel for :code:`set` requests, and a :code:`state` channel where we will hold a the data resource. It waits on the :code:`get` and :code:`set` channels for client requests. Client requests are pattern matched via :code:`case` class [#f6]_.
 
 Upon receiving a request, the contract joins :code:`;` an incoming client with a request against the :code:`state` channel. This join does two things. Firstly, it removes the internal :code:`state` from access while this, in turn, sequentializes :code:`get` and :code:`set` actions, so that they are always operating against a single consistent copy of the resource - simultaneously providing a data resource synchronization mechanism and a memory of accesses and updates against the :code:`state`.
 
@@ -247,7 +247,9 @@ For a more complete historical narrative leading up to Rholang, see `Mobile Proc
 .. _Mobile Process Calculi for Programming the Blockchain: https://docs.google.com/document/d/1lAbB_ssUvUkJ1D6_16WEp4FzsH0poEqZYCi-FBKanuY
 
 .. [#f1] Lawford, M., Wassyng, A.: Formal Verification of Nuclear Systems: Past, Present, and Future. Information & Security: An International Journal. 28, 223–235 (2012).
-.. [#f2] See Scala Documentation: Reflection.
-.. [#f3] See Scala Documentation: For-Comprehensions
-.. [#f4] See Scala Documentation: Delimited Continuations
-.. [#f5] See Scala Documentation: Case Classes
+.. [#f2] In addition to selecting a formally verifiable model of computation,  are investigating a few verification frameworks such as the `K-Framework`_ to achieve this. 
+.. _K-Framework: http://www.kframework.org/index.php/Main_Page
+.. [#f3] See Scala Documentation: Reflection
+.. [#f4] See Scala Documentation: For-Comprehensions
+.. [#f5] See Scala Documentation: Delimited Continuations
+.. [#f6] See Scala Documentation: Case Classes
