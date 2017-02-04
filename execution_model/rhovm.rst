@@ -7,7 +7,7 @@ The compiled Rholang contract is executed on an instance of the Rho virtual mach
 
 
 .. figure:: ../img/execution_strategy.png
-    :width: 959
+    :width: 1200
     :align: center
     :scale: 80
     
