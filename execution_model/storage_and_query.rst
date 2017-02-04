@@ -27,45 +27,44 @@ SpecialK: DSL for Data Access
 SpecialK is the DSL for data access, and KVDB is the decentralized implementation behind the DSL. SpecialK defines distributed data-access patterns in a consistent way, as shown below:
 
 
-
 .. table:: Figure - SpecialK’s Data Access Patterns
 
-+----------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
-|                      | **Item-level read and write (distributed locking)** | **Database read and write** | **Publish / Subscribe messaging** | **Publish / Subscribe with history** |
-+======================+=====================================================+=============================+===================================+======================================+
-| **Data**             | Ephemeral                                           | Persistent                  | Ephemeral                         | Persistent                           |
-+----------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
-| **Continuation(K)** | Ephemeral                                           | Ephemeral                   | Persistent                        | Persistent                           |
-+----------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
-| **Producer Verb**    | Put                                                 | Store                       | Publish                           | Publish with History                 |
-+----------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
-| **Consumer Verb**    | Get                                                 | Read                        | Subscribe                         | Subscribe                            |
-+----------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
++---------------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
+|                           | **Item-level read and write (distributed locking)** | **Database read and write** | **Publish / Subscribe messaging** | **Publish / Subscribe with history** |
++===========================+=====================================================+=============================+===================================+======================================+
+| **Data**                  | Ephemeral                                           | Persistent                  | Ephemeral                         | Persistent                           |
++---------------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
+| **Continuation(K)** [#]_  | Ephemeral                                           | Ephemeral                   | Persistent                        | Persistent                           |
++---------------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
+| **Producer Verb** [#]_    | Put                                                 | Store                       | Publish                           | Publish with History                 |
++---------------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
+| **Consumer Verb**         | Get                                                 | Read                        | Subscribe                         | Subscribe                            |
++---------------------------+-----------------------------------------------------+-----------------------------+-----------------------------------+--------------------------------------+
 
 
 *Figure - SpecialK’s Data Access Patterns*
-
-
 
 From the point of view of the SpecialK DSL and API, when it performs a data-access action, such as the verb Get (with a pattern), it doesn’t need to know or care whether it is stored locally or going out to the network. There is a single query mechanism regardless.
 
 The 2016 and prior SpecialK technology stack (Agent Services, SpecialK, and KVDB, with RabbitMQ and MongoDB) delivered a decentralized Content Delivery Network, although it was neither metered nor monetized. The SpecialK & KVDB components sit on top of MongoDB and RabbitMQ to create the decentralized logic for storing and retrieving content, both locally and remotely. The current 1.0 implementations of SpecialK and KVDB are written in Scala and are in `GitHub`_.
 
-.. _GitHub:https://github.com/leithaus/SpecialK
+.. _GitHub: https://github.com/leithaus/SpecialK
 
 The query semantics vary depending on which level in the architecture is involved. At the SpecialK level, prolog expressions are stored as part of the key and subsequently queried via prolog (datalog) expressions. Higher up in the architecture, prolog expressions of labels are used for storage, and datalog expressions of labels are used for query.
 
 In RChain, the SpecialK and KVDB layers will be reimplemented in Rholang (versus the prior implementation in Scala with custom implementation of delimited continuations and code serialization).
 
-**For more information, see `SpecialK/KVDB – A Pattern Language for the Web`_.** LINK
+For more information, see `SpecialK & KVDB`_ – A Pattern Language for the Web.
+
+.. _SpecialK & KVDB: https://docs.google.com/document/d/1aM5OIJWOyW89rHdUg6d9-YVbItdtxxiosP_fXZQaRdg/edit
 
 =====================================================
 KVDB - Data & Continuation Access, Cache
 =====================================================
 
-KVDB is a Decentralized Key-Value Database. A view of how two nodes collaborate to respond to a get request is shown below: 
+Data will be accessed using the SpecialK semantics and physically stored in a  decentralized, Key-Value Database known as "KVDB". A view of how two nodes collaborate to respond to a get request is shown below:
 
-**Figure - Decentralized data access in SpecialK** PICTURE
+**Figure - Decentralized data access in SpecialK**
 
 1) The first node checks its in-memory cache. Then if it is not found it,
 
@@ -84,3 +83,6 @@ Content Delivery Network
 ----------------------------------------------
 
 This layer will track access and storage of content. Software clients will be required to pay for creation, storage, and retrieval of all content delivered to/from the CDN, via microtransactions. Since storing and retrieving content is not free, why should a technical solution make it free to users like centralized solutions that subsidize the cost in indirect ways? With the promise of micropayments, the RChain platform can more directly charge for the storage and retrieval of content.
+
+.. [#] Note that by convention a continuation function is represented as a parameter named k.
+.. [#] This is only a subset of the verbs possible under this decomposition of the functionality. The verb fetch, for example, gets the data without leaving a continuation around, if there is no data available.
