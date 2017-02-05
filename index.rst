@@ -7,6 +7,8 @@
 RChain Platform Architecture
 ###############################################
 
+.. figure:: ../img/Rchain_brand_blue.png
+    :align: center
 
 :Authors: Ed Eykholt, Lucius Meredith, Joseph Denman
 :Date: 1.13.2017
