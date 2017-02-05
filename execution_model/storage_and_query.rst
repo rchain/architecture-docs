@@ -62,23 +62,21 @@ KVDB - Data & Continuation Access, Cache
 Data will be accessed using the SpecialK semantics, while physically being stored in a  decentralized, Key-Value Database known as "KVDB". A view of how two nodes collaborate to respond to a get request is shown below:
 
 
-
 .. figure:: ../img/specialk.png
   :align: center
-  :with: 3446
+  :width: 3446
   :scale: 80
   
-  Figure - Decentralized data access in SpecialK
+  *Figure - Decentralized Data Access in SpecialK*
   
-  
 
-1) The first node checks its in-memory cache. Then if it is not found it,
+1) The node first queries its in-memory cache for the requested data. Then if it is not found it,
 
-2) checks its local store, and if it is not found stores a delimited continuation at that location, and 
+2) queries its local store, and, if it is not found, stores a delimited continuation at that location, and 
 
-3) checks the network. When the network returns data, the delimited continuation is brought back in scope with the retrieved data as its parameter.
+3) queries the network. If and when the network returns the appropriate data, the delimited continuation is brought back in scope with the retrieved data as its parameter.
 
-Why did RChain not select IPFS (InterPlanetary File System) for distributed memory. In addition to carrying centralization risks, IPFS uses a path to get to content, whereas SpecialK uses entire trees (and trees with holes in them) to get to content. IPFS has an intuitive path model, but that design begs the question on how to do queries. SpecialK started from the query side of addressing. Now, the RChain project can benefit from the IPFS work, including their hashing for addressing content, once the SpecialK query semantics are in place. SpecialK can also utilize a randomly generated flat key that has no correlation to the data.
+Why did RChain not select IPFS (InterPlanetary File System) for distributed memory? In addition to carrying centralization risks, IPFS uses a path to get to content, whereas SpecialK uses entire trees (and trees with holes in them) to get to content. IPFS has an intuitive path model, but that design begs the question on how to do queries. SpecialK started from the query side of addressing. Now, the RChain project can benefit from the IPFS work, including their hashing for addressing content, once the SpecialK query semantics are in place. SpecialK can also utilize a randomly generated flat key that has no correlation to the data.
 
 P2P Node Communications
 ---------------------------------------------
