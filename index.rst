@@ -37,4 +37,8 @@ support these efforts.
    introduction/architecture-overview.rst
    contracts/contract-design.rst
    contracts/namespaces.rst
+   execution_model/rhovm.rst
+   execution_model/storage_and_query.rst
+   execution_model/consensus_protocol.rst
+   execution_model/applications.rst
    references.rst
