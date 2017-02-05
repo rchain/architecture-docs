@@ -22,7 +22,7 @@ Like the language, RhoVM is derived from the rho-calculus. Necessarily, there wi
 .. figure:: ../img/execution_strategy.png
     :width: 1200
     :align: center
-    :scale: 80
+    :scale: 50
     
     *Figure - RChain Execution Strategy*
     
@@ -75,10 +75,3 @@ Discovery Service
 ----------------------------------------------------
 
 An advanced discovery feature that will ultimately be implemented enables searching for compatible contracts and assembling a new composite contract from of other contracts. With the formal verification techniques, the author of the new contract can be guaranteed that when working contracts are plugged together they will work as well as a single contract.
-
-
-***********************************************
-Call for Participation
-***********************************************
-
-We invite you to participate in RChain's Slack channels, joining via https://ourchain.slack.com/messages/coop/. We require a variety of talent, but most urgently programmers with language development, formal methods, and, ideally, mobile process calculi and functional programming experience. Or, individuals who can demonstrate their ability to quickly learn these disciplines. We need investors to help fund the building out of this architecture. Contact Lucius Gregory Meredith lgreg.meredith@gmail.com and / or Ed Eykholt ed.eykholt@livelygig.com for more information.
