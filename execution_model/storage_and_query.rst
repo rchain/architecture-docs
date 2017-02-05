@@ -61,7 +61,16 @@ KVDB - Data & Continuation Access, Cache
 
 Data will be accessed using the SpecialK semantics, while physically being stored in a  decentralized, Key-Value Database known as "KVDB". A view of how two nodes collaborate to respond to a get request is shown below:
 
-**Figure - Decentralized data access in SpecialK**
+
+
+.. figure:: ../img/specialk.png
+  :align: center
+  :with: 3446
+  :scale: 80
+  
+  Figure - Decentralized data access in SpecialK
+  
+  
 
 1) The first node checks its in-memory cache. Then if it is not found it,
 
