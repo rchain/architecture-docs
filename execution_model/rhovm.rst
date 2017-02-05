@@ -36,33 +36,26 @@ Let’s describe these steps in more detail:
     c) desugaring of syntax
     d) simplification of functional equivalencies
 
-
 2. **Transcompilation**: From Rholang source-code, the compiler:
 
     a) performs a simple source-to-source compilation from Rholang to Rosette source-code, which will eventually be executed on the     Rosette VM.
-
 
 3. **Analysis**: From Rosette source-code, the compiler performs:
     
     a) lexical, syntactic, and semantic analysis of the Rosette syntax, constructs an AST and;
     b) synthesizes a Rosette intermediate representation
 
-
 4. **Optimization**: From Rosette IR, the compiler:
 
     a) optimizes the IR via redundancy elimination, sub-expression elimination, dead-code elimination, constant folding, induction variable identification and strength simplification
     b) synthesizes bytecode to be executed on Rosette VM
     
-    
 5. **Execution**: Once passed to Rosette VM, the interpreter:
 
     a) retrieves (environmental variables)??? from decentralized storage layer
-    b) translates Rosette bytecode to Java bytecode
-    c) 
+    b) executes the bytecode
     d) returns the updated contract to the storage layer in bytecode form
     
-
-
 For more details see the #rholang channel on the RChain Slack `here`_. Early compiler work can be seen on `GitHub`_.
 
 .. _GitHub: https://github.com/rchain/Rosette-VM
