@@ -54,7 +54,7 @@ Let’s describe these steps in more detail:
 
     a) retrieves (environmental variables)??? from decentralized storage layer
     b) executes the bytecode
-    d) returns the updated contract to the storage layer in bytecode form
+    c) returns the updated contract to the storage layer in bytecode form
     
 For more details see the #rholang channel on the RChain Slack `here`_. Early compiler work can be seen on `GitHub`_.
 
@@ -81,4 +81,4 @@ An advanced discovery feature that will ultimately be implemented enables search
 Call for Participation
 ***********************************************
 
-We invite you to participate in RChain's Slack channels, joining via https://ourchain.slack.com/messages/coop/. We require a variety of talent, but most urgently programmers with language development, formal methods, and, ideally, mobile process calculi and functional programming experience. Or, individuals who can demonstrate their ability to quickly learn these disciplines. We need investors to help fund the building out of this architecture. Contact Lucius Gregory Meredith <lgreg.meredith@gmail.com> and / or Ed Eykholt <ed.eykholt@livelygig.com> for more information.
+We invite you to participate in RChain's Slack channels, joining via https://ourchain.slack.com/messages/coop/. We require a variety of talent, but most urgently programmers with language development, formal methods, and, ideally, mobile process calculi and functional programming experience. Or, individuals who can demonstrate their ability to quickly learn these disciplines. We need investors to help fund the building out of this architecture. Contact Lucius Gregory Meredith lgreg.meredith@gmail.com and / or Ed Eykholt ed.eykholt@livelygig.com for more information.
