@@ -3,16 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
 ###############################################
 RChain Platform Architecture
 ###############################################
 
 
 
-.. image:: ../img/Rchain_brand_blue.png
-   :width: 1000
-   :align: center
-   :scale: 80
+.. figure:: ../img/Rchain_brand_blue.png
+    :width: 1000
+    :align: center
+    :scale: 80
 
 
 
