@@ -28,9 +28,3 @@ For example, the following diagram depicts some of the possible development, tes
 
 
 We’ll collaborate with IDE tool vendors to integrate Rholang and validation tools. 
-
-***********************************************
-Call for Participation
-***********************************************
-
-We invite you to participate in RChain's Slack channels, joining via https://ourchain.slack.com/messages/coop/. We require a variety of talent, but most urgently programmers with language development, formal methods, and, ideally, mobile process calculi and functional programming experience. Or, individuals who can demonstrate their ability to quickly learn these disciplines. We need investors to help fund the building out of this architecture. Contact Lucius Gregory Meredith lgreg.meredith@gmail.com, Ed Eykholt ed.eykholt@livelygig.com, or Joseph Denman josephrileydenman@gmail.com for more information.
