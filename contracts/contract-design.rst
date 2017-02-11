@@ -212,7 +212,7 @@ RhoLang - A Concurrent Blockchain Language
 Rholang is a fully featured, general purpose, Turing complete programming
 language built from the rho-calculus. It is a behaviorally typed, **r**-eflective,
 **h**-igher **o**-rder process language and the official smart contracting language
-of RChain. It’s purpose is to concretize fine-grained, programmatic concurrency.
+of RChain. Its purpose is to concretize fine-grained, programmatic concurrency.
 
 Necessarily, the language is concurrency-oriented, with a focus on message-passing through input-guarded channels. Channels are statically typed and can be used as single message-pipes, streams, or data stores. Similar to typed functional languages, Rholang will support immutable data structures.
 
