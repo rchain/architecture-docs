@@ -14,7 +14,7 @@ Using smart contracts, a broad array of fully-scalable decentralized application
 
    Figure: High-level RChain Architecture
 
-The RChain Network implements direct node-to-node communication, where each node runs the RChain platform and a set of dApps on the top of it. The heart of an RChain node is written in Scala and runs on one or more instances of the concurrent **Rho Virtual Machine (RhoVM)** that executes on top of the JVM. An instance of RhoVM is very light-weight. Theoretically, an independent RhoVM exists for every set of independently executing contracts i.e contracts that do not compete for resources.
+The RChain Network implements direct node-to-node communication, where each node runs the RChain platform and a set of dApps on the top of it. The heart of an RChain node is written in Scala and runs on one or more instances of the concurrent **Rho Virtual Machine (RhoVM)** that executes on top of the JVM. An instance of RhoVM is very light-weight. Theoretically, an independent RhoVM exists for every set of independently executing contracts i.e. contracts that do not compete for resources.
 
 This design choice of many concurrent virtual machines is top-level concurrency on the RChain platform. It is also in direct contrast to a “global compute” design which constrains transactions to be executed sequentially, on a single virtual machine notwithstanding their associated dependencies. Hence, where there is a discussion held in this publication concerning a single RhoVM, it is assumed that there are a multiplex of RhoVMs executing the same protocols in parallel for a different set of contracts.
 
