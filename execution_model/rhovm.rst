@@ -42,7 +42,7 @@ Let’s describe these steps in more detail:
 
 3. **Analysis**: From Rosette source-code, the compiler performs:
     
-    a) lexical, syntactic, and semantic analysis of the Rosette syntax, constructs an AST and;
+    a) lexical, syntactic, and semantic analysis of the Rosette syntax, construction of the AST; and
     b) synthesizes a Rosette intermediate representation
 
 4. **Optimization**: From Rosette IR, the compiler:
