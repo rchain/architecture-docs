@@ -16,7 +16,6 @@ Used loosely as ‘contract’, **a smart contract is a process with:**
 1. Persistent state
 2. Associated code
 3. An associated RChain address(s)
-4. An associated Phlogiston balance
 
 Important to remember is that a smart contract is of arbitrary complexity; it may refer to an atomic operation, or to a superset of chained operations which compose to form a complex contract.
 
