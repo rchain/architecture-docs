@@ -1,7 +1,7 @@
 .. _consensus_protocol:
 
 **************************************************************
-Casper Replication and Consensus
+Casper Consensus Algorithm
 **************************************************************
 Nodes that take on the validation role have the function to achieve consensus on the blockchain state. Validators also assure a blockchain is self-consistent and hasn’t been tampered with and protect against Sybil attack.
 
