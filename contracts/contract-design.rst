@@ -17,19 +17,26 @@ Used loosely as ‘contract’, **a smart contract is a process with:**
 2. Associated code
 3. An associated RChain address(s)
 
-Important to remember is that a smart contract is of arbitrary complexity; it may refer to an atomic operation, or to a superset of chained operations which compose to form a complex contract.
+Important to remember is that a smart contract is of arbitrary complexity; it may refer to an atomic operation, or to a superset of protocols which compose to form a complex protocol.
 
-A contract is triggered by input, in the form of a message, from other network agents, where an agent may be a contract or an external actor.
+A contract is triggered by a message from an external network agent, where an external agent may be a contract or a network user.
 
 **A Message:**
 
-1. Is issued over an instantiated, encrypted channel(s) that may be public or private.
-2. May communicate a return address for the sender.
-3. May communicate a value, a channel, **or the serialized code of a process.**
+1. Is issued over a named channel(s) that may be public or private.
+2. May be typed and may range, in format, from a simple value, to an unordered array of bytes, to a variable, to a data structure, to **the code of a process**, and most things in between.
 
-There is no restriction barring a contract from sending and receiving messages to and from itself.
+**Agents send and receive messages on named communication links known as ‘named channels’.**  
 
-**Agents send and receive messages on named communication links known as ‘named channels’.** A contract may send and receive on multiple channels. **A blockchain address is a named channel** i.e. a location(s) where an agent may be reached.
+**A Named Channel:**
+
+1. Is a "location" where otherwise independent processes synchronize.
+2. Is used by processes to send and receieve messages between each other.
+2. Is provably unguessable and anonymous unless deliberately introduced by a process.
+
+A channel is implemented as a variable that is shared between a "read-only" and a "write-only" process. Therefore, the functionality of a channel is only limited by the interpretation of what a variable may be. As a channel represents the abstract notion of "location", it may take different forms. For our early interpretation, a named channel's function may range from the local memory address of a register machine, to the network address of a distributed machine.
+
+Consistent with that interpretation, **A blockchain address is a named channel** i.e. a location(s) where an agent may be reached.
 
 Two contracts sending and receiving a message on the channel named ‘Address’:
 
@@ -42,7 +49,7 @@ Two contracts sending and receiving a message on the channel named ‘Address’
 
 
 
-This model depicts two contracts, which both may receive and send messages. Eventually, :code:`Contract1` is prompted to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes some process continuation with :code:`v` as an argument. These last two steps occur sequentially.
+This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
 
 Note that, this model assumes that at least the sender possesses the address of :code:`Contract2`. Also note that, after it sends :code:`v`, :code:`Contract1` has been run to termination, thus it is incapable of sending anything else unless prompted. Similarly, after it invokes its continuation, :code:`Contract2` has been run to termination, thus it is incapable of listening for any other messages.
 
@@ -57,16 +64,16 @@ RChain contracts enjoy fine-grain, internal concurrency, which means that these 
 
 
 
-Executing in parallel with a number of other processes, :code:`Contract1` is prompted to send a value, :code:`v`, on the channel :code:`address` i.e. the address of :code:`Contract2`. If :code:`Contract1` has no value to send, then it is blocked. If :code:`Contract2` has not received a value, then it is blocked and the continuation is not triggered. Thus, :code:`Contract1` and :code:`Contract2` may execute asynchronously and in parallel. 
+Executing in parallel with a number of other processes, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel :code:`address` i.e. the address of :code:`Contract2`. If :code:`Contract1` has no value to send, it blocks. If :code:`Contract2` has not received a value, it blocks and the continuation is not triggered.
 
 Transactions
 -------------------------------------------------------------
 
-How do transaction semantics fit into our description of contracts? **From the process level, a transaction is an acknowledgment that two agents have successfully exchanged a message over a channel.**
+How do transaction semantics fit into our description of contracts? **From the process level, a transaction is an acknowledgment that a message has been "witnessed" at a channel**
 
-Messages themselves are virtual objects, but the pre-state and post-state of a contract, referring to the states before and after a message is sent by one agent and received by another, are verified and written to blockchain storage.
+Messages themselves are virtual objects, but the pre-state and post-state of a contract, referring to the states before and after a message is sent by one agent and witnessed by another, are recorded an timestamped in storage, also known (in a moral sense) as the "blockchain".
 
-Message passing is an atomic operation. Either a message is transmitted, or it is not, and only the successful transmission of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when a resource is transferred from one agent to another, even in larger systems, there is record of when and where it went. This implementation is consistent with an interpretation of data as a linear resource.
+Message passing is an atomic operation. Either a message is witnessed, or it is not, and only the successful witnessing of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when the value of some resource is altered and witnessed by a process, there is record of when and where it was witnessed by what agent. This implementation is consistent with an interpretation of data as a linear resource.
 
 
 .. figure:: ../img/10156345.png
@@ -76,9 +83,9 @@ Message passing is an atomic operation. Either a message is transmitted, or it i
    :scale: 80
 
 
-This model of transaction favorably lends itself to information flow analysis and optimization between addresses. The ability to place a message at either end of a channel before and after the message is sent, and therefore to view the serialized form of messages, is an attribute specific to RChain. Additionally, by stating successful messages as transactions, all messages, whether from external user to contract or between contracts, are accounted for. Thus, we balance the extensible autonomy of contracts with accountability.
+The ability to place a message at either end of a channel before and after the message is sent, and therefore to view the serialized form of messages, is an attribute specific to RChain. Additionally, by stating successful messages as transactions, all messages, whether from external user to contract or between contracts, are accounted for. Thus, we balance the extensible autonomy of contracts with accountability.
 
-For an example of how this model is adaptable to industry trends in reactive programming, observe the following two contracts, which model interaction over “live” data streams:
+For an example of how this model is adaptable to industry trends in reactive programming, observe the following two contracts, which model interaction over “live” data feeds:
 
 
 .. figure:: ../img/21300107.png
