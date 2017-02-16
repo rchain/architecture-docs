@@ -27,7 +27,6 @@ RChain’s runtime environment includes essential **System Contracts** which are
 RChain will support ne, or possibly more, native economics-based protocol access tokens (PATs), similar to BitCoin, Ether etc. It will also support a single resource-based protocol access token, correllated to units of computation consumed, similar to Gas. **DApp contracts** will require economics-based PATs that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based PAT, dubbed “Phlogiston”.
 
 The **Rho API** provides access to the RhoVM, System Contracts, and Agent Services.
-We'll detail these components in the sections below, from the bottom-up.
 
 Concurrency vs. Parallelism
 ----------------------------------------
