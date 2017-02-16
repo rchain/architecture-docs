@@ -56,10 +56,10 @@ Let’s describe these steps in more detail:
     b) executes the bytecode
     c) returns the updated contract to the storage layer in bytecode form
     
-For more details `join`_ the `#rhovm channel`_ on the RChain Slack here. Early compiler work can be seen on `GitHub`_.
+For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Early compiler work can be seen on `GitHub`_.
 
 .. _GitHub: https://github.com/rchain/Rosette-VM
-.. _#rhovm channel: https://ourchain.slack.com/messages/coop/
+.. _#rhovm: https://ourchain.slack.com/messages/coop/
 .. _join: http://slack.rchain.coop/
 
 Rate-limiting Mechanism
