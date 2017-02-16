@@ -24,18 +24,16 @@ The **RChain Runtime System** manages contract execution, thread execution, code
 
 RChain’s runtime environment includes essential **System Contracts** which are also written in Rholang and executed in the RhoVM. System processes include those for managing dApp contracts, tokens, node trust, namespace registration, and many others.
 
-**DApp contracts** will require access protocol tokens that will be managed by the RChain token-issuance contract, and ultimately exchanged for RChain’s native platform access token, dubbed “Phlogiston”.
+**DApp contracts** will require protocol access tokens that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based token, dubbed “Phlogiston”.
 
 The **Rho API** provides access to the RhoVM, System Contracts, and Agent Services.
 We'll detail these components in the sections below, from the bottom-up.
 
-Concurrency
+Concurrency vs. Parallelism
 ----------------------------------------
-It is of the utmost importance that the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not exclusively referring to the simultaneous execution of multiple processes. That is parallelism.
+It is of the utmost importance that the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not referring to the simultaneous execution of multiple processes. That is parallelism.
 
-**Concurrency is a structural property which allows independent processes to communicate and compose into complex processes. Processes are considered independent if they do not compete for resources.**
+**Concurrency is a structural property which allows independent processes to compose into complex processes. Processes are considered independent if they do not compete for resources.**
 
 We’ll see that, when we commit to concurrency, we get parallelism and asynchronicity for free. Whether the platform is running on one processor or 1,000,000 processors, the RChain design is scalable. Having said that, patterns of concurrency are absolutely fundamental to the RChain architecture and will be frequent to the astute reader.
-
-Let’s begin.
 
