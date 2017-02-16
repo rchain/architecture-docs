@@ -22,9 +22,9 @@ Above that, the **SpecialK Access Pattern Language** and the **KVDB Data & Conti
 
 The **RChain Runtime System** manages contract execution, thread execution, code safety (security-type) verification, compilation, as well as the synchronization of contracts and their metadata between the KVDB/SpecialK storage layer and RhoVM.
 
-RChain’s runtime environment includes essential **System Contracts** which are also written in Rholang and executed in the RhoVM. System processes include those for managing dApp contracts, tokens, node trust, namespace registration, and many others.
+RChain’s runtime environment includes essential **System Contracts** which are also written in Rholang and executed in the RhoVM. System processes include those for loadbalancing, managing dApp contracts, tokens, node trust, namespace registration, and many others.
 
-**DApp contracts** will require protocol access tokens that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based token, dubbed “Phlogiston”.
+RChain will support ne, or possibly more, native economics-based protocol access tokens (PATs), similar to BitCoin, Ether etc. It will also support a single resource-based protocol access token, correllated to units of computation consumed, similar to Gas. **DApp contracts** will require economics-based PATs that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based PAT, dubbed “Phlogiston”.
 
 The **Rho API** provides access to the RhoVM, System Contracts, and Agent Services.
 We'll detail these components in the sections below, from the bottom-up.
