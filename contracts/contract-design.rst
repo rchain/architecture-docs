@@ -34,7 +34,7 @@ A contract is triggered by a message from an external network agent, where an ex
 2. Is used by processes to send and receieve messages between each other.
 3. Is provably unguessable and anonymous unless deliberately introduced by a process.
 
-A channel is implemented as a variable that is shared between a "read-only" and a "write-only" process. Therefore, the functionality of a channel is only limited by the interpretation of what a variable may be. As a channel represents the abstract notion of "location", it may take different forms. For our early interpretation, a named channel's function may range from the local memory address of a register machine, to the network address of a distributed machine.
+A channel is implemented as a variable that is shared between a "read-only" and a "write-only" process. Therefore, the functionality of a channel is only limited by the interpretation of what a variable may be. As a channel represents the abstract notion of "location", it may take different forms. For our early interpretation, a named channel's function may range from the local memory address (variable) of a single machine, to the network address of a machine in a distributed system.
 
 Consistent with that interpretation, **A blockchain address is a named channel** i.e. a location(s) where an agent may be reached.
 
