@@ -58,12 +58,20 @@ For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Early c
 What Is Rosette?
 ------------------------------------------------
 
-Rosette is a reflective, object-oriented language that achieves concurdrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of **Rosette VM** in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency requirements demanded by a scalable design. Second, Rosette VM was intentionally designed to support multi-computer systems of an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_. 
+Rosette is a reflective, object-oriented language that achieves concurrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of **Rosette VM** in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency requirements demanded by a scalable design. Second, Rosette VM was intentionally designed to support multi-computer systems of an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_. 
 
 .. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
 
 Execution Environment - RhoVM
 ================================================
+
+
+.. figure:: .. /img/execution_diagram.png
+    :width: 1792
+    :align: center
+    :scale: 50
+    
+    *Figure - RChain Execution Sequence*
 
 5. **Execution**: Once passed to Rosette VM, the interpreter:
 
