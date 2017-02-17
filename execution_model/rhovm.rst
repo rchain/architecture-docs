@@ -7,14 +7,14 @@ Execution Model
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Given an environment and runnable bytecode, RhoVM realizes computation by repeatedly applying rho-calculus reduction semantics to elements of a key-value database, where a named channel is a key and a value may be a variable, a data structure, or the code of a contract.
+To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Each instance of the VM maintains an environment into which bindings of contract locations to contract code will be committed. Binding differences are realized through units of computation. Given an environment and runnable rholang bytecode, computation is realized by repeatedly applying the rho-calculus reduction semantics to the elements of a distributed key-value database. The binding differences produced by the rho-calculus reduction semantics constitute "transactions", which are validated to produce transaction blocks that represent the history of state transitions of the distributed database. Because at any one moment the state of the entire VM is stored on this database, this environment is persisted. Thus, when we refer to RhoVM, we are referring to the composition of an execution engine and a persisted key-value database.
 
 Scalability
 -------------------------------------------------------------------
 
-From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of one another. Hence, there is no global “RhoVM”. At any given moment there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for every namespace,  a distributed key-value database also exists for every namespace.
+From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of each other. Hence, there is no "global" RhoVM. At any given moment, there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for each namespace, the distributed key-value database, which stores the state of the VM, also exists for each.
 
-This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where processor and instruction-level concurrency are given by Rholang. It is also in direct contrast to the “global virtual machine” model which constrains every state transition, defined by every contract on the platform, to be executed *sequentially*, notwithstanding their associated dependencies. Hence, where there is a discussion held in this publication concerning a single RhoVM, it is assumed that there are a multiplex of RhoVMs executing in parallel for a different set of contracts in a different namespace.
+This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where instruction-level concurrency is given by Rholang. Hence, when this publication refers to a single instance of RhoVM, it is assumed that there are a multiplex of RhoVM instances simultaneously executing a different set of contracts in a different namespace.
 
 Compilation Environment
 ================================================
@@ -68,6 +68,9 @@ Rosette is a reflective, object-oriented language that achieves concurrency via 
 Execution Strategy
 ================================================
 
+This section gives a high-level view of RChain's contract execution strategy.
+
+
 .. figure:: .. /img/execution_diagram.png
     :width: 1792
     :align: center
@@ -75,7 +78,9 @@ Execution Strategy
     
     *Figure - RChain Execution Sequence*
 
-This sequence portrays a request for a contract that is sent to the node operators validating transactions in that namespace. On each node, the request is recieved by the virtual machine system thread that handles work requests.
+
+This sequence portrays a client request for a contract that is sent to all node operators validating transactions for the superset of contracts in the namespace of the requested contract. On each node, the request is recieved by a VM system contract (thread) that handles work requests.
+
 
 For brevity, this representation sidesteps the consensus requirement of each system contract. In practice, each system contract may posess many protocols that are themselves subject to consensus. During the course of each contract, many transactions will be requested and need to be committed before progress on other parts of the contract can be made.
  
