@@ -8,17 +8,6 @@
 RChain Platform Architecture
 ###############################################
 
-
-
-
-.. image:: .. /Rchain_brand_blue.png
-    :width: 1000
-    :align: center
-    :scale: 80
-
-
-
-
 :Authors: Ed Eykholt, Lucius Meredith, Joseph Denman
 :Date: 1.13.2017
 :Organization: RChain Cooperative
