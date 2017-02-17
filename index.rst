@@ -11,7 +11,7 @@ RChain Platform Architecture
 
 
 
-.. image:: ../img/Rchain_brand_blue.png
+.. image:: .. /Rchain_brand_blue.png
     :width: 1000
     :align: center
     :scale: 80
