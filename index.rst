@@ -30,7 +30,6 @@ support these efforts.
    :maxdepth: 2
    :caption: Contents:
 
-   index.rst
    introduction/motivation.rst
    introduction/introduction.rst
    introduction/comparison-of-blockchains.rst
