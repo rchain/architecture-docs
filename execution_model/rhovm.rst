@@ -7,9 +7,12 @@ Execution Model
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Given an environment and runnable bytecode, RhoVM realizes computation by repeatedly applying rho-calculus reduction semantics (state transitions) to elements of a distributed key-value database. Per usual, a key is a location in memory, on some machine in the network, that maps to a value.
+To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Given an environment and runnable bytecode, RhoVM realizes computation by repeatedly applying rho-calculus reduction semantics to elements of a key-value database, where a named channel is a key and a value may be a variable, a data structure, or the code of a contract.
 
-From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of one another. Hence, there is no global “RhoVM”. At any given moment there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for the shard(s) or, as we’ve referred to them thus far, namespaces, to which they're subscribed. Because an instance of RhoVM exists for every namespace, the state information for every namespace is stored in a key-value database specific to that namespace.
+Scalability
+-------------------------------------------------------------------
+
+From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of one another. Hence, there is no global “RhoVM”. At any given moment there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for every namespace,  a distributed key-value database also exists for every namespace.
 
 This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where processor and instruction-level concurrency are given by Rholang. It is also in direct contrast to the “global virtual machine” model which constrains every state transition, defined by every contract on the platform, to be executed *sequentially*, notwithstanding their associated dependencies. Hence, where there is a discussion held in this publication concerning a single RhoVM, it is assumed that there are a multiplex of RhoVMs executing in parallel for a different set of contracts in a different namespace.
 
@@ -62,9 +65,8 @@ Rosette is a reflective, object-oriented language that achieves concurrency via 
 
 .. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
 
-Execution Environment - RhoVM
+Execution Strategy
 ================================================
-
 
 .. figure:: .. /img/execution_diagram.png
     :width: 1792
@@ -73,11 +75,16 @@ Execution Environment - RhoVM
     
     *Figure - RChain Execution Sequence*
 
-5. **Execution**: Once passed to Rosette VM, the interpreter:
+This sequence portrays a request for a contract that is sent to the node operators validating transactions in that namespace. On each node, the request is recieved by the virtual machine system thread that handles work requests.
 
-    a) retrieves (environmental variables)??? from decentralized storage layer
-    b) executes the bytecode
-    c) returns the updated contract to the storage layer in bytecode form
+For brevity, this representation sidesteps the consensus requirement of each system contract. In practice, each system contract may posess many protocols that are themselves subject to consensus. During the course of each contract, many transactions will be requested and need to be committed before progress on other parts of the contract can be made.
+ 
+    
+Execution Environment - RhoVM
+================================================
+
+In the section on rho-calculus, we presented the rho-calculus reduction semantics as a faithful representation of an atomic transaction.
+
 
 Rate-limiting Mechanism
 ---------------------------------------------------
