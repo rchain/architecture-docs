@@ -1,40 +1,39 @@
 .. _rhovm:
 
 ******************************************************************
-Execution Model - RhoVM
+Execution Model
 ******************************************************************
 
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Given an environment and runnable bytecode, RhoVM performs state changes (transactions) on the data that is stored in a distributed key-value database, where a key is a location in memory (name), on some machine in the network, that maps to a value, which may, in practice, be any form of data supported by the platform.
+To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Given an environment and runnable bytecode, RhoVM realizes computation by repeatedly applying rho-calculus reduction semantics (state transitions) to elements of a distributed key-value database. Per usual, a key is a location in memory, on some machine in the network, that maps to a value.
 
-From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of one another. Hence, there is no global “RhoVM”. At any given moment there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for the shard(s) or, as we’ve referred to them thus far, namespaces, to which they're subscribed.
+From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of one another. Hence, there is no global “RhoVM”. At any given moment there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for the shard(s) or, as we’ve referred to them thus far, namespaces, to which they're subscribed. Because an instance of RhoVM exists for every namespace, the state information for every namespace is stored in a key-value database specific to that namespace.
 
-This design choice of many virtual machines executing "in parallel" is machine-level concurrency on the RChain platform, where processor and instruction-level concurrency are given by Rholang. It is also in direct contrast to the “global virtual machine” model which constrains every state transition, defined by every contract on the platform, to be executed *sequentially*, notwithstanding their associated dependencies. Hence, where there is a discussion held in this publication concerning a single RhoVM, it is assumed that there are a multiplex of RhoVMs executing in parallel for a different set of contracts in a different namespace.
+This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where processor and instruction-level concurrency are given by Rholang. It is also in direct contrast to the “global virtual machine” model which constrains every state transition, defined by every contract on the platform, to be executed *sequentially*, notwithstanding their associated dependencies. Hence, where there is a discussion held in this publication concerning a single RhoVM, it is assumed that there are a multiplex of RhoVMs executing in parallel for a different set of contracts in a different namespace.
 
-Programming Environment
+Compilation Environment
 ================================================
 
-Like the language, RhoVM is derived from the rho-calculus. Necessarily, there will be a tight coupling between Rholang and its VM, ensuring correctness. To allow clients to execute state transitions on the VM, we’ll build a compiler pipeline that starts with Rholang code that is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
+Necessarily, RhoVM is derived from the rho-calculus. Thus, there will be a tight coupling between Rholang and its VM, ensuring correctness. To allow clients to execute on the VM, we’ll build a compiler pipeline that starts with Rholang code that is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
 
 
-.. figure:: ../img/execution_strategy.png
+.. figure:: ../img/compilation_strategy.png
     :width: 1200
     :align: center
     :scale: 50
     
-    *Figure - RChain Execution Strategy*
+    *Figure - RChain Compilation Strategy*
     
-    
-Let’s describe these steps in more detail:
  
 1. **Analysis**: From Rholang source-code, or from another smart contract language that compiles to Rholang, this step includes:
 
-    a) injection of code for the rate-limiting mechanism
-    b) formal verification of transaction semantics
-    c) desugaring of syntax
-    d) simplification of functional equivalencies
+    a) analysis of computational complexity
+    b) injection of code for the rate-limiting mechanism
+    c) formal verification of transaction semantics
+    d) desugaring of syntax
+    e) simplification of functional equivalencies
 
 2. **Transcompilation**: From Rholang source-code, the compiler:
 
@@ -50,17 +49,27 @@ Let’s describe these steps in more detail:
     a) optimizes the IR via redundancy elimination, sub-expression elimination, dead-code elimination, constant folding, induction variable identification and strength simplification
     b) synthesizes bytecode to be executed on Rosette VM
     
-5. **Execution**: Once passed to Rosette VM, the interpreter:
-
-    a) retrieves (environmental variables)??? from decentralized storage layer
-    b) executes the bytecode
-    c) returns the updated contract to the storage layer in bytecode form
-    
 For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Early compiler work can be seen on `GitHub`_.
 
 .. _GitHub: https://github.com/rchain/Rosette-VM
 .. _#rhovm: https://ourchain.slack.com/messages/coop/
 .. _join: http://slack.rchain.coop/
+
+What Is Rosette?
+------------------------------------------------
+
+Rosette is a reflective, object-oriented language that achieves concurdrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of **Rosette VM** in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency requirements demanded by a scalable design. Second, Rosette VM was intentionally designed to support multi-computer systems of an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_. 
+
+.. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
+
+Execution Environment - RhoVM
+================================================
+
+5. **Execution**: Once passed to Rosette VM, the interpreter:
+
+    a) retrieves (environmental variables)??? from decentralized storage layer
+    b) executes the bytecode
+    c) returns the updated contract to the storage layer in bytecode form
 
 Rate-limiting Mechanism
 ---------------------------------------------------
