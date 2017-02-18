@@ -7,7 +7,56 @@ Execution Model
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled and passed to an instance of the **Rho Virtual Machine** (RhoVM) and executed. Each instance of the VM maintains an environment into which bindings of contract locations to contract code will be committed. Binding differences are realized through units of computation. Given an environment and runnable rholang bytecode, computation is realized by repeatedly applying the rho-calculus reduction semantics to the elements of a distributed key-value database. The binding differences produced by the rho-calculus reduction semantics constitute "transactions", which are validated to produce transaction blocks that represent the history of state transitions of the distributed database. Because at any one moment the state of the entire VM is stored on this database, this environment is persisted. Thus, when we refer to RhoVM, we are referring to the composition of an execution engine and a persisted key-value database.
+To begin, a client writes a program (contract) in Rholang. The rho-calculus reduction semantics are fed to the **Rho Virtual Machine** (RhoVM) in the form of bytecode and applied to the members of a key-value database. 
+
+It's useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state, and a legal transition expressed in bytecode, an updated machine state is produced. An updated state could be updating a routine from blocking to non-blocking status. It could be altering heap size. **COMPLETE SENTENCE**
+
+**STATE TRANSITION TABLE**
+
+Transitions in RhoVM are realized by the rho-calculus I/O reduction semantics, which consist of a basic substitution rule:
+
+
+::
+
+
+    for ( y <- x )P | x! ( @Q ) -> P { @Q/y }
+
+
+The instruction reads: for the output operation :code:`x!` commiting the code of the process :code:`@Q` to the location :code:`x`, running in parallel with the input operation :code:`for ( y <- x )P` waiting for a pattern :code:`y` to appear at the location :code:`x`, execute the continuation :code:`P` in an environment where :code:`@Q` is bound (maps) to :code:`y`. At the lowest level each instance of the VM maintains a set of environments into which bindings of locations to values will be committed. The two principal dynamic attributes of a program, environment and state, are depicted in terms of 
+
+The output operator is equivalently a protocol invocation that provides the actual continuation parameters as the content of the message.
+
+A simple register update for example: 
+
+
+::
+
+
+    for ( Int <- register )P | register! ( 1 ) -> P { 1/Int }
+
+
+For the output operation :code:`x!` commiting the integer :code:`1` to the location :code:`register`, running in parallel with the input operation :code:`for ( Int <- register )P` waiting for a pattern :code:`Int` to appear at :code:`register`, execute the continuation :code:`P` in an environment where :code:`1` is bound (maps) to every occurance of :code:`Int`. If no further processing is desired, the continuation :code:`P` is the null process :code:`0`.
+
+Although the above example depicts an alteration to local storage, the monadic treatment of channels allows for much higher-level constructs. In addition to local storage, a channel may be bound to a network-wide advanced message queuing protocol (AMQP) or tcp/ip sockets, etc. For example, a node operator listening on a live data stream that is receiving transaction blocks:
+
+
+::
+
+
+    for ( ptrn <- stream ) | stream! ( block ) -> P { block/ptrn }
+
+
+In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. The difference is that, in this use-case, node operators are communicating through an AMQP, where channels are network addresses instead of local memory addresses.
+
+Regardless of how a channel is implemented, all binding alterations committed to the virtual machine, of names to locations (channels/variables) and of locations to values, are written to storage:
+
+Executed bytecode instructions constitute transactions which are stored along with the information they alter and subjected to consensus to produce transaction blocks. By extension, transaction blocks represent the verifiable history of states and transitions of the virtual machine.
+
+To summarize:
+
+1. when we refer to RhoVM, we are referring to the composition of an execution engine and a key-value database. 
+2. The rho-calculus I/O semantics, where channels correspond to keys, substitute one value for another.
+3. Substitutions manifest differences in the VM bytecode. Those differences are subjected to consensus, and written to storage.
 
 Scalability
 -------------------------------------------------------------------
@@ -19,7 +68,7 @@ This design choice of many virtual machines executing "in parallel" constitutes 
 Compilation Environment
 ================================================
 
-Necessarily, RhoVM is derived from the rho-calculus. Thus, there will be a tight coupling between Rholang and its VM, ensuring correctness. To allow clients to execute on the VM, we’ll build a compiler pipeline that starts with Rholang code that is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
+To allow clients to execute on the VM, we’ll build a compiler pipeline that starts with Rholang source-code that is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
 
 
 .. figure:: ../img/compilation_strategy.png
@@ -61,7 +110,7 @@ For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Early c
 What Is Rosette?
 ------------------------------------------------
 
-Rosette is a reflective, object-oriented language that achieves concurrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of **Rosette VM** in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency requirements demanded by a scalable design. Second, Rosette VM was intentionally designed to support multi-computer systems of an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_. 
+Rosette is a reflective, object-oriented language that achieves concurrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of Rosette VM in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency requirements demanded by a scalable design. Second, Rosette VM was intentionally designed to support multi-computer systems of an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_. 
 
 .. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
 
