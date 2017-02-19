@@ -7,26 +7,27 @@ Execution Model
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The rho-calculus reduction semantics are fed to the **Rho Virtual Machine** (RhoVM) in the form of bytecode and applied to the members of a key-value database. 
+To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM). 
 
-It's useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state, and a legal transition expressed in bytecode, an updated machine state is produced. An updated state could be updating a routine from blocking to non-blocking status. It could be altering heap size. **COMPLETE SENTENCE**
+It's useful to reiterate that each virtual machine corresponds to a finite state transition table. Given a machine state configuration, and a legal transitions, the machine runs to it's next state, where it (maybe) awaits further instructions. In the case of the RhoVM, state configuration and transitions are expressed in bytecode. The VM applies the bytecode it's been fed to update it's state configuration. 
 
-**STATE TRANSITION TABLE**
-
-Transitions in RhoVM are realized by the rho-calculus I/O reduction semantics, which consist of a basic substitution rule:
+State transitions in RhoVM are realized by the rho-calculus I/O reduction semantics, which consist of a basic substitution rule:
 
 
 ::
 
 
-    for ( y <- x )P | x! ( @Q ) -> P { @Q/y }
+    for ( y <- x )P | x! ( @Q ) -> P { @Q -> y }
 
 
-The instruction reads: for the output operation :code:`x!` commiting the code of the process :code:`@Q` to the location :code:`x`, running in parallel with the input operation :code:`for ( y <- x )P` waiting for a pattern :code:`y` to appear at the location :code:`x`, execute the continuation :code:`P` in an environment where :code:`@Q` is bound (maps) to :code:`y`. At the lowest level each instance of the VM maintains a set of environments into which bindings of locations to values will be committed. The two principal dynamic attributes of a program, environment and state, are depicted in terms of 
+The instruction reads: for the output operation :code:`x!` commiting the code of the process :code:`@Q` to the location :code:`x`, running in parallel with the input operation :code:`for ( y <- x )P` waiting for a pattern :code:`y` to appear at the location :code:`x`, execute the continuation :code:`P` in an environment where :code:`@Q` is bound (maps) to :code:`y`.
 
-The output operator is equivalently a protocol invocation that provides the actual continuation parameters as the content of the message.
+At the lowest level each instance of the VM maintains a set of environments into which bindings of locations to values will be committed. **Variable bindings are updated via bytecode instructions that are, essentially, the repeated application of rho-calculus reduction rule**.The two main dynamic bindings at runtime are *environment* and *state* - the of binding of names to locations (channels/variables) and of locations to values, respectively. Both are depicted in context of the rho-calculus semantics below.
 
-A simple register update for example: 
+[ State Diagram ]
+
+
+An updated state configuration could be anything from updating a routine from blocking to non-blocking status to updating a location in local memory. A simple register update for example: 
 
 
 ::
@@ -35,9 +36,12 @@ A simple register update for example:
     for ( Int <- register )P | register! ( 1 ) -> P { 1/Int }
 
 
-For the output operation :code:`x!` commiting the integer :code:`1` to the location :code:`register`, running in parallel with the input operation :code:`for ( Int <- register )P` waiting for a pattern :code:`Int` to appear at :code:`register`, execute the continuation :code:`P` in an environment where :code:`1` is bound (maps) to every occurance of :code:`Int`. If no further processing is desired, the continuation :code:`P` is the null process :code:`0`.
 
-Although the above example depicts an alteration to local storage, the monadic treatment of channels allows for much higher-level constructs. In addition to local storage, a channel may be bound to a network-wide advanced message queuing protocol (AMQP) or tcp/ip sockets, etc. For example, a node operator listening on a live data stream that is receiving transaction blocks:
+The continuation :code:`P` in an environment where :code:`1` is substituted every occurance of :code:`Int`. If no further processing is desired, the continuation :code:`P` is the null process :code:`0`.
+
+The above example depicts an alteration to local storage, but the monadic treatment of channels allows for much higher-level constructs. In addition to local storage, a channel may be bound to a network-wide advanced message queuing protocol (AMQP) or tcp/ip sockets, etc. For example, a node operator listening on a live data stream that is receiving transaction blocks:
+
+How are state configuration and bytecode differences stored? **Bytecode instructions are applied to the members of a key-value database.** We are required to apply the consensus algorithm when node operators have differing configurations for the same instance of RhoVM.
 
 
 ::
