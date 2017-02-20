@@ -9,10 +9,18 @@ Introduction
 
 To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM).
 
-It's useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, and a legal transition, the machine runs to it's next state. In the case of the RhoVM, state configurations and transitions are expressed in bytecode. The bytecode given to the VM is applied to update the VM's state configuration.
+It's useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, and a legal transition, the machine runs to it's next state. In the case of the RhoVM, state configurations and transitions are expressed in bytecode. The bytecode given as input to the VM is applied to update the VM's state configuration.
 
 
-<bytecode, state> -> <bytecode', state'>
++-------------------+--------------+----------------+------------+
+| **Current State** |   **Input**  | **Next State** | **Output** |
++-------------------+--------------+----------------+------------+
+| S1                | bytecode     | S1'            | bytecode'  |
++-------------------+--------------+----------------+------------+
+| ...               | ...          | ...            | ...        |
++-------------------+--------------+----------------+------------+
+| Sn                | bytecode     | Sn'            | bytecode'  |
++-------------------+--------------+----------------+------------+
 
 
 The two dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively. **CITE**
@@ -38,19 +46,7 @@ The evaluation rule (in bytecode form) affects the values of a persisted key-val
 [ Better State Diagram ]
 
 
-A state transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. A simple register update for example: 
-
-
-::
-
-
-    for ( Int <- register )P | register! ( 1 ) -> P { 1 := Int }
-
-
-
-The continuation :code:`P` is executed in an environment where :code:`1` is substituted for every occurance of :code:`Int`. If no further processing is desired, the continuation :code:`P` is the null process :code:`0`.
-
-The above example depicts an alteration to local storage, but the monadic treatment of channels allows for much higher-level constructs. Locations such as :code:`x` and :code:`register` may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
+A state transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
 A node operator listening on a live data stream that is receiving transaction blocks:
 
@@ -61,7 +57,7 @@ A node operator listening on a live data stream that is receiving transaction bl
     for ( ptrn <- stream ) | stream! ( block ) -> P { block := ptrn }
 
 
-In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. The difference is that, in this use-case, node operators are communicating through an AMQP, where channels are network addresses instead of local memory addresses. This case may be composed of a subset of transitions, the successful application of which yields this final transition.
+In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. In this use-case, node operators are communicating through an AMQP, where channels represent network addresses. This case may be composed of a subset of lower-level transitions, the successful application of which yields this transition.
 
 The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored as well. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
