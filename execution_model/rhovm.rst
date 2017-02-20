@@ -42,7 +42,7 @@ An updated state configuration could be anything from updating a routine from bl
 ::
 
 
-    for ( Int <- register )P | register! ( 1 ) -> P { 1/Int }
+    for ( Int <- register )P | register! ( 1 ) -> P { 1 -> Int }
 
 
 
@@ -56,7 +56,7 @@ A node operator listening on a live data stream that is receiving transaction bl
 ::
 
 
-    for ( ptrn <- stream ) | stream! ( block ) -> P { block/ptrn }
+    for ( ptrn <- stream ) | stream! ( block ) -> P { block -> ptrn }
 
 
 In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. The difference is that, in this use-case, node operators are communicating through an AMQP, where channels are network addresses instead of local memory addresses.
