@@ -15,13 +15,13 @@ It's useful to reiterate that each virtual machine corresponds to a state transi
 <bytecode, state> -> <bytecode', state'>
 
 
-The two main dynamic qualities of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively.
+The two main dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively.
 
 
 [ State diagram ]
 
 
-Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits its are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
+Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
 
 
 ::
@@ -30,13 +30,13 @@ Each instance of the VM maintains a set of environments into which the bindings 
     for ( y <- x )P | x! ( @Q ) -> P { @Q -> y }
 
 
-The output operation :code:`x!`, commits the code of the process :code:`@Q` to the location :code:`x`, runs in parallel with the input operation :code:`for ( y <- x )P`, waiting for a pattern :code:`y` to appear at the location :code:`x`. When pattern :code:`y` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound (maps) to :code:`y`.
+The output operation, :code:`x!`, commits the code of the process :code:`@Q` to the location, :code:`x`. In parallel the input operation :code:`for ( y <- x )P`, waits for a pattern :code:`y` to appear at the location :code:`x`. When pattern :code:`y` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound (maps) to :code:`y`.
 
 
 [ Better State Diagram ]
 
 
-An updated state configuration could be anything from updating a routine from blocking to non-blocking status to, incrementing a PC register counter, to updating a location in local memory. A simple register update for example: 
+An updated state configuration could be anything from updating a routine from blocking to non-blocking status to incrementing a PC register counter, to updating a location in local memory. A simple register update for example: 
 
 
 ::
@@ -61,7 +61,7 @@ A node operator listening on a live data stream that is receiving transaction bl
 
 In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. The difference is that, in this use-case, node operators are communicating through an AMQP, where channels are network addresses instead of local memory addresses.
 
-The current state configuration and instructions of the VM, as well as the history of state configuration and bytecode differences are stored in a key-value database. **Bytecode instructions are applied to the members of a key-value database.** We are required to apply the consensus algorithm when node operators have differing configurations for the same instance of RhoVM.
+The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored in a persistent key-value database. **Bytecode instructions are applied to the members of a key-value database.** We are required to apply the consensus algorithm when node operators have differing configurations for the same instance of RhoVM.
 
 Bytecode differencesRegardless of how a channel is implemented, all binding alterations committed to the virtual machine are written to storage:
 
