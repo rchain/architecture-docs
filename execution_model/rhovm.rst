@@ -7,7 +7,7 @@ Execution Model
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM). 
+To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM).
 
 It's useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, and a legal transition, the machine runs to it's next state. In the case of the RhoVM, state configurations and transitions are expressed in bytecode. The bytecode given to the VM is applied to update the VM's state configuration.
 
@@ -15,10 +15,10 @@ It's useful to reiterate that each virtual machine corresponds to a state transi
 <bytecode, state> -> <bytecode', state'>
 
 
-The two main dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively.
+The two dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively. **CITE**
 
 
-[ State diagram ]
+[ Binding State diagram ]
 
 
 Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
@@ -27,28 +27,30 @@ Each instance of the VM maintains a set of environments into which the bindings 
 ::
 
 
-    for ( y <- x )P | x! ( @Q ) -> P { @Q -> y }
+    for ( y <- x )P | x! ( @Q ) -> P { @Q := y }
 
 
-The output operation, :code:`x!`, commits the code of the process :code:`@Q` to the location, :code:`x`. In parallel the input operation :code:`for ( y <- x )P`, waits for a pattern :code:`y` to appear at the location :code:`x`. When pattern :code:`y` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound (maps) to :code:`y`.
+One thread of the VM, :code:`x!`, commits the code of the process :code:`@Q` to the location, :code:`x`. In parallel, another thread :code:`for ( y <- x )P`, waits for a pattern :code:`y` to appear at the location :code:`x`. When pattern :code:`y` is matched at location :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`y`.
+
+The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys that map to locations that map to values. The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`:
 
 
 [ Better State Diagram ]
 
 
-An updated state configuration could be anything from updating a routine from blocking to non-blocking status to incrementing a PC register counter, to updating a location in local memory. A simple register update for example: 
+Such constitutes a state transition of the VM. An updated state configuration could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. A simple register update for example: 
 
 
 ::
 
 
-    for ( Int <- register )P | register! ( 1 ) -> P { 1 -> Int }
+    for ( Int <- register )P | register! ( 1 ) -> P { 1 := Int }
 
 
 
-The continuation :code:`P` is executed an environment where :code:`1` is substituted for every occurance of :code:`Int`. If no further processing is desired, the continuation :code:`P` is the null process :code:`0`.
+The continuation :code:`P` is executed in an environment where :code:`1` is substituted for every occurance of :code:`Int`. If no further processing is desired, the continuation :code:`P` is the null process :code:`0`.
 
-The above example depicts an alteration to local storage, but the monadic treatment of channels allows for much higher-level constructs. In addition to local storage, a channel, for example, may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
+The above example depicts an alteration to local storage, but the monadic treatment of channels allows for much higher-level constructs. Locations such as :code:`x` and :code:`register` may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
 A node operator listening on a live data stream that is receiving transaction blocks:
 
@@ -56,16 +58,14 @@ A node operator listening on a live data stream that is receiving transaction bl
 ::
 
 
-    for ( ptrn <- stream ) | stream! ( block ) -> P { block -> ptrn }
+    for ( ptrn <- stream ) | stream! ( block ) -> P { block := ptrn }
 
 
-In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. The difference is that, in this use-case, node operators are communicating through an AMQP, where channels are network addresses instead of local memory addresses.
+In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. The difference is that, in this use-case, node operators are communicating through an AMQP, where channels are network addresses instead of local memory addresses. This case may be composed of a subset of transitions, the successful application of which yields this final transition.
 
-The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored in a persistent key-value database. **Bytecode instructions are applied to the members of a key-value database.** We are required to apply the consensus algorithm when node operators have differing configurations for the same instance of RhoVM.
+The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored as well. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
-Bytecode differencesRegardless of how a channel is implemented, all binding alterations committed to the virtual machine are written to storage:
-
-Executed bytecode instructions constitute transactions which are stored along with the information they alter and subjected to consensus to produce transaction blocks. By extension, transaction blocks represent the verifiable history of states and transitions of the virtual machine.
+Executed bytecode instructions constitute transactions which are stored along with the information they alter and subjected to consensus to produce transaction blocks. By extension, transaction blocks represent the verifiable history of states and transitions of an instances of the virtual machine.
 
 To summarize:
 
@@ -77,6 +77,8 @@ Scalability
 -------------------------------------------------------------------
 
 From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of each other. Hence, there is no "global" RhoVM. At any given moment, there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for each namespace, the distributed key-value database, which stores the state of the VM, also exists for each.
+
+The global state of RhoVM (if such a global data structure existed) would be an enormous, shared tuplespace consisting of all the keys and values that ever existed on the platform. Fortunately, that method for 
 
 This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where instruction-level concurrency is given by Rholang. Hence, when this publication refers to a single instance of RhoVM, it is assumed that there are a multiplex of RhoVM instances simultaneously executing a different set of contracts in a different namespace.
 
