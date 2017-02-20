@@ -26,7 +26,7 @@ It's useful to reiterate that each virtual machine corresponds to a state transi
 The two dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively. **CITE**
 
 
-[ Binding State diagram ]
+
 
 
 Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
@@ -40,7 +40,7 @@ Each instance of the VM maintains a set of environments into which the bindings 
 
 On some VM thread, the output operation, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running in parallel, the input operation, :code:`for ( y <- x )P`, waits for a pattern, :code:`y`, to appear at the location, :code:`x`. When pattern, :code:`y`, is matched at location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`y`.
 
-The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys that map to values. The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`:
+The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys which map to locations which map to values. The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`. For brevity, this example assumes that the name :code:`x` and the location (variable) :code:`x`, are the lexically the same.
 
 
 [ Better State Diagram ]
