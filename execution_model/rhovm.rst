@@ -30,15 +30,15 @@ Each instance of the VM maintains a set of environments into which the bindings 
     for ( y <- x )P | x! ( @Q ) -> P { @Q := y }
 
 
-One thread of the VM, :code:`x!`, commits the code of the process :code:`@Q` to the location, :code:`x`. In parallel, another thread :code:`for ( y <- x )P`, waits for a pattern :code:`y` to appear at the location :code:`x`. When pattern :code:`y` is matched at location :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`y`.
+On some VM thread, the output operation, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running in parallel, the input operation, :code:`for ( y <- x )P`, waits for a pattern, :code:`y`, to appear at the location, :code:`x`. When pattern, :code:`y`, is matched at location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`y`.
 
-The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys that map to locations that map to values. The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`:
+The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys that map to values. The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`:
 
 
 [ Better State Diagram ]
 
 
-Such constitutes a state transition of the VM. An updated state configuration could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. A simple register update for example: 
+A state transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. A simple register update for example: 
 
 
 ::
