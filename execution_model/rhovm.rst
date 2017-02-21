@@ -51,7 +51,7 @@ The evaluation rule (in bytecode form) affects the values of a persisted key-val
 [ Digram similar to one above, except with { key/name, channel/location }
 
 
-The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the key, :code:`x`.
+Note that, because environment is unchanged in this example, "location" is omitted from the following diagram. The output operation, :code:`x!( @Q )`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x`:
 
 
 [ Replace this diagram with the updated one ]
