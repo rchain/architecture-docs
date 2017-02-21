@@ -54,18 +54,15 @@ The evaluation rule (in bytecode form) affects the values of a persisted key-val
 Note that, because environment is unchanged in this example, "location" is omitted from the following diagram. The output operation, :code:`x!( @Q )`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x`:
 
 
-[ Replace this diagram with the updated one ]
-
-
-.. figure:: ../img/io_binding_diagram.png
+.. figure:: ../img/io_binding.png
     :align: center
     :scale: 80
-    :width: 1438
+    :width: 2517
     
     *Figure - Dynamic Bindings and Rho-Calculus I/O*
 
 
-This depiction raises an important point, which is that the output term :code:`x!(@Q)`, which assigns :code:`@Q` to the location, :code:`x`, constitutes a state transition by nature of its function. However, it is not an *observed* state transition. Only when the input term, :code:`for ( pattern <- x ) P`, *observes* a value that matches the generic pattern, :code:`pattern`, at :code:`x`, does evaluation occur. Therefore, the continuation :code:`P` is a predetermined protocol to be executed as a result of an observed state transition.
+This depiction raises an important point, which is that the output term :code:`x!(@Q)`, which assigns :code:`@Q` to the location denoted by the key, :code:`x`, constitutes a state transition by nature of its function. However, it is not an *observed* state transition. Only when the input term, :code:`for ( pattern <- x ) P`, *observes* a value that matches the generic pattern, :code:`pattern`, at :code:`x`, does evaluation occur. Therefore, the continuation :code:`P` is a protocol to be executed as the *result* of an observed state transition. This obvservability requirement can be easily checked at compile-time and is the basic requirement which prevents DDoS attacks by repeated invocation of, :code:`x!(@Q)`.
 
 A transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
