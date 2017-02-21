@@ -24,7 +24,7 @@ To begin, a client writes a program (contract) in Rholang. The contract is compi
 The effect that a program has on the VM can be described by *environment* and *state*, which are the binding of names to locations in memory, and of locations in memory to values, respectively. A program is typically executed to change one or both of these associations. Because variables refer to locations, environment is equivalenty a binding of names to variables. Environmental changes occur with changes of lexical scope.
 
 
-.. figure:: ../img/binding_diagram.png
+.. figure:: ../img/bindings_diagram.png
     :align: center
     :scale: 40
     :width: 1017
