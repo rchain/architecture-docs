@@ -45,13 +45,13 @@ Each instance of the VM maintains a set of environments into which the bindings 
 
 On some VM thread, the output term, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running concurrently, the input term, :code:`for ( pattern <- x )P`, waits for a generic pattern, :code:`pattern`, to appear at the location, :code:`x`. When the generic pattern, :code:`pattern`, is matched at the location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`pattern`. The synchronization of input and output at :code:`x` is the event required for a state transition to occur.
 
-The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys which map to locations which map to values.
+The evaluation rule, expressed in the form of compiled bytecode, affects the values of a persisted key-value database, where channel names are keys that map to locations that map to values.
 
 
 [ Digram similar to one above, except with { key/name, channel/location }
 
 
-Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name to value. The output term, :code:`x!( @Q )`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
+Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name to value. The output term, :code:`x!(@Q)`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
 
 
 .. figure:: ../img/io_binding_diagram.png
@@ -62,7 +62,7 @@ Note that, because "name" and "location" are both represented as :code:`x` in th
     *Figure - Dynamic Binding of Key to Value and Rho-Calculus I/O*
 
 
-This depiction raises an important point. At first glance, the output term, which assigns :code:`@Q` to the location denoted by the key, :code:`x`, appears to constitute a state transition itself, by nature of its function. However, it is not an *observed* state transition. Only when the input term *observes* a value at :code:`x`, does evaluation occur. This obvservability requirement can be easily enforced at compile-time. This is the basic synchronization requirement which prevents DDoS attacks by repeated invocation of, :code:`x!(@Q)`.
+This depiction raises an important point. At first glance, the output term, which assigns :code:`@Q` to the location denoted by the key, :code:`x`, appears to constitute a state transition itself, by nature of its function. However, it is not an *observed* state transition. Only when the input term *observes* a value at :code:`x`, does evaluation occur. This obvservability requirement can be easily enforced at compile-time. This is the basic synchronization constraint which prevents DDoS attacks by repeated invocation of, :code:`x!(@Q)`.
 
 A transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
@@ -77,7 +77,7 @@ A node operator listening on a live data stream that is receiving transaction bl
 
 In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. In this use-case, node operators are communicating through an AMQP, where channels represent network addresses. This case may be composed of a subset of lower-level transitions, the successful application of which yields this transition.
 
-The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored as well. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
+The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
 Executed bytecode instructions constitute transactions which are subjected to consensus to produce transaction blocks and then written to storage. By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine.
 
