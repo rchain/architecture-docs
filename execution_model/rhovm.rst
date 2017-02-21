@@ -26,7 +26,7 @@ The effect that a program has on the VM can be described by *environment* and *s
 
 .. figure:: ../img/bindings_diagram.png
     :align: center
-    :scale: 40
+    :scale: 60
     :width: 1017
     
     *Figure - Two-stage binding from Names to values*
@@ -53,7 +53,7 @@ Environment, environmental changes, state and state changes are stored in a pers
 .. figure:: ../img/keyvalue_state.png
     :align: center
     :width: 1017
-    :scale: 40
+    :scale: 60
     
     *Figure - Two-stage binding from keys to values*
 
