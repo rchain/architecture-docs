@@ -9,11 +9,11 @@ Introduction
 
 To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM).
 
-It's useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, and a legal transition, the machine runs to it's next state. In the case of the RhoVM, state configurations and transitions are expressed in bytecode. The bytecode given as input to the VM is applied to update the VM's state configuration.
+It is useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, a legal transition, and an external event to trigger it, the transition is applied and the machine is run to its next state. In the case of the RhoVM, state, transitions, and events are expressed in bytecode.
 
 
 +-------------------+--------------+----------------+------------+
-| **Current State** |   **Input**  | **Next State** | **Output** |
+| **Current State** | **Input**    | **Post State** | **Output** |
 +-------------------+--------------+----------------+------------+
 | S1                | bytecode     | S1'            | bytecode'  |
 +-------------------+--------------+----------------+------------+
@@ -43,7 +43,7 @@ Each instance of the VM maintains a set of environments into which the bindings 
     for ( pattern <- x )P | x! ( @Q ) -> P { @Q/pattern }
 
 
-On some VM thread, the output operation, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running concurrently, the input operation, :code:`for ( pattern <- x )P`, waits for a generic pattern, :code:`pattern`, to appear at the location, :code:`x`. When the generic pattern, :code:`pattern`, is matched at the location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`pattern`.
+On some VM thread, the output term, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running concurrently, the input term, :code:`for ( pattern <- x )P`, waits for a generic pattern, :code:`pattern`, to appear at the location, :code:`x`. When the generic pattern, :code:`pattern`, is matched at the location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`pattern`. The synchronization of input and output at :code:`x` is the event required for a state transition to occur.
 
 The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys which map to locations which map to values.
 
@@ -51,7 +51,7 @@ The evaluation rule (in bytecode form) affects the values of a persisted key-val
 [ Digram similar to one above, except with { key/name, channel/location }
 
 
-Note that, because environment is unchanged in this example, "location" is omitted from the following diagram. The output operation, :code:`x!( @Q )`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x`:
+Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name to value. The output term, :code:`x!( @Q )`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
 
 
 .. figure:: ../img/io_binding.png
@@ -62,7 +62,7 @@ Note that, because environment is unchanged in this example, "location" is omitt
     *Figure - Dynamic Bindings and Rho-Calculus I/O*
 
 
-This depiction raises an important point, which is that the output term :code:`x!(@Q)`, which assigns :code:`@Q` to the location denoted by the key, :code:`x`, constitutes a state transition by nature of its function. However, it is not an *observed* state transition. Only when the input term, :code:`for ( pattern <- x ) P`, *observes* a value that matches the generic pattern, :code:`pattern`, at :code:`x`, does evaluation occur. Therefore, the continuation :code:`P` is a protocol to be executed as the *result* of an observed state transition. This obvservability requirement can be easily checked at compile-time and is the basic requirement which prevents DDoS attacks by repeated invocation of, :code:`x!(@Q)`.
+This depiction raises an important point. At first glance, the output term, which assigns :code:`@Q` to the location denoted by the key, :code:`x`, appears to constitute a state transition itself, by nature of its function. However, it is not an *observed* state transition. Only when the input term *observes* a value at :code:`x`, does evaluation occur. This obvservability requirement can be easily enforced at compile-time. This is the basic synchronization requirement which prevents DDoS attacks by repeated invocation of, :code:`x!(@Q)`.
 
 A transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
