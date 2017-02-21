@@ -45,7 +45,7 @@ Each instance of the VM maintains a set of environments into which the bindings 
 
 On some VM thread, the output term :code:`x!` commits the code of a process :code:`@Q` to the location :code:`x`. On another VM thread running concurrently, the input term :code:`for ( pattern <- x )P` waits for a generic pattern :code:`pattern` to appear at the location :code:`x`. When :code:`pattern` is matched at the location :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`. The synchronization of input and output at :code:`x` is the event required for a state transition to occur.
 
-The evaluation rule, expressed in the form of compiled bytecode, affects the values of a persisted key-value database, where channel names are keys that map to locations that map to values.
+Reduction affects the values of a persisted key-value database, where channel names are keys that map to locations that map to values.
 
 
 [ Digram similar to one above, except with { key/name, channel/location }
