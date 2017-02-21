@@ -21,7 +21,7 @@ To begin, a client writes a program (contract) in Rholang. The contract is compi
 +-------------------+--------------+----------------+------------+
 
 
-The affect that a program has on the VM can be described by *environment* and *state*, which are the binding of names to locations in memory and of locations in memory to values, respectively. A program is typically executed to alter one or both of these associations. Because variables refer to locations, environment is equivalenty a binding of names to variables. Environmental changes occur with changes of lexical scope.
+The effect that a program has on the VM can be described by *environment* and *state*, which are the binding of names to locations in memory, and of locations in memory to values, respectively. A program is typically executed to change one or both of these associations. Because variables refer to locations, environment is equivalenty a binding of names to variables. Environmental changes occur with changes of lexical scope.
 
 
 .. figure:: ../img/binding_diagram.png
@@ -29,7 +29,7 @@ The affect that a program has on the VM can be described by *environment* and *s
     :scale: 40
     :width: 1017
     
-    *Figure - Two-stage Binding from Names to Values*
+    *Figure - Two-stage binding from Names to values*
 
 
 Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
@@ -41,15 +41,22 @@ Each instance of the VM maintains a set of environments into which the bindings 
     for ( pattern <- x )P | x! ( @Q ) -> P { @Q/pattern }
 
 
-On some VM thread, the output term :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`x`. On another thread running concurrently, the input term :code:`for ( pattern <- x )P` waits for a generic pattern :code:`pattern` to appear at :code:`x`. When :code:`pattern` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`. 
+On some VM thread, the output process :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`x`. On another thread running concurrently, the input process :code:`for ( pattern <- x )P` waits for a generic pattern :code:`pattern` to appear at :code:`x`. When :code:`pattern` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`.
 
-Synchronization of input and output terms at :code:`x` is the event with triggers a state transition. At first glance, the output term, which reassigns the value at location :code:`x` from :code:`pattern` to :code:`@Q`, would appear to constitute a state transition itself. With the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( pattern <- x) P` observes the reassignment at :code:`x` for further computation :code:`P` to occur.
+Synchronization of input and output terms at :code:`x` is the event that triggers a state transition. At first glance, the output term, which reassigns the value at location :code:`x` from :code:`pattern` to :code:`@Q`, would appear to constitute a state transition itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( pattern <- x) P` observes the reassignment at :code:`x` for further computation :code:`P` to occur.
 
 From an I/O perspective, the output term alone specifies no further computation. It has no side-effects and is therefore computationally insignificant. No side-effect can occurr until the reassignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`x!(@Q)`.
 
-Environment, environment changes, state and state changes are stored in a persistent key-value data store. Channel names represent keys.
+Environment, environmental changes, state and state changes are stored in a persistent key-value data store. Channel names represent keys.
 
-.. figure:: ../img/
+
+.. figure:: ../img/keyvalue_state.png
+    :align: center
+    :width: 1017
+    :scale: 40
+    
+    *Figure - Two-stage binding from keys to values*
+
 
 Note that, in the following example, the *environment* mapping is ommitted because "name" and "location" are both represented as :code:`x`. The output term :code:`x!(@Q)` places the value :code:`@Q` at the location denoted by the key :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
 
@@ -59,7 +66,7 @@ Note that, in the following example, the *environment* mapping is ommitted becau
     :scale: 80
     :width: 1650
     
-    *Figure - Reduction Effecting a Key-Value Data Store*
+    *Figure - Reduction effecting a key-value data store*
 
 
 A transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
@@ -105,7 +112,7 @@ To allow clients to execute on the VM, we’ll build a compiler pipeline that st
     :align: center
     :scale: 50
     
-    *Figure - RChain Compilation Strategy*
+    *Figure - RChain compilation strategy*
     
  
 1. **Analysis**: From Rholang source-code, or from another smart contract language that compiles to Rholang, this step includes:
@@ -154,7 +161,7 @@ This section gives a high-level view of RChain's contract execution strategy.
     :align: center
     :scale: 50
     
-    *Figure - RChain Execution Sequence*
+    *Figure - RChain execution sequence*
 
 
 This sequence portrays a client request for a contract that is sent to all node operators validating transactions for the superset of contracts in the namespace of the requested contract. On each node, the request is recieved by a VM system contract (thread) that handles work requests.
