@@ -13,7 +13,7 @@ It is useful to reiterate that each virtual machine corresponds to a state trans
 
 
 +-------------------+--------------+----------------+------------+
-| **Current State** | **Input**    | **Post State** | **Output** |
+| **Current state** | **Input**    | **Post-state** | **Output** |
 +-------------------+--------------+----------------+------------+
 | S1                | bytecode     | S1'            | bytecode'  |
 +-------------------+--------------+----------------+------------+
