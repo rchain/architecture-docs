@@ -28,7 +28,7 @@ The two dynamic bindings of a program at runtime are *environment* and *state*, 
 
 .. figure:: ../img/binding_diagram.png
     :align: center
-    :scale: 50
+    :scale: 40
     :width: 1017
     
     *Figure - Dynamic Runtime Bindings*
