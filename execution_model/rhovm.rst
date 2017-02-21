@@ -7,9 +7,7 @@ Execution Model
 Introduction
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM).
-
-It is useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, a legal transition, and an external event to trigger it, the transition is applied and the machine is run to its next state. In the case of the RhoVM, state, transitions, and events are expressed in bytecode.
+To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM). It is useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, a legal transition, and an external event to trigger it, the transition is applied and the machine is run to its next state. In the case of the RhoVM, state, transitions, and events are expressed in bytecode.
 
 
 +-------------------+--------------+----------------+------------+
@@ -23,7 +21,7 @@ It is useful to reiterate that each virtual machine corresponds to a state trans
 +-------------------+--------------+----------------+------------+
 
 
-The two dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively. **CITE**
+The affect that a program has on the VM can be described by *environment* and *state*, which are the binding of names to locations in memory and of locations in memory to values, respectively. A program is typically executed to alter one or both of these associations. Because variables refer to locations, environment is equivalenty a binding of names to variables. Environmental changes occur with changes of lexical scope.
 
 
 .. figure:: ../img/binding_diagram.png
@@ -31,7 +29,7 @@ The two dynamic bindings of a program at runtime are *environment* and *state*, 
     :scale: 40
     :width: 1017
     
-    *Figure - Dynamic Runtime Bindings*
+    *Figure - Two-stage Binding from Names to Values*
 
 
 Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
@@ -43,15 +41,17 @@ Each instance of the VM maintains a set of environments into which the bindings 
     for ( pattern <- x )P | x! ( @Q ) -> P { @Q/pattern }
 
 
-On some VM thread, the output term :code:`x!` commits the code of a process :code:`@Q` to the location :code:`x`. On another VM thread running concurrently, the input term :code:`for ( pattern <- x )P` waits for a generic pattern :code:`pattern` to appear at the location :code:`x`. When :code:`pattern` is matched at the location :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`. The synchronization of input and output at :code:`x` is the event required for a state transition to occur.
+On some VM thread, the output term :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`x`. On another thread running concurrently, the input term :code:`for ( pattern <- x )P` waits for a generic pattern :code:`pattern` to appear at :code:`x`. When :code:`pattern` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`. 
 
-Reduction affects the values of a persisted key-value database, where channel names are keys that map to locations that map to values.
+Synchronization of input and output terms at :code:`x` is the event with triggers a state transition. At first glance, the output term, which reassigns the value at location :code:`x` from :code:`pattern` to :code:`@Q`, would appear to constitute a state transition itself. With the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( pattern <- x) P` observes the reassignment at :code:`x` for further computation :code:`P` to occur.
 
+From an I/O perspective, the output term alone specifies no further computation. It has no side-effects and is therefore computationally insignificant. No side-effect can occurr until the reassignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`x!(@Q)`.
 
-[ Digram similar to one above, except with { key/name, channel/location }
+Environment, environment changes, state and state changes are stored in a persistent key-value data store. Channel names represent keys.
 
+.. figure:: ../img/
 
-Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name (key), directly to value. The output term :code:`x!(@Q)` places the value :code:`@Q` at the location denoted by the key :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
+Note that, in the following example, the *environment* mapping is ommitted because "name" and "location" are both represented as :code:`x`. The output term :code:`x!(@Q)` places the value :code:`@Q` at the location denoted by the key :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
 
 
 .. figure:: ../img/io_binding_diagram.png
@@ -59,10 +59,8 @@ Note that, because "name" and "location" are both represented as :code:`x` in th
     :scale: 80
     :width: 1650
     
-    *Figure - Dynamic Binding of Key to Value and Rho-Calculus I/O*
+    *Figure - Reduction Effecting a Key-Value Data Store*
 
-
-This depiction raises an important point. At first glance, the output term, which assigns :code:`@Q` to the location denoted by the key :code:`x` appears to constitute a state transition itself, by nature of its function. However, it is not an *observed* state transition. Only when the input term *observes* a value at :code:`x`, does evaluation occur. This obvservability requirement can be easily enforced at compile-time. This is the basic synchronization constraint which prevents DDoS attacks by repeated invocation of :code:`x!(@Q)`.
 
 A transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
@@ -77,20 +75,20 @@ A node operator listening on a live data stream that is receiving transaction bl
 
 In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. In this use-case, node operators are communicating through an AMQP, where channels represent network addresses. This case may be composed of a subset of lower-level transitions, the successful application of which yields this transition.
 
-The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
+Along with the current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
 Executed bytecode instructions constitute transactions which are subjected to consensus to produce transaction blocks and then written to storage. By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine.
 
 To summarize:
 
-1. when we refer to RhoVM, we are referring to the composition of an execution engine and a key-value database. 
-2. The rho-calculus I/O semantics, where channels correspond to keys, substitute one value for another.
-3. Substitutions manifest differences in the VM bytecode. Those differences are subjected to consensus, and written to storage.
+1. when we refer to RhoVM, we are referring to the composition of the rho-calculus reduction semantics and a key-value data store. 
+2. The rho-calculus reduction rule substitute one value for another, where a named channel corresponds to a key.
+3. Substitutions manifest as differences in the VM bytecode. Those differences are subjected to consensus, and written to storage.
 
 Scalability
 -------------------------------------------------------------------
 
-From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of each other. Hence, there is no "global" RhoVM. At any given moment, there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for each namespace, the distributed key-value database, which stores the state of the VM, also exists for each.
+From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of each other. Hence, there is no "global" RhoVM. At any given moment, there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for each namespace, the distributed key-value data store, which stores the state of the VM, also exists for each.
 
 The global state of RhoVM (if such a global data structure existed) would be an enormous, shared tuplespace consisting of all the keys and values that ever existed on the platform. Fortunately, that method for 
 
