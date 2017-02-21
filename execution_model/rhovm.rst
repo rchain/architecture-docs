@@ -51,7 +51,7 @@ Reduction affects the values of a persisted key-value database, where channel na
 [ Digram similar to one above, except with { key/name, channel/location }
 
 
-Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name to value. The output term :code:`x!(@Q)` places the value :code:`@Q` at the location denoted by the key :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
+Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name (key), directly to value. The output term :code:`x!(@Q)` places the value :code:`@Q` at the location denoted by the key :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
 
 
 .. figure:: ../img/io_binding_diagram.png
