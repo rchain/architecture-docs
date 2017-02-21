@@ -51,7 +51,10 @@ The evaluation rule (in bytecode form) affects the values of a persisted key-val
 [ Digram similar to one above, except with { key/name, channel/location }
 
 
-The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`.
+The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the key, :code:`x`.
+
+
+[ Replace this diagram with the updated one ]
 
 
 .. figure:: ../img/io_binding_diagram.png
@@ -62,9 +65,9 @@ The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q
     *Figure - Dynamic Bindings and Rho-Calculus I/O*
 
 
-This depiction raises an important point, which is that the output term :code:`x!(@Q)`, which assigns :code:`@Q` to the location, :code:`x`, constitutes a state transition by nature of its function. However, it does not constitute an *observable* state transition. Only when the input term, :code:`for ( pattern <- x ) P`, witnesses a value that matches the generic pattern, :code:`pattern`, does evaluation occur. Therefore, the continuation :code:`P` is a predetermined protocol to be executed only when a state transition is *observed* at a location.
+This depiction raises an important point, which is that the output term :code:`x!(@Q)`, which assigns :code:`@Q` to the location, :code:`x`, constitutes a state transition by nature of its function. However, it is not an *observed* state transition. Only when the input term, :code:`for ( pattern <- x ) P`, *observes* a value that matches the generic pattern, :code:`pattern`, at :code:`x`, does evaluation occur. Therefore, the continuation :code:`P` is a predetermined protocol to be executed as a result of an observed state transition.
 
-A state transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
+A transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
 A node operator listening on a live data stream that is receiving transaction blocks:
 
