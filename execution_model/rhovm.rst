@@ -54,12 +54,12 @@ The evaluation rule (in bytecode form) affects the values of a persisted key-val
 Note that, because "name" and "location" are both represented as :code:`x` in the following example, the mapping is depicted from name to value. The output term, :code:`x!( @Q )`, places the value, :code:`@Q`, at the location denoted by the key, :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
 
 
-.. figure:: ../img/io_binding.png
+.. figure:: ../img/io_binding_diagram.png
     :align: center
     :scale: 80
-    :width: 2517
+    :width: 1650
     
-    *Figure - Dynamic Bindings and Rho-Calculus I/O*
+    *Figure - Dynamic Binding of Key to Value and Rho-Calculus I/O*
 
 
 This depiction raises an important point. At first glance, the output term, which assigns :code:`@Q` to the location denoted by the key, :code:`x`, appears to constitute a state transition itself, by nature of its function. However, it is not an *observed* state transition. Only when the input term *observes* a value at :code:`x`, does evaluation occur. This obvservability requirement can be easily enforced at compile-time. This is the basic synchronization requirement which prevents DDoS attacks by repeated invocation of, :code:`x!(@Q)`.
