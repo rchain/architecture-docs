@@ -26,7 +26,12 @@ It's useful to reiterate that each virtual machine corresponds to a state transi
 The two dynamic bindings of a program at runtime are *environment* and *state*, which are the binding of names to locations and of locations to values, respectively. **CITE**
 
 
-
+.. figure:: ../img/binding_diagram.png
+    :align: center
+    :scale: 80
+    :width: 1017
+    
+    *Figure - Dynamic Runtime Bindings*
 
 
 Each instance of the VM maintains a set of environments into which the bindings of locations to values will be committed. Commits are realized by the rho-calculus I/O reduction semantics, which consist of a single substitution/evaluation rule:
@@ -35,16 +40,29 @@ Each instance of the VM maintains a set of environments into which the bindings 
 ::
 
 
-    for ( y <- x )P | x! ( @Q ) -> P { @Q := y }
+    for ( pattern <- x )P | x! ( @Q ) -> P { @Q/pattern }
 
 
-On some VM thread, the output operation, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running in parallel, the input operation, :code:`for ( y <- x )P`, waits for a pattern, :code:`y`, to appear at the location, :code:`x`. When pattern, :code:`y`, is matched at location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`y`.
+On some VM thread, the output operation, :code:`x!`, commits the code of a process :code:`@Q` to the location, :code:`x`. On another VM thread running concurrently, the input operation, :code:`for ( pattern <- x )P`, waits for a generic pattern, :code:`pattern`, to appear at the location, :code:`x`. When the generic pattern, :code:`pattern`, is matched at the location, :code:`x`, :code:`P` is executed in an environment where, :code:`@Q`, is bound to, :code:`pattern`.
 
-The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys which map to locations which map to values. The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`. For brevity, this example assumes that the name :code:`x` and the location (variable) :code:`x`, are the lexically the same.
+The evaluation rule (in bytecode form) affects the values of a persisted key-value database, where channel names are keys which map to locations which map to values.
 
 
-[ Better State Diagram ]
+[ Digram similar to one above, except with { key/name, channel/location }
 
+
+The output operation, :code:`x!( @Q )`, for example, places the value, :code:`@Q`, at the location denoted by the name, :code:`x`.
+
+
+.. figure:: ../img/io_binding_diagram.png
+    :align: center
+    :scale: 80
+    :width: 1438
+    
+    *Figure - Dynamic Bindings and Rho-Calculus I/O*
+
+
+This depiction raises an important point, which is that the output term :code:`x!(@Q)`, which assigns :code:`@Q` to the location, :code:`x`, constitutes a state transition by nature of its function. However, it does not constitute an *observable* state transition. Only when the input term, :code:`for ( pattern <- x ) P`, witnesses a value that matches the generic pattern, :code:`pattern`, does evaluation occur. Therefore, the continuation :code:`P` is a predetermined protocol to be executed only when a state transition is *observed* at a location.
 
 A state transition could be anything from updating a routine from blocking to non-blocking status, to incrementing a PC register, **to updating a location in local memory REVISIT**. The monadic treatment of channels allows for higher-level constructs. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
@@ -54,14 +72,14 @@ A node operator listening on a live data stream that is receiving transaction bl
 ::
 
 
-    for ( ptrn <- stream ) | stream! ( block ) -> P { block := ptrn }
+    for ( pattern <- stream ) | stream! ( block ) -> P { block/pattern }
 
 
 In this case, the I/O pair is satisfied by two node operators, one writing a block to a stream and one reading a block from a stream. In this use-case, node operators are communicating through an AMQP, where channels represent network addresses. This case may be composed of a subset of lower-level transitions, the successful application of which yields this transition.
 
 The current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored as well. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
-Executed bytecode instructions constitute transactions which are stored along with the information they alter and subjected to consensus to produce transaction blocks. By extension, transaction blocks represent the verifiable history of states and transitions of an instances of the virtual machine.
+Executed bytecode instructions constitute transactions which are subjected to consensus to produce transaction blocks and then written to storage. By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine.
 
 To summarize:
 
