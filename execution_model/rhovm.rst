@@ -14,7 +14,7 @@ The execution of a contract affects the *environment* and *state* of RhoVM. Envi
 
 .. figure:: ../img/bindings_diagram.png
     :align: center
-    :scale: 60
+    :scale: 50
     :width: 1017
     
     *Figure - Two-stage binding from Names to values*
@@ -34,7 +34,7 @@ On some thread, the output process :code:`x!` assigns the code of a process :cod
 
 .. figure:: ../img/io_binding.png
     :align: center
-    :scale: 80
+    :scale: 90
     :width: 1650
     
     *Figure - Reduction effecting a key-value data store*
@@ -80,7 +80,7 @@ To allow clients to execute on the VM, we’ll build a compiler pipeline that st
 
 
 .. figure:: ../img/compilation_strategy.png
-    :width: 1200
+    :width: 1467
     :align: center
     :scale: 50
     
