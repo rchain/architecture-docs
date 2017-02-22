@@ -9,21 +9,7 @@ Realizing Computation
 
 To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM).
 
-It is useful to reiterate that each virtual machine corresponds to a state transition table. Given a machine state configuration, a legal transition, and an external event to trigger it, the transition is applied and the machine is run to its next state. In the case of the RhoVM, state, transitions, and events are expressed in bytecode.
-
-
-+-------------------+--------------+----------------+------------+
-| **Current state** | **Input**    | **Post-state** | **Output** |
-+-------------------+--------------+----------------+------------+
-| S1                | bytecode     | S1'            | bytecode'  |
-+-------------------+--------------+----------------+------------+
-| ...               | ...          | ...            | ...        |
-+-------------------+--------------+----------------+------------+
-| Sn                | bytecode     | Sn'            | bytecode'  |
-+-------------------+--------------+----------------+------------+
-
-
-The execution of a contract affects the *environment* and *state* of the VM. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. A program typically changes one or both of these associations at runtime. Because variables refer to locations, environment is equivalenty a mapping of names to variables. Environmental changes occur with changes of lexical scope.
+The execution of a contract affects the *environment* and *state* of the VM. Environment and state are the mapping of names (keys) to locations in memory, and of locations in memory to values, respectively. A program typically changes one or both of these associations at runtime. Because variables refer to locations, environment is equivalenty a mapping of names to variables. Environmental changes occur with changes of lexical scope, and values may be simple or complex
 
 
 .. figure:: ../img/bindings_diagram.png
@@ -34,25 +20,33 @@ The execution of a contract affects the *environment* and *state* of the VM. Env
     *Figure - Two-stage binding from Names to values*
 
 
-State changes are achieved by application of the rho-calculus I/O reduction (substitution) rule:
+Because RhoVM operates against a key-value database, a state change is realized by any operation that changes which key maps to which value. This operation is the rho-calculus I/O reduction (substitution) rule, where channels correspond to keys and values correspond to the values being substituted:
 
 
 ::
 
 
-    for ( pattern <- x )P | x! ( @Q ) -> P { @Q/pattern }
+    for ( pattern <- key )P | key! ( @Q ) -> P { @Q/pattern }
 
 
-On some thread, the output process :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`x`. On another thread running concurrently, the input process :code:`for ( pattern <- x )P` waits for a generic pattern :code:`pattern` to appear at :code:`x`. When :code:`pattern` is matched at :code:`x`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`.
+On some thread, the output process :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( pattern <- key )P` waits for a generic pattern :code:`pattern` to appear at :code:`key`. When :code:`pattern` is matched at :code:`key`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`.
 
-The synchronization of input and output terms at :code:`x` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location :code:`x`, would appear to constitute a state transition itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( pattern <- x) P` observes the assignment at :code:`x` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone has no side-effects and is therefore computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`x!(@Q)`.
+The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( pattern <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
+
+In the following depiction, the *environment* mapping is ommitted because "name" and "location" are both represented as :code:`key`. The output term places the value :code:`@Q` at the location denoted by :code:`key` , while the input term simultaneously looks for a value that meets a pattern requirement:
+
+
+.. figure:: ../img/io_binding_diagram.png
+    :align: center
+    :scale: 80
+    :width: 1650
+    
+    *Figure - Reduction effecting a key-value data store*
+
 
 **[ TO INCLUDE? ]** The "monadic treatment of channels" is a channel's ability to recieve a value that is a channel, within a channel, within a channel *ad infinitum*. The monadic treatment of channels allows for higher-level constructs and thus higher-level transitions. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
 Because a state transition corresponds to an alteration in the mapping of a variable to a value, the interpretation of what a state transition can mean is limited only to the interpretation of what value a variable can hold.
-
-
-
 
 As mentioned in the previous section, state transitions of the VM manifest as bytecode differences. Those bytecode differences are written to a persistent key-value data store. Channel names represent keys.
 
@@ -67,18 +61,7 @@ Consists of the state, transitions, and history of the execution engine, which c
     *Figure - Two-stage binding from keys to values*
 
 
-Note that, in the following example, the *environment* mapping is ommitted because "name" and "location" are both represented as :code:`x`. The output term :code:`x!(@Q)` places the value :code:`@Q` at the location denoted by the key :code:`x` , while the input term simultaneously looks for a value that meets a pattern requirement:
-
-
-.. figure:: ../img/io_binding_diagram.png
-    :align: center
-    :scale: 80
-    :width: 1650
-    
-    *Figure - Reduction effecting a key-value data store*
-
 Along with the current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored.
-
 
 Executed bytecode instructions constitute transactions which are subjected to consensus to produce transaction blocks and then written to storage. By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
