@@ -20,7 +20,7 @@ The execution of a contract affects the *environment* and *state* of RhoVM. Envi
     *Figure - Two-stage binding from Names to values*
 
 
-Because RhoVM operates against a key-value data store, a state change is realized by an operation that changes which key maps to which value. This operation is the rho-calculus I/O reduction rule. Effectively, it is a substitution rule that specifies a computation :code:`P` to be performed if a discrete value is observed at a given key. Keys are analogous to names, in that they allow the programmer to reference the location in memory of the value that they would like to change. In the following example, :code:`val` is the value being changed:
+Because RhoVM operates against a key-value data store, a state change is realized by an operation that changes which key maps to which value. This operation is the rho-calculus I/O reduction rule. Effectively, it is a substitution rule that specifies a computation :code:`P` to be performed if a new, discrete value is observed at a given key. Keys are analogous to names in that they allow the programmer to reference the location in memory of the value that they would like to alter. In the following example, :code:`val` is the value being changed:
 
 
 ::
@@ -31,10 +31,8 @@ Because RhoVM operates against a key-value data store, a state change is realize
 
 On some thread, the output process :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When :code:`val` appears at :code:`key`, :code:`P` is executed in an environment where :code:`@Q` is bound to (substituted for) :code:`val`. The resulting mapping difference i.e. :code:`key` previously mapped to :code:`val` but now maps to :code:`@Q`, constitutes a state transition of RhoVM.
 
-The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( val <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
 
-
-.. figure:: ../img/io_binding_diagram.png
+.. figure:: ../img/io_binding.png
     :align: center
     :scale: 80
     :width: 1650
@@ -42,11 +40,12 @@ The synchronization (co-channel orientation) of input and output at the location
     *Figure - Reduction effecting a key-value data store*
 
 
-**[ TO INCLUDE? ]** The "monadic treatment of channels" is a channel's ability to recieve a value that is a channel, within a channel, within a channel *ad infinitum*. The monadic treatment of channels allows for higher-level constructs and thus higher-level transitions. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
+The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( val <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
 
-Because a state transition corresponds to an alteration in the mapping of a variable to a value, the interpretation of what a state transition can mean is limited only to the interpretation of what value a variable can hold.
 
-As mentioned in the previous section, state transitions of the VM manifest as bytecode differences. Those bytecode differences are written to a persistent key-value data store. Channel names represent keys.
+We've seen that an application of the rho-calculus reduction rule, to an element of a persisted key-value data store, constitutes a state transition of the RhoVM, and that those state transitions manifest as bytecode differences. 
+
+As mentioend in previous sections, the rho-calculus reduction semantics also serve as a faithful representation of an atomic transaction.
 
 Consists of the state, transitions, and history of the execution engine, which can be thought of as "system-space" and of "user-space"
 
@@ -75,6 +74,8 @@ Scalability
 From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of each other. Hence, there is no "global" RhoVM. At any given moment, there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for each namespace, the distributed key-value data store, which stores the state of the VM, also exists for each.
 
 The global state of RhoVM (if such a global data structure existed) would be an enormous, shared tuplespace consisting of all the keys and values that ever existed on the platform. Fortunately, that method for 
+
+**[ TO INCLUDE? ]** The "monadic treatment of channels" is a channel's ability to recieve a value that is a channel, within a channel, within a channel *ad infinitum*. The monadic treatment of channels allows for higher-level constructs and thus higher-level transitions. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
 
 This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where instruction-level concurrency is given by Rholang. Hence, when this publication refers to a single instance of RhoVM, it is assumed that there are a multiplex of RhoVM instances simultaneously executing a different set of contracts in a different namespace.
 
@@ -130,8 +131,6 @@ Rosette is a reflective, object-oriented language that achieves concurrency via 
     
 Execution Environment - RhoVM
 ================================================
-
-In the section on rho-calculus, we presented the rho-calculus reduction semantics as a faithful representation of an atomic transaction.
 
 
 Rate-limiting Mechanism
