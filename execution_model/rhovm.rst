@@ -4,12 +4,12 @@
 Execution Model
 ******************************************************************
 
-Realizing Computation
+Overview
 ==================================================================
 
-To begin, a client writes a program (contract) in Rholang. The contract is compiled into bytecode and fed to the **Rho Virtual Machine** (RhoVM).
+Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that continuously applies the rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store.
 
-The execution of a contract affects the *environment* and *state* of the VM. Environment and state are the mapping of names (keys) to locations in memory, and of locations in memory to values, respectively. A program typically changes one or both of these associations at runtime. Because variables refer to locations, environment is equivalenty a mapping of names to variables. Environmental changes occur with changes of lexical scope, and values may be simple or complex
+The execution of a contract affects the *environment* and *state* of RhoVM. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. A program typically changes one or both of these associations at runtime. Because variables refer to locations, environment is equivalenty a mapping of names to variables. Environmental changes occur with changes of lexical scope, and values may be simple or complex
 
 
 .. figure:: ../img/bindings_diagram.png
@@ -20,20 +20,18 @@ The execution of a contract affects the *environment* and *state* of the VM. Env
     *Figure - Two-stage binding from Names to values*
 
 
-Because RhoVM operates against a key-value database, a state change is realized by any operation that changes which key maps to which value. This operation is the rho-calculus I/O reduction (substitution) rule, where channels correspond to keys and values correspond to the values being substituted:
+Because RhoVM operates against a key-value data store, a state change is realized by an operation that changes which key maps to which value. This operation is the rho-calculus I/O reduction rule. Effectively, it is a substitution rule that specifies a computation :code:`P` to be performed if a discrete value is observed at a given key. Keys are analogous to names, in that they allow the programmer to reference the location in memory of the value that they would like to change. In the following example, :code:`val` is the value being changed:
 
 
 ::
 
 
-    for ( pattern <- key )P | key! ( @Q ) -> P { @Q/pattern }
+    for ( val <- key )P | key! ( @Q ) -> P { @Q/val}
 
 
-On some thread, the output process :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( pattern <- key )P` waits for a generic pattern :code:`pattern` to appear at :code:`key`. When :code:`pattern` is matched at :code:`key`, :code:`P` is executed in an environment where :code:`@Q` is bound to :code:`pattern`.
+On some thread, the output process :code:`x!` assigns the code of a process :code:`@Q` to the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When :code:`val` appears at :code:`key`, :code:`P` is executed in an environment where :code:`@Q` is bound to (substituted for) :code:`val`. The resulting mapping difference i.e. :code:`key` previously mapped to :code:`val` but now maps to :code:`@Q`, constitutes a state transition of RhoVM.
 
-The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( pattern <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
-
-In the following depiction, the *environment* mapping is ommitted because "name" and "location" are both represented as :code:`key`. The output term places the value :code:`@Q` at the location denoted by :code:`key` , while the input term simultaneously looks for a value that meets a pattern requirement:
+The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( val <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
 
 
 .. figure:: ../img/io_binding_diagram.png
@@ -129,25 +127,6 @@ Rosette is a reflective, object-oriented language that achieves concurrency via 
 
 .. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
 
-Execution Strategy
-================================================
-
-This section gives a high-level view of RChain's contract execution strategy.
-
-
-.. figure:: .. /img/execution_diagram.png
-    :width: 1792
-    :align: center
-    :scale: 50
-    
-    *Figure - RChain execution sequence*
-
-
-This sequence portrays a client request for a contract that is sent to all node operators validating transactions for the superset of contracts in the namespace of the requested contract. On each node, the request is recieved by a VM system contract (thread) that handles work requests.
-
-
-For brevity, this representation sidesteps the consensus requirement of each system contract. In practice, each system contract may posess many protocols that are themselves subject to consensus. During the course of each contract, many transactions will be requested and need to be committed before progress on other parts of the contract can be made.
- 
     
 Execution Environment - RhoVM
 ================================================
