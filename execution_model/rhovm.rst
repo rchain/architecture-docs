@@ -42,12 +42,9 @@ On some thread, the output process :code:`x!` assigns the code of a process :cod
 
 The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( val <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
 
-
-We've seen that an application of the rho-calculus reduction rule, to an element of a persisted key-value data store, constitutes a state transition of the RhoVM, and that those state transitions manifest as bytecode differences. 
+We've seen that an application of the rho-calculus reduction rule, to an element of a persistent key-value data store, constitutes a state transition of the RhoVM. The data store is considered persistent because the history of state configurations, as well as the history of transitions applied to those states, is maintained for any given key.
 
 As mentioend in previous sections, the rho-calculus reduction semantics also serve as a faithful representation of an atomic transaction.
-
-Consists of the state, transitions, and history of the execution engine, which can be thought of as "system-space" and of "user-space"
 
 
 .. figure:: ../img/keyvalue_state.png
@@ -56,9 +53,6 @@ Consists of the state, transitions, and history of the execution engine, which c
     :scale: 60
     
     *Figure - Two-stage binding from keys to values*
-
-
-Along with the current state configuration and instruction set of the VM, as well as the history of state configurations and bytecode differences are stored stored.
 
 Executed bytecode instructions constitute transactions which are subjected to consensus to produce transaction blocks and then written to storage. By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. We are required to apply the consensus algorithm when, and only when, node operators have conflicting histories of the observable state and transitions of an instance of RhoVM.
 
