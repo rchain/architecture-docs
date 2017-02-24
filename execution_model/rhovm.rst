@@ -10,15 +10,15 @@ Overview
 Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that repeatedly applies the low-level rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store [#]_.
 
 
-
 .. figure:: ../img/execution_storage_kv.png
     :align: center
     :scale: 80
     :width: 965
+    
+    *Figure - RhoVM as a key-value store and execution engine*
    
 
-
-The execution of a contract affects the *environment* and *state configuration* of an instance of RhoVM. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. Note that variables directly reference locations, which means that environment is equivalenty a mapping of names to variables. A program typically modifies one or both of these associations at runtime. Environmental modifications occur with the lexical scoping rules of Rholang, and values may be simple or complex.
+The execution of a contract affects the *environment* and *state* of an instance of RhoVM. In this case, the useage of "environment" does not refer to the execution environment exclusively, but to the configuration of the key-value structure. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. Variables directly reference locations, which means that environment is equivalenty a mapping of names to variables. A program typically modifies one or both of these associations at runtime. Environmental modifications occur with the lexical scoping rules of Rholang, and values may be simple or complex.
 
 
 .. figure:: ../img/bindings_diagram.png
