@@ -13,6 +13,7 @@ Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment th
 .. figure:: ../img/execution_storage_kv.png
     :width: 988
     :scale: 50
+    :align: left
     
     *Figure - RhoVM as a back-to-back key-value store and execution engine*
    
