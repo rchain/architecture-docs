@@ -48,7 +48,7 @@ We've seen that an application of the rho-calculus reduction rule, to a data ele
 .. figure:: ../img/transaction_history.png
     :align: center
     :width: 2175
-    :scale:
+    :scale: 80
     
     *Figure - Reduction/Transaction history of a location in memory*
     
