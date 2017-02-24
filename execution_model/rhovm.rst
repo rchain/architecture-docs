@@ -55,14 +55,14 @@ We've seen that an application of the rho-calculus reduction rule, to a data ele
 
 :code:`keyn` maps to a list of reductions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`. This list of reductions is the history of value alterations committed to the location in memory denoted by :code:`keyn`. What's more, the reduction history of a key is the transaction history of an address.
 
-After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistent across all nodes running that instance of RhoVM. The transaction is then written to the store as :code:`for(valn+1 <- keyn).Pn+1 | keyn!(@Qn+1)` [**FORMAT**]. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
+After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistent across all nodes running that instance of RhoVM. The transaction is then written to the store as :code:`for(valn+1<- keyn).Pn+1 | keyn!(@Qn+1)` [**FORMAT**]. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
 
-By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. Note that the consensus algorithm is only applied if, and only if, node operators propose conflicting reduction histories i.e. propose conflicting histories of the observable state and transitions of an instance of RhoVM.
+By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. Note that the consensus algorithm is applied if, and only if, node operators propose conflicting reduction histories i.e. propose conflicting histories of the observable state and transitions of an instance of RhoVM.
 
 To summarize:
 
 1. when we refer to RhoVM, we are referring to the composition of the rho-calculus reduction semantics and a key-value data store. 
-2. The rho-calculus reduction rule substitute one value for another, where a named channel corresponds to a key.
+2. The rho-calculus reduction rule substitutes the value at a key for another value, where a named channel corresponds to a key, and values may be simple or complex.
 3. Substitutions manifest as differences in the VM bytecode. Those differences are subjected to consensus, and written to storage.
 
 Scalability
