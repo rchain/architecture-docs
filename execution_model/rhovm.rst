@@ -12,10 +12,8 @@ Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment th
 
 .. figure:: ../img/execution_storage_kv.png
     :align: center
-    :scale: 80
-    :width: 965
     
-    *Figure - RhoVM as a key-value store and execution engine*
+    *Figure - RhoVM as a back-to-back key-value store and execution engine*
    
 
 The execution of a contract affects the *environment* and *state* of an instance of RhoVM. In this case, the useage of "environment" does not refer to the execution environment exclusively, but to the configuration of the key-value structure. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. Variables directly reference locations, which means that environment is equivalenty a mapping of names to variables. A program typically modifies one or both of these associations at runtime. Environmental modifications occur with the lexical scoping rules of Rholang, and values may be simple or complex.
@@ -76,21 +74,17 @@ To summarize:
 
 .. [#] The RhoVM "Execution Environment" will later be introduced as the "Rosette VM". The choice to use Rosette VM hinged on two factors. First, the Rosette system has been in commerical production for over 20 years. Second, Rosette VM's memory model, model of computation, and runtime systems provide the support for concurrency that RhoVM requires. RChain has pledged to perform a modernized re-implementation of Rosette VM, in Scala, to serve as the initial RhoVM execution environment.
 
-Scalability
+A Brief Aside on Scalability
 -------------------------------------------------------------------
 
-From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant; it is assumed that VM instances operate independently of each other. Hence, there is no "global" RhoVM. At any given moment, there is a multiplex of replicated VM instances running on nodes across the network - each executing and validating state transitions for their associated namespaces. Because an instance of RhoVM exists for each namespace, the distributed key-value data store, which stores the state of the VM, also exists for each.
+From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant. It is assumed that VM instances operate independently of each other. Accordingly, there is no "global" RhoVM. Instead, there is a multiplex of RhohVM instances running on nodes across the network at any given moment - each executing and validating transactions for their associated namespaces.
 
-The global state of RhoVM (if such a global data structure existed) would be an enormous, shared tuplespace consisting of all the keys and values that ever existed on the platform. Fortunately, that method for 
-
-**[ TO INCLUDE? ]** The "monadic treatment of channels" is a channel's ability to recieve a value that is a channel, within a channel, within a channel *ad infinitum*. The monadic treatment of channels allows for higher-level constructs and thus higher-level transitions. Locations may be bound to and nested within many channels. For example, in addition to local storage, a channel may be bound to a network-address supported by an advanced message queuing protocol (AMQP).
-
-This design choice of many virtual machines executing "in parallel" constitutes system-level concurrency on the RChain platform, where instruction-level concurrency is given by Rholang. Hence, when this publication refers to a single instance of RhoVM, it is assumed that there are a multiplex of RhoVM instances simultaneously executing a different set of contracts in a different namespace.
+This design choice constitutes system-level concurrency on the RChain platform, where instruction-level concurrency is given by Rholang. Hence, when this publication refers to a single instance of RhoVM, it is assumed that there are a multiplex of RhoVM instances simultaneously executing a different set of contracts for a different namespace.
 
 Compilation Environment
 ================================================
 
-To allow clients to execute on the VM, we’ll build a compiler pipeline that starts with Rholang source-code that is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
+To allow clients to execute contracts on the VM, RChain has developed a compiler pipeline that starts with Rholang source-code. The source-code is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
 
 
 .. figure:: ../img/compilation_strategy.png
@@ -111,7 +105,7 @@ To allow clients to execute on the VM, we’ll build a compiler pipeline that st
 
 2. **Transcompilation**: From Rholang source-code, the compiler:
 
-    a) performs a simple source-to-source compilation from Rholang to Rosette source-code, which will eventually be executed on the     Rosette VM.
+    a) performs a source-to-source translation from Rholang to Rosette source-code.
 
 3. **Analysis**: From Rosette source-code, the compiler performs:
     
@@ -121,25 +115,23 @@ To allow clients to execute on the VM, we’ll build a compiler pipeline that st
 4. **Optimization**: From Rosette IR, the compiler:
 
     a) optimizes the IR via redundancy elimination, sub-expression elimination, dead-code elimination, constant folding, induction variable identification and strength simplification
-    b) synthesizes bytecode to be executed on Rosette VM
+    b) synthesizes bytecode to be executed by the Rosette VM
     
-For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Early compiler work can be seen on `GitHub`_.
+For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Compiler work can be seen on `GitHub`_.
 
 .. _GitHub: https://github.com/rchain/Rosette-VM
 .. _#rhovm: https://ourchain.slack.com/messages/coop/
 .. _join: http://slack.rchain.coop/
 
-What Is Rosette?
-------------------------------------------------
-
-Rosette is a reflective, object-oriented language that achieves concurrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of Rosette VM in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency requirements demanded by a scalable design. Second, Rosette VM was intentionally designed to support multi-computer systems of an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_. 
-
-.. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
-
-    
 Execution Environment - RhoVM
 ================================================
 
+What Is Rosette?
+------------------------------------------------
+
+Rosette is a reflective, object-oriented language that achieves concurrency via actor semantics. The Rosette system (including the Rosette virtual machine) has been in commerical production since 1994. Because of its demonstrated reliability, RChain Cooperative has committed to completing a clean-room reimplementation of Rosette VM in Scala. There are two main benefits of doing so. First, the Rosette language satisfies the instruction-level concurrency semantics expressed in Rholang. Second, Rosette VM was intentionally designed to support a multi-computer (distributed) system operating on an arbitrary amount of processors. For more information, see `Mobile Process Calculi for Programming the Blockchain`_.
+
+.. _Mobile Process Calculi for Programming the Blockchain: http://mobile-process-calculi-for-programming-the-new-blockchain.readthedocs.io/en/latest/
 
 Rate-limiting Mechanism
 ---------------------------------------------------
