@@ -68,11 +68,11 @@ By extension, transaction blocks represent sets of reductions that have been app
 
 To summarize:
 
-1. When RhoVM is the composition of the rho-calculus reduction semantics and a persistent key-value data store. 
+1. RhoVM is the composition of the rho-calculus reduction semantics, expressed in Rholang, and a persistent key-value data store. 
 2. The rho-calculus reduction rule substitutes the value at a key for another value, where a named channel corresponds to a key, and values may be simple or complex.
-3. Substitutions manifest as differences in the bytecode stored at a key. The accurate replication of those differences, across all nodes validating that instance of RhoVM, is verified via the consensus algorithm.
+3. Substitutions and transactions, which manifest as differences in the bytecode stored at a key. The accurate replication of those bytecode differences, across all nodes validating that instance of RhoVM, is verified via the consensus algorithm.
 
-.. [#] The RhoVM "Execution Environment" will later be introduced as the "Rosette VM". The choice to use Rosette VM hinged on the fact that the Rosette system has been in commerical production for over 20 years, and that its memory model, model of computation, and runtime systems provide support for concurrency that RhoVM requires. RChain has pledged to perform a modernized re-implementation of Rosette VM, in Scala, to serve as the initial RhoVM execution environment.
+.. [#] The RhoVM "Execution Environment" will later be introduced as the "Rosette VM". The choice to use Rosette VM hinged on two factors. First, the Rosette system has been in commerical production for over 20 years. Second, Rosette VM's memory model, model of computation, and runtime systems provide the support for concurrency that RhoVM requires. RChain has pledged to perform a modernized re-implementation of Rosette VM, in Scala, to serve as the initial RhoVM execution environment.
 
 Scalability
 -------------------------------------------------------------------
