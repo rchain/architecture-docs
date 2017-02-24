@@ -10,10 +10,10 @@ Overview
 Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that repeatedly applies the low-level rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store [#]_.
 
 
-.. figure:: ../img/execution_storage_kv.png
-    :width: 988
+.. figure:: ../img/execution_storage.png
+    :width: 965
     :scale: 50
-    :align: left
+    :align: center
     
     *Figure - RhoVM as a back-to-back key-value store and execution engine*
    
