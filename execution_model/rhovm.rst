@@ -7,9 +7,9 @@ Execution Model
 Overview
 ==================================================================
 
-Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that continuously applies the rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store.
+Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that continuously applies the low-level rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store.
 
-The execution of a contract affects the *environment* and *state* of RhoVM. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. A program typically changes one or both of these associations at runtime. Because variables refer to locations, environment is equivalenty a mapping of names to variables. Environmental changes occur with changes of lexical scope, and values may be simple or complex
+The execution of a contract affects the *environment* and *state* of RhoVM. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. A program typically changes one or both of these associations at runtime. Because variables refer to locations, environment is equivalenty a mapping of names to variables. Environmental changes occur with the lexical scoping rules of the Rholang, and values may be simple or complex
 
 
 .. figure:: ../img/bindings_diagram.png
@@ -42,11 +42,20 @@ On some thread, the output process :code:`x!` assigns the code of a process :cod
 
 The synchronization (co-channel orientation) of input and output at the location denoted by :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output term, which assigns the value :code:`@Q` to the location denoted by :code:`key`, would appear to constitute a state change itself. However, with the rho-calculus I/O, we pick up an *observability* requirement. We require that the input process :code:`for ( val <- key) P` observes the assignment at :code:`key` for further computation :code:`P` to occur. This is because, from an I/O perspective, only the input term specifies further computation. The output term alone is computationally insignificant. In fact, no side-effect can occurr until the assignment given by the output term is seen by the input term. Therefore, no *observable* state transition can occurr until the input and output terms are in concurrent orientation. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated invocation of the output term :code:`key!(@Q)`.
 
-We've seen that an application of the rho-calculus reduction rule, to a data element of a key-value data store, constitutes a state transition of the RhoVM. The goal is to maintain and verify every state transition that ever occurs on the VM, which means that the data store must be maintained. Therefore, in addition to mapping to the current values, each key maps to the verified history of reductions to occur at that location:
+We've seen that an application of the rho-calculus reduction rule, to a data element of a key-value data store, constitutes a state transition of the RhoVM. The goal is to maintain and verify every state transition that ever occurs on the VM, which means that the key-value data store must be maintained, or *persisted*. Therefore, in addition to mapping to the current values, each key maps to the verified history of reductions to occur at that location:
+
+
+.. figure:: ../img/transaction_history.png
+    :align: center
+    :width: 2175
+    :scale:
+    
+    *Figure - Reduction/Transaction history of a location in memory*
+    
 
 :code:`keyn` maps to a list of reductions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`. This list of reductions is the history of value alterations committed to the location in memory denoted by :code:`keyn`. What's more, the reduction history of a key is the transaction history of an address.
 
-After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistent across all nodes running that instance of RhoVM. The transaction is then written to the store as :code:`for(valn+1 <- keyn).Pn+1 | keyn!(@Qn+1)` [**FORMAT**]. The same consensus protocol is applied to the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
+After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistent across all nodes running that instance of RhoVM. The transaction is then written to the store as :code:`for(valn+1 <- keyn).Pn+1 | keyn!(@Qn+1)` [**FORMAT**]. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
 
 By extension, transaction blocks represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. Note that the consensus algorithm is only applied if, and only if, node operators propose conflicting reduction histories i.e. propose conflicting histories of the observable state and transitions of an instance of RhoVM.
 
