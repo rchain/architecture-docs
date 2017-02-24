@@ -43,7 +43,6 @@ On some thread, the output process :code:`key!` assigns the code of a process :c
 
 .. figure:: ../img/io_binding.png
     :align: center 
-    :scale: 90
     :width: 1650
     
     *Figure - Reduction effecting a key-value data store*
@@ -55,7 +54,7 @@ It has been demonstrated that an application of the rho-calculus reduction rule,
 
 
 .. figure:: ../img/transaction_history.png
-    :align: center
+    :align: left
     :width: 2175
     :scale: 80
     
@@ -110,7 +109,7 @@ To allow clients to execute contracts on the VM, RChain has developed a compiler
 
 
 .. figure:: ../img/compilation_strategy.png
-    :width: 1467
+    :width: 930
     :align: center
     :scale: 50
     
