@@ -34,5 +34,5 @@ It is of the utmost importance that the reader understand the implications of co
 
 **Concurrency is a structural property which allows independent processes to compose into complex processes. Processes are considered independent if they do not compete for resources.**
 
-We’ll see that, when we commit to concurrency, we get parallelism and asynchronicity for free. Whether the platform is running on one processor or 1,000,000 processors, the RChain design is scalable. Having said that, design patterns of concurrency will be frequent to the astute reader.
+We’ll see that, when we commit to concurrency, we get parallelism and asynchronicity for free. Whether the platform is running on one processor or 1,000,000 processors, the RChain design is scalable. Having said that, design patterns of concurrent computation will be frequent to the astute reader.
 
