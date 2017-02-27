@@ -7,7 +7,7 @@ Execution Model
 Overview
 ==================================================================
 
-Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that repeatedly applies the low-level rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store [#]_.
+Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment that repeatedly applies the low-level rho-calculus reduction rule, expressed in the high-level Rholang contracting language, to the elements of a persistent key-value data store [#]_. The "state" of RhoVM is analogous to the state of the blockchain.
 
 
 .. figure:: ../img/execution_storage.png
@@ -29,7 +29,7 @@ The execution of a contract affects the *environment* and *state* of an instance
     *Figure - Two-stage binding from Names to values*
 
 
-RhoVM operates against a key-value data store. A state change of RhoVM is realized by an operation that modifies which key maps to what value. Since, like Rholang, RhoVM is derived from the rho-calculus model of computation, that operation is the low-level rho-calculus reduction rule. Effectively, the reduction rule, known as the "COMM" rule, is a substitution that defines a computation :code:`P` to be performed if a new value is observed at a key. A key is analogous to a name in that it references a location in memory which holds the value being substituted. In the following example, :code:`key` is a key and :code:`val` is the value being substituted:
+RhoVM operates against a key-value data store. **A state change of RhoVM is realized by an operation that modifies which key maps to what value.** Since, like Rholang, RhoVM is derived from the rho-calculus model of computation, that operation is the low-level rho-calculus reduction rule. Effectively, the reduction rule, known as the "COMM" rule, is a substitution that defines a computation :code:`P` to be performed if a new value is observed at a key. A key is analogous to a name in that it references a location in memory which holds the value being substituted. In the following example, :code:`key` is a key and :code:`val` is the value being substituted:
 
 
 ::
@@ -38,7 +38,7 @@ RhoVM operates against a key-value data store. A state change of RhoVM is realiz
     for ( val <- key )P | key! ( @Q ) -> P { @Q/val }
 
 
-Barring consensus, this is the computational model of a concurrent protocol that stores a contract on the blockchain. On some thread, the output process :code:`key!` stores the code of a contract :code:`@Q` at the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When some :code:`val` appears at :code:`key`, in this case :code:`@Q`, :code:`P` is executed in an environment where :code:`@Q` is substituted for every occurrance of :code:`val`. This operation modifies the value that :code:`key` references i.e. :code:`key` previously mapped to a generic :code:`val` but now it maps to the code of a contract:code:`@Q`. Therefore, a reduction is a state transition of RhoVM.
+Barring consensus, this is the computational model of a concurrent protocol that stores a contract on the blockchain. On some thread, the output process :code:`key!` stores the code of a contract :code:`@Q` at the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When some :code:`val` appears at :code:`key`, in this case :code:`@Q`, :code:`P` is executed in an environment where :code:`@Q` is substituted for every occurrance of :code:`val`. This operation modifies the value that :code:`key` references i.e. :code:`key` previously mapped to a generic :code:`val` but now it maps to the code of a contract:code:`@Q`, which qualifies a reduction as a state transition of the RhoVM.
 
 
 .. figure:: ../img/io_binding.png
@@ -106,10 +106,10 @@ Discovery Service
 
 An advanced discovery feature that will ultimately be implemented enables searching for compatible contracts and assembling a new composite contract from of other contracts. With the formal verification techniques, the author of the new contract can be guaranteed that when working contracts are plugged together they will work as well as a single contract.
 
-Compilation Environment
+Compilation
 ================================================
 
-To allow clients to execute contracts on the VM, RChain has developed a compiler pipeline that starts with Rholang source-code. The source-code is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
+To allow clients to execute contracts on the VM, RChain has developed a compiler pipeline that starts with Rholang source-code. Rholang source-code first undergoes transcompilation into Rosette source-code. After analysis, the Rosette source-code is compiled into a Rosette intermediate representation (IRs), which undergoes optimization. From the Rosette IR, Rosette bytecode is synthesized and passed to the VM for local execution. Each translation step within the compilation pipeline is either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
 
 
 .. figure:: ../img/compilation_strategy.png
