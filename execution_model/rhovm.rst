@@ -18,7 +18,7 @@ Each instance of the **Rho Virtual Machine** (RhoVM) maintains an environment th
     *Figure - RhoVM as a back-to-back key-value store and execution engine*
    
 
-The execution of a contract affects the *environment* and *state* of an instance of RhoVM. In this case, the usage of "environment" does not refer to the execution environment exclusively, but to the configuration of the key-value structure. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. Variables directly reference locations, which means that environment is equivalently a mapping of names to variables. A program typically modifies one or both of these associations at runtime. Environmental modifications occur with the lexical scoping rules of Rholang, and values may be simple or complex.
+The execution of a contract affects the *environment* and *state* of an instance of RhoVM. In this case, the usage of the term "environment" does not refer to the execution environment exclusively, but to the configuration of the key-value structure. Environment and state are the mapping of names to locations in memory, and of locations in memory to values, respectively. Variables directly reference locations, which means that environment is equivalently a mapping of names to variables. A program typically modifies one or both of these associations at runtime. Environmental modifications occur with the lexical scoping rules of Rholang, and values may be simple or complex i.e. primitive values or complete programs.
 
 
 .. figure:: ../img/bindings_diagram.png
@@ -38,19 +38,19 @@ RhoVM operates against a key-value data store. A state change of RhoVM is realiz
     for ( val <- key )P | key! ( @Q ) -> P { @Q/val }
 
 
-On some thread, the output process :code:`key!` assigns the code of a process :code:`@Q` to the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When :code:`val` appears at :code:`key`, :code:`P` is executed in an environment where :code:`@Q` is bound to (substituted for) :code:`val`. This operation modifies the value that :code:`key` references i.e. :code:`key` previously mapped to :code:`val` but now it maps to :code:`@Q`. Therefore, a reduction is a state transition of RhoVM.
+Barring consensus, this is the computational model of a concurrent protocol that stores a contract on the blockchain. On some thread, the output process :code:`key!` stores the code of a contract :code:`@Q` at the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When some :code:`val` appears at :code:`key`, in this case :code:`@Q`, :code:`P` is executed in an environment where :code:`@Q` is substituted for every occurrance of :code:`val`. This operation modifies the value that :code:`key` references i.e. :code:`key` previously mapped to a generic :code:`val` but now it maps to the code of a contract:code:`@Q`. Therefore, a reduction is a state transition of RhoVM.
 
 
 .. figure:: ../img/io_binding.png
-    :align: center 
+    :align: center
     :width: 1650
     
     *Figure - Reduction effecting a key-value data store*
 
 
-The synchronization of an input and output process at :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output process, which assigns the value :code:`@Q` to the location denoted by :code:`key`, appears to constitute a state transition in itself. However, the rho-calculus reduction semantics have an *observability* requirement. For any future computation :code:`P` to occur, the reduction rule requires that the input process :code:`for ( val <- key) P` *observes* the assignment at :code:`key`. This is because only the input term defines future computation, which means that the output term alone is computationally insignificant. Therefore, no *observable* state transition occurs until the input and output terms synchronize at :code:`key`. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated output :code:`key!(@Q)` invocation.
+The synchronization of an input and output process at :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output process, which stores the contract :code:`@Q` to the location denoted by :code:`key`, appears to constitute a state transition in itself. However, the rho-calculus reduction semantics have an *observability* requirement. For any future computation :code:`P` to occur, the reduction rule requires that the input process :code:`for ( val <- key) P` *observes* the assignment at :code:`key`. This is because only the input term defines future computation, which means that the output term alone is computationally insignificant. Therefore, no *observable* state transition occurs until the input and output terms synchronize at :code:`key`. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated output :code:`key!(@Q)` invocation.
 
-It has been demonstrated that an application of the rho-calculus reduction rule, to a data element of a key-value data store, constitutes a state transition of an instance of the RhoVM. The goal, however, is to verify and maintain every state transition that ever occurs on an instance of the VM, which means that the configuration history of the key-value data store must be maintained through modification, hence it being a *persistent* data structure. Therefore, in addition to mapping to current values, each key maps to the verified history of reductions to occur at that location:
+It has been demonstrated that an application of the rho-calculus reduction rule, to a data element of a key-value data store, constitutes a state transition of an instance of the RhoVM. The goal, however, is to verify and maintain every state transition that is specified by any contract to ever execute on an instance of the VM. This means that the configuration history of the key-value data store must be maintained through modification, hence it being a *persistent* data structure. Therefore, each key must map to the verified history of reductions to occur at that location:
 
 
 .. figure:: ../img/transaction_history.png
@@ -59,11 +59,15 @@ It has been demonstrated that an application of the rho-calculus reduction rule,
     :scale: 80
     
     *Figure - Reduction/transaction history of a location in memory*
-    
 
-:code:`keyn` maps to a list of reductions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`. The list of reductions is the history of value modifications committed to the location denoted by :code:`keyn`. What's more, the reduction history of a key is the transaction history of an address.
 
-After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistently replicated across all nodes running that instance of RhoVM. Once histories are verified, the transaction is added to the list. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
+Each key maps to a list of reductions which is, in fact, the "transaction history" of an address. The history of transactions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1), ... , for(valn <- keyn).Pn | keyn!(@Qn) } -> { P1{@Q1/val1}, ... , Pn{@Qn/valn} }` denotes the modifications that have been made to the contract :code:`@Q` where :code:`@Qn` is the current version stored in memory. It is important to recognize that this scheme is a top-level transaction on the RChain platform. The messages being passed are contracts themselves, which most often occurs in client-system, or system-system interactions. 
+
+However, each contract :code:`@Q` may, itself, execute many lower-level transactions on simpler values.
+
+For example.
+
+After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistently replicated across all nodes running that instance of RhoVM. Once transaction histories are verified, the most transaction is added to the transaction history. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
 
 By extension, transaction blocks represent sets of reductions that have been applied to elements of the persistent key-value store, and transaction histories represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. Note that the consensus algorithm is applied if, and only if, node operators propose conflicting reduction histories.
 
@@ -71,14 +75,14 @@ To summarize:
 
 1. RhoVM is the composition of the rho-calculus reduction semantics, expressed in Rholang, and a persistent key-value data store. 
 2. The rho-calculus reduction rule substitutes the value at a key for another value, where a named channel corresponds to a key, and values may be simple or complex.
-3. Substitutions and transactions, which manifest as differences in the bytecode stored at a key. The accurate replication of those bytecode differences, across all nodes validating that instance of RhoVM, is verified via the consensus algorithm.
+3. Substitutions are transactions, which manifest as differences in the bytecode stored at a key. The accurate replication of those bytecode differences, across all nodes operating that instance of RhoVM, is verified via the consensus algorithm.
 
-.. [#] The RhoVM "Execution Environment" will later be introduced as the "Rosette VM". The choice to use Rosette VM hinged on two factors. First, the Rosette system has been in commerical production for over 20 years. Second, Rosette VM's memory model, model of computation, and runtime systems provide the support for concurrency that RhoVM requires. RChain has pledged to perform a modernized re-implementation of Rosette VM, in Scala, to serve as the initial RhoVM execution environment.
+.. [#] The RhoVM "Execution Environment" will later be introduced as the "Rosette VM". The choice to use Rosette VM hinged on two factors. First, the Rosette system has been in commercial production for over 20 years. Second, Rosette VM's memory model, model of computation, and runtime systems provide the support for concurrency that RhoVM requires. RChain has pledged to perform a modernized re-implementation of Rosette VM, in Scala, to serve as the initial RhoVM execution environment.
 
 A Brief Aside on Scalability
 -------------------------------------------------------------------
 
-From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant. It is assumed that VM instances operate independently of each other. Accordingly, there is no "global" RhoVM. Instead, there is a multiplex of RhohVM instances running on nodes across the network at any given moment - each executing and validating transactions for their associated namespaces.
+From the perspective of a traditional software platform, the notion of “parallel” VM instances is redundant. It is assumed that VM instances operate independently of each other. Accordingly, there is no "global" RhoVM. Instead, there is a multiplex of independently operating RhoVM instances running on nodes across the network at any given moment - each executing and validating transactions for their associated shards, or as we have been referring to them, namespaces.
 
 This design choice constitutes system-level concurrency on the RChain platform, where instruction-level concurrency is given by Rholang. Hence, when this publication refers to a single instance of RhoVM, it is assumed that there are a multiplex of RhoVM instances simultaneously executing a different set of contracts for a different namespace.
 
