@@ -112,7 +112,7 @@ Compilation Environment
 To allow clients to execute contracts on the VM, RChain has developed a compiler pipeline that starts with Rholang source-code. The source-code is then compiled into intermediate representations (IRs) that are progressively closer to bytecode, with each translation step being either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
 
 
-.. figure:: ../img/compilation_pipeline.png
+.. figure:: ../img/compilation_strategy.png
     :width: 1109
     :align: center
     :scale: 50
