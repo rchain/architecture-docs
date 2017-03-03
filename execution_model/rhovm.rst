@@ -38,7 +38,7 @@ RhoVM operates against a key-value data store. **A state change of RhoVM is real
     for ( val <- key )P | key! ( @Q ) -> P { @Q/val }
 
 
-Barring consensus, this is the computational model of a concurrent protocol that stores a contract on the blockchain. On some thread, the output process :code:`key!` stores the code of a contract :code:`@Q` at the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When some :code:`val` appears at :code:`key`, in this case :code:`@Q`, :code:`P` is executed in an environment where :code:`@Q` is substituted for every occurrance of :code:`val`. This operation modifies the value that :code:`key` references i.e. :code:`key` previously mapped to a generic :code:`val` but now it maps to the code of a contract:code:`@Q`, which qualifies a reduction as a state transition of the RhoVM.
+Barring consensus, this is the computational model of a concurrent protocol that stores a contract on the blockchain. On some thread, the output process :code:`key!` stores the code of a contract :code:`@Q` at the location denoted by :code:`key`. On another thread running concurrently, the input process :code:`for ( val <- key )P` waits for a new value :code:`val` to appear at :code:`key`. When some :code:`val` appears at :code:`key`, in this case :code:`@Q`, :code:`P` is executed in an environment where :code:`@Q` is substituted for every occurrance of :code:`val`. This operation modifies the value that :code:`key` references i.e. :code:`key` previously mapped to a generic :code:`val` but now it maps to the code of a contract :code:`@Q`, which qualifies a reduction as a state transition of the RhoVM.
 
 
 .. figure:: ../img/io_binding.png
@@ -50,7 +50,7 @@ Barring consensus, this is the computational model of a concurrent protocol that
 
 The synchronization of an input and output process at :code:`key` is the event that triggers a state transition of RhoVM. At first glance, the output process, which stores the contract :code:`@Q` to the location denoted by :code:`key`, appears to constitute a state transition in itself. However, the rho-calculus reduction semantics have an *observability* requirement. For any future computation :code:`P` to occur, the reduction rule requires that the input process :code:`for ( val <- key) P` *observes* the assignment at :code:`key`. This is because only the input term defines future computation, which means that the output term alone is computationally insignificant. Therefore, no *observable* state transition occurs until the input and output terms synchronize at :code:`key`. This obvservability requirement is enforced at compile-time to prevent DDoS attacks by repeated output :code:`key!(@Q)` invocation.
 
-It has been demonstrated that an application of the rho-calculus reduction rule, to a data element of a key-value data store, constitutes a state transition of an instance of the RhoVM. The goal, however, is to verify and maintain every state transition that is specified by any contract to ever execute on an instance of the VM. This means that the configuration history of the key-value data store must be maintained through modification, hence it being a *persistent* data structure. Therefore, each key must map to the verified history of reductions to occur at that location:
+It has been demonstrated that an application of the rho-calculus reduction rule, to a data element of a key-value data store, constitutes a state transition of an instance of the RhoVM. The goal, however, is to verify and maintain every state transition that is specified by any contract to ever execute on an instance of the RhoVM. This means that the configuration history of the key-value data store must be maintained through modification, hence it being a *persistent* data structure. Therefore, each key must map to the verified history of reductions to occur at that location:
 
 
 .. figure:: ../img/transaction_history.png
@@ -61,11 +61,7 @@ It has been demonstrated that an application of the rho-calculus reduction rule,
     *Figure - Reduction/transaction history of a location in memory*
 
 
-Each key maps to a list of reductions which is, in fact, the "transaction history" of an address. The history of transactions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1), ... , for(valn <- keyn).Pn | keyn!(@Qn) } -> { P1{@Q1/val1}, ... , Pn{@Qn/valn} }` denotes the modifications that have been made to the contract :code:`@Q` where :code:`@Qn` is the current version stored in memory. It is important to recognize that this scheme is a top-level transaction on the RChain platform. The messages being passed are contracts themselves, which most often occurs in client-system, or system-system interactions. 
-
-However, each contract :code:`@Q` may, itself, execute many lower-level transactions on simpler values.
-
-For example.
+Each key maps to a list of reductions which is, in fact, the "transaction history" of an address. The history of transactions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1), ... , for(valn <- keyn).Pn | keyn!(@Qn) } -> { P1{@Q1/val1}, ... , Pn{@Qn/valn} }` denotes the modifications that have been made to the contract :code:`@Q`, where :code:`@Qn` is the most current version in store. It is important to recognize that this scheme is a top-level transaction on the RChain platform. The messages being passed are contracts themselves, which most often occurs in client-system, or system-system interactions. However, each contract :code:`@Q` may, itself, execute many lower-level transactions on simpler values.
 
 After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistently replicated across all nodes running that instance of RhoVM. Once transaction histories are verified, the most transaction is added to the transaction history. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
 
@@ -109,7 +105,7 @@ An advanced discovery feature that will ultimately be implemented enables search
 Compilation
 ================================================
 
-To allow clients to execute contracts on the VM, RChain has developed a compiler pipeline that starts with Rholang source-code. Rholang source-code first undergoes transcompilation into Rosette source-code. After analysis, the Rosette source-code is compiled into a Rosette intermediate representation (IRs), which undergoes optimization. From the Rosette IR, Rosette bytecode is synthesized and passed to the VM for local execution. Each translation step within the compilation pipeline is either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
+To allow clients to execute contracts on the RhoVM, RChain has developed a compiler pipeline that starts with Rholang source-code. Rholang source-code first undergoes transcompilation into Rosette source-code. After analysis, the Rosette source-code is compiled into a Rosette intermediate representation (IRs), which undergoes optimization. From the Rosette IR, Rosette bytecode is synthesized and passed to the VM for local execution. Each translation step within the compilation pipeline is either provably correct, commercially tested in production systems, or both. This pipeline is illustrated in the figure below:
 
 
 .. figure:: ../img/compilation_strategy.png
