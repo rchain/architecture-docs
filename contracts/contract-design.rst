@@ -73,20 +73,17 @@ Each of the above terms are processes. The first three terms denote I/O, describ
 
 * :code:`0` is the stop/halt process that is the ground of the model.
 
-* The output process, :code:`x!( @Q )`, sends :code:`@Q` on the channel, :code:`x`. In more concrete terms, this operator binds the value :code:`@Q` to the variable :code:`x`.
+* The output process, :code:`x!( @Q )`, sends :code:`@Q` on the channel, :code:`x`. In more concrete terms, this operator binds the value :code:`@Q` to the variable, :code:`x`.
 
 This representation depicts the quoted process, :code:`@Q`, being bound to :code:`x`, but any supported data type, simple or complex, is subject to binding, including a serialized process.
 
-* The input process, :code:`for( ptrn <- x ; if cond. ).P`, searches for values satisfying a defined pattern, :code:`ptrn`, on the channel :code:`x`. On matching that pattern, the continuation, :code:`P`, is invoked with that value as an argument[#]_. This is a unique implementation of an input term that is improved from other message-passing based languages in three respects:
+* The input process, :code:`for( ptrn <- x ; if cond. ).P`, searches for values satisfying a defined pattern, :code:`ptrn`, on the        channel :code:`x`. On matching that pattern, the continuation, :code:`P`, is invoked with that value as an argument[#]_. This is a unique implementation of an input term that is improved from other message-passing based languages in three respects:
 
+    1. A channel is a statically typed, monadically structured, and provably persistent queue subject to structural pattern matching.
 
-    1. A channel is a monadically structured, unbounded, and persistent queue[#]_. In simple terms, :code:`x` is like a container that    holds a range of values, where the output term :code:`x!( @Q )` introduces those values. The "for-comprehension" filters that range for values satisfying a pre-defined structural pattern.
-
-
-    2. The input term applies an (optional) if-conditional to examine the result returned from the pattern match. Only if the result satisfies additional properties, *which may not be structural*, can the continuation :code:`P` execute. **The input term is effectively an atomic and mobile firewall that stipulates some state must be observed at** :code:`x` **before the continuation** :code:`P` **is triggered.**
-
-
-    3. **An input term is the consumer of a live data feed, and the ouput term produces the feed.** One channel may be bound to a number of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive paradigm so popular.
+    2. The input term applies an (optional) if-conditional to examine the result of the pattern match for properties *which may not be          structural.*
+    
+    3. Because channels may be bound to a number of data sources, the output and input terms may be implemented as the producer and              consumer of a "live" data feed analogous to those leverged in reactive paradigms. 
 
 The next term is structural, describing concurrency:
 
@@ -125,7 +122,13 @@ The COMM rule is *atomic*. If a value satisfying :code:`ptrn` is ever committed 
 Use-Cases: Contract Interaction
 ------------------------------------------------------------
 
-In this section on contract design, we investigate the formal model of computation that RChain uses to achieve provable concurrency on a variety of architectural layers. We demonstrate how that model extends to accomodate best-in-industry language attributes such as meta-programming, parallelization, asynchronicity, code mobility, reactive API's, and compile-time security-type checks.
+Reuse this in a use-case -> **In simple terms, :code:`x` is like a container that              holds a range of values, where the output term :code:`x!( @Q )` introduces those values. The "for-comprehension" filters that            range for values satisfying a pre-defined structural pattern.**
+
+This too -> **, can the continuation :code:`P` execute. The input term is              effectively an atomic and mobile firewall that stipulates some state must be observed at** :code:`x` **before the continuation**          :code:`P` **is triggered.**
+
+This too -> **One channel may be bound to a number        of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each          value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as          the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive        paradigm so popular.**
+
+In this section on contract design, we investigate the formal model of computation that RChain uses to achieve concurrency on a variety of architectural layers. We demonstrate how that model extends to accomodate best-in-industry language attributes such as meta-programming, parallelization, asynchronicity, code mobility, reactive API's, and compile-time security-type checks.
 
 This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
 
