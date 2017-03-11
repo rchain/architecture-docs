@@ -29,7 +29,7 @@ A process:
 
 1. Has an associated name (identifier).
 2. Is of arbitrary complexity; a process could be a sub-routine, a smart contract, an application etc.
-2. May be serialized/deserialized and passed as a variable.
+3. May be serialized/deserialized and passed as a variable.
 
 A process can be stateful but does not assume persistent state and can therefore be thought of as the more general form of a “smart contract”, which is necessarily stateful[#]_. Hence, every smart contract is a process, but not every process is a smart contract.
 
