@@ -4,60 +4,12 @@
 Contract Design
 ******************************************************************
 
-In this section on contract design, we investigate how RChain achieves internal concurrency for smart contracts. To begin, we give an overview of contract interaction. Afterwards, we describe the core formalism RChain uses to achieve concurrency and formal verification of contracts. Throughout, we demonstrate how that model extends to accomodate best-in-industry language attributes such as reflection, parallelism, asynchronicity, reactive API's, and compile-time security-type checks.
-
-Contract Overview
-======================================================================================
-
-Likewise, a channel is implemented as a variable that is shared between two divided "read-only" and a "write-only" process, so the functional range of a channel is only limited to what a variable may represent. A channel may be  local variable, a global varible, a location in a datastore, or the network address (TCP/IP Sockets) of a machine in a distributed system.
-
-Two contracts sending and receiving a message on the channel named ‘Address’:
-
-
-.. figure:: ../img/57444266.png
-   :height: 170
-   :width: 844
-   :align: center
-   :scale: 80
-
-
-This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
-
-Note, this model assumes that at least the sender possesses the address of :code:`Contract2`. Note also, after it sends :code:`v`, :code:`Contract1`, has been run to termination. Thus, it is incapable of sending anything else unless prompted. Similarly, after it invokes its continuation, :code:`Contract2` has been run to termination, and it is incapable of receiving further messages.
-
-RChain contracts enjoy internal concurrency, which means that these processes, and any processes that are not co-dependent, may be placed in parallel composition. So, we amend our notation:
-
-
-.. figure:: ../img/82846984.png
-   :align: center
-   :width: 926
-   :height: 124
-   :scale: 80
-
-
-
-Executing in parallel with a number of other processes, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel :code:`address` i.e. the address of :code:`Contract2`. If :code:`Contract1` has no value to send, it blocks. If :code:`Contract2` has not received a value, it blocks and the continuation is not triggered.
-
-For an example of how this model is adaptable to industry trends in reactive programming, observe the following two contracts, which interact over live data feeds:
-
-
-.. figure:: ../img/21300107.png
-   :width: 1014
-   :height: 142
-   :align: center
-   :scale: 80
-
-
-:code:`Contract1` is prompted to send a set of  values, :code:`vN`, on the channel :code:`address` i.e. the address of :code:`Contract2`. In this scenario, :code:`Contract2` is like a thread. It recieves a set of values from the head of a stream that is dual to a set of values being produced at its tail. When the set of values, :code:`v1...vN`, is witnessed at the channel, :code:`address`, a continuation is invoked with :code:`v1...vN` as an argument. While the interaction between :code:`Contract1` and :code:`Contract2` is asynchronous, the input operation :code:`address?(v1...vN)` and :code:`Continuation(v)` of :code:`Contract2` are necessarily sequential. :code:`address?(v1...vN)` is said to "pre-fix" :code:`Continuation(v)` in every execution instance.
-
-We have presented a high-level depiction of contract interaction on the RChain platform. Next, we outline the formal method which derives these interactions.
-
 Rho-calculus: A Concurrent Model of Computation for the Blockchain
 ===================================================================
 
-Despite the growing body of knowledge in support of concurrency, there are relatively few programming languages that address concurrent processing in their core model. *Concurrency is a structural property that allows processes to execute with maximal order-independence*. Having said that, RChain admits the inevitable and non-trivial computational overhead of a consensus mechanism by nature of using blockchain technology. With the consensus overhead in mind, RChain chose the **rho-calculus** model of concurrent computation.
+Despite the growing body of knowledge in support of concurrency, there are relatively few programming languages that address concurrent processing in their core model. Generally speaking, *concurrency is a structural property that allows processes to execute with maximum order-independence*. RChain, and any other BC-based platform, admits the inevitable and significant computational overhead of a consensus mechanism. With the consensus overhead in mind, RChain chose the **rho-calculus** model of concurrent computation.
 
-The rho-calculus is one constitutent of a mucher larger class of formal systems known as the **process calculi**. It was introduced as a variant of the **π-calculus** in 2004 by Greg Meredith. Like the π-calculus, the rho-calculus is a programming abstraction based on message passing between processes. However, the rho-calculus is distinguished from the π-calculus because it supports "reflection". “Rho-calculus” stands for reflective, higher-order calculus.
+The rho-calculus is one constitutent of a mucher larger class of formal systems known as the **process calculi**. It was introduced as a variant of the **π-calculus** in 2004 by Greg Meredith. Like the π-calculus, the rho-calculus is an formal abstraction based on the interaction of processes, but the rho-calculus is distinguished from the π-calculus in that it supports "reflection". “Rho-calculus” stands for reflective, higher-order calculus.
 
 For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category Models of the Pi-Calculus`_.
 
@@ -66,30 +18,41 @@ For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category Model
 
 Reflection is widely recognized as a key feature of practical programming languages. Known broadly as "meta-programming", reflection is a disciplined way to turn programs into data that programs can operate on and then turn the modified data back into new programs. Java, C#, and Scala eventually adopted reflection as a core feature, and even OCaml and Haskell have ultimately developed reflective versions [#]_. The reason is simple: at industrial scale, programmers use programs to write programs. Without that computational leverage, it would take too long to write advanced industrial scale programs.
 
-Preamble: Basic Constructs
+Preamble: Basic Rho-calculus Constructs
 --------------------------------------------------------------------------
 
-Before we make the case for why the rho-calculus model of concurrent computation will beget the scalable blockchain, we introduce core concepts that are mostly consistent with message-passing paradigms, with a few very useful outliers. The rho-calculus constructs *processes* and *channels*. Independent processes may *only* interact by passing messages over channels.
+The rho-calculus constructs *processes* and *channels* where processes may only interact by passing messages over channels.
 
-We can think of **a process as an abstraction of an independent thread of control.** A process is of arbitrary complexity; it may refer to an atomic operation or to a superset of protocols. A process can be stateful but does not assume persistent state and can therefore be thought of as the more general form of a “smart contract”, which is necessarily stateful[#]_. Hence, every smart contract is a process, but not every process is a smart contract.
+A process can be thought of as **an abstraction of an independent thread of control.** 
 
-.. [#] The coming sections will describe smart contracts as processes with persistent state, consistent with an interpretation of values as linear resources.
-
-**A channel is an abstraction of a communication link between two processes** that:
+A process:
 
 1. Has an associated name (identifier).
-2. Is statically typed; and
-3. Is provably unguessable and anonymous unless deliberately given by a process.
+2. Is of arbitrary complexity; a process could be a sub-routine, a smart contract, an application etc.
+2. May be serialized/deserialized and passed as a variable.
 
-Processes interact by sending and receiving messages. A message:
+A process can be stateful but does not assume persistent state and can therefore be thought of as the more general form of a “smart contract”, which is necessarily stateful[#]_. Hence, every smart contract is a process, but not every process is a smart contract.
 
-1. Is passed over a channel; and
-2. May be a simple value, *a channel itself*, a data structure, or *the code of a process*.
+A channel can be thought of as **an abstraction of a communication link between two processes.**
 
-Formal Syntax
+A channel:
+
+1. Has an associated name.
+2. Is of arbitrary complexity; and
+3. Is provably unguessable and anonymous unless given.
+
+The notion of a channel is key to the RChain platform. It is sufficiently abstract to cover a wide range of functionality such that a channel may be a local variable, a global variable, a location in shared memory, a location in a data store, a network location (TCP/IP socket), etc.
+
+Channels vary greatly in their implementations, but consistently represent access to a location. If a process has the name of a channel, it may communicate with the objects at the other end of that channel. If the name of a channel is unknown to a process, then it is indifferent to all of the computation and communication occuring over that channel and, otherwise, proceeds in parallel.
+
+In terms of implementation, a named channel is nothing more than a variable name that is shared between a read-only and write-only process, and the rho-calculus model *only* allows computation when those processes meet at a channel. But channels (and processes) can be passed between processes as well, so they become an exceptionally useful tool to dynamically manage the internal structure of processes at runtime.
+
+Processes interact by sending and receiving messages over channels, where **a message may be any supported data type, ranging from a literal, to a data structure, to the code of a process.**
+
+Formal Syntax and Semantics
 ---------------------------------------------------
 
-The rho-calculus presents the following syntax, where :code:`P` and :code:`Q` are processes. These basic terms also happen to be the primitives for RChain's contracting language:
+The rho-calculus presents the following syntax, where :code:`P` and :code:`Q` are processes. These basic terms comprise the primitives for RChain's contracting language:
 
 
 ::
@@ -108,47 +71,89 @@ Each of the above terms are processes. The first three terms denote I/O, describ
 
 * :code:`0` is the stop/halt process that is the ground of the model.
 
-* The output process, :code:`x!( @Q )`, sends :code:`@Q` on the channel, :code:`x`. 
+* The output process, :code:`x!( @Q )`, sends :code:`@Q` on the channel, :code:`x`. In more concrete terms, this operator binds the value :code:`@Q` to the variable :code:`x`.
 
-In this representation, :code:`@Q`, is the quoted process :code:`Q`, but any value, simple or complex, can be sent as a message, including a channel itself.
+This representation depicts the quoted process, :code:`@Q`, being bound to :code:`x`, but any supported data type, simple or complex, is subject to binding, including a serialized process.
 
-* The input process, :code:`for( ptrn <- x ).P`, searches for a defined pattern, :code:`ptrn`, on the channel :code:`x`. On matching that pattern, it invokes the continuation, :code:`P`[#]_. Note that, this is the only term which defines a subsequent computation.The rho-calculus has a unique implementation of the input term that is improved from traditional representations of the π-calculus input term in two respects:
+* The input process, :code:`for( ptrn <- x ; if cond. ).P`, searches for values satisfying a defined pattern, :code:`ptrn`, on the channel :code:`x`. On matching that pattern, the continuation, :code:`P`, is invoked with that value as an argument[#]_. This is a unique implementation of an input term that is improved from other message-passing based languages in three respects:
 
-   1. A channel corresponds to an unbounded and persistent queue that is structured monadically[#]_. In simple terms, a channel is like    a container that holds a range of values. The for-comprehension allows us to search that range for values that match a pre-defined        pattern. It is effectively an input-guard which stipulates that some state must be observed at :code:`x` before the continuation          :code:`P` is triggered. The input term can be decorated with additional language constructs, such as if-conditionals, to refine query results.
+1. A channel is a monadically structured, unbounded, and persistent queue[#]_. In simple terms, :code:`x` is like a container that holds a range of values, where the output term :code:`x!( @Q )` introduces those values. The "for-comprehension" filters that range for values satisfying a pre-defined structural pattern.
 
-   2. At runtime, input operations search for data on channels while output operations place data at channels, and channels may be bound    to a number of live data generators. Thus, the input process supports the same data streaming capabilities that have made the reactive      paradigm so popular. This imbues process interaction, written in Rholang, with exceptional responsiveness.
+2. The input term applies an (optional) if-conditional to examine the result returned from the pattern match. Only if the result satisfies additional properties, *which may not be structural*, can the continuation :code:`P` execute. **The input term is effectively an atomic and mobile firewall that stipulates some state must be observed at :code:`x` before the continuation :code:`P` is trigged.**
+
+3. **An input term is the consumer of a live data feed, and the ouput term produces the feed.** One channel may be bound to a number of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive paradigm so popular.
 
 The next term is structural, describing concurrency:
 
-* :code:`P|Q` is the form of a process that is the parallel composition of two processes, :code:`P` and :code:`Q`.
+* :code:`P|Q` is the form of a process that is the *parallel composition* of two processes, :code:`P` and :code:`Q`.
 
 Two additional terms are introduced to provide reflection:
 
-* :code:`@`, the “Reflect" operation serializes or "quotes" the code of a process. This allows us to send processes to other processes.
+* :code:`@`, the “Reflect" operation serializes or "quotes" the code of a process. This allows processes to send other processes as messages.
 
 * :code:`*`, the “Reify” operation deserializes or "unquotes" and evaluates the code of a process.
 
-It goes without saying that abstraction is a powerful tool for managing complexity. The above presentation is sufficiently abstract to allow the implementations of processes, channels, and messages to go largely undefined. For that reason, the rho-calculus model is our most efficient tool to reason about concurrency on a variety of architectural layers, from stack-level evaluation to network-level inter-node communication.
+In total, there are six very simple, yet enormously powerful language primitives which provide built-in support for functions that are otherwise absent in the blockchain space:
 
-Use-cases
+* Maximum concurrency/parallelism
+* Structural pattern matching and conditional evaluation
+* Unbounded, persistent, and monadically structured queues
+* Reactive evaluation on live data feeds; and
+* Serialization/deserialization primitives for code mobility
+
+.. [#] The coming sections will describe smart contracts as processes with persistent state, consistent with an interpretation of values as linear resources.
+
+Evaluation Model - Reduction
 -------------------------------------------------------
 
-Because for-comprehensions also supports join semantics, we can stipulate pattern matches on multiple channels: :code:`for( pThis introduces something of a transactional guarantee 
-
-For example, if for some reason, we were traversing the store for all contracts similar to a contract :code:`@Q`, we could implement a naive input process, :code:`for ( @Q <- x ). P`, which filters through the data at, :code:`x`, to find a contract structurally equivalent to :code:`@Q` and then performs some computation, :code:`P`, on that result.
+Finally, the rho-calculus gives a single evaluation rule to realize computation, known as the “COMM” rule. It is the only rule which directly reduces a rho-calculus term:
 
 
+.. code-block::
+
+  for( ptrn <- x ).P | x!( @Q ) -> P { @Q/ptrn } //COMM rule
 
 
+It says that if :code:`for( ptrn <- x ).P` and :code:`x!(@Q)` are executing in parallel composition, and the value :code:`@Q` being sent on the channel :code:`x` matches a pattern, :code:`ptrn`, being searched for on :code:`x`, then the I/O pair reduces and the continuation :code:`P` executes in an environment where :code:`Q@` is bound to :code:`ptrn`. That is, where :code:`ptrn` is substituted for :code:`@Q` in the body of :code:`P`.
+
+The COMM rule is *atomic*. If a value satisfying :code:`ptrn` is ever committed to :code:`x` *and* witnessed at :code:`x`, then computation must occur, but if either I/O process is absent, :code:`ptrn` is not matched, or the optional if-conditional is not satisfied, then the I/O pair blocks and the system freezes. This is the only rule in the rho-calculus model that allows for subsequent computation to continue ( hence “continuation” ), yet it’s fundamentally different from beta reduction given by the lambda calculus in that computation is a result of the *coordination* of two processes, rather than the sequential evaluation of one.
 
 
-Rho-calculus also gives a single, reduction (substitution) rule to realize computation, known as the “COMM” rule. Reductions are atomic; they either happen, or they don’t. It is the only rule which directly reduces a rho-calculus term:
+Use-Cases: Contract Interaction
+------------------------------------------------------------
 
-.. code-block:: none
+In this section on contract design, we investigate the formal model of computation that RChain uses to achieve provable concurrency on a variety of architectural layers. We demonstrate how that model extends to accomodate best-in-industry language attributes such as meta-programming, parallelization, asynchronicity, code mobility, reactive API's, and compile-time security-type checks.
 
-  for( ptrn <- x ).P | x!(@Q) -> P{ @Q/ptrn } //Reduction Rule
+This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
 
-The COMM rule requires that two processes are placed in concurrent execution. It also requires that the two are in a co-channel relationship. That is, one process is reading from channel, :code:`x`, while the other process is writing to the channel, :code:`x`. The two processes are said to "synchronize" at :code:`x`. The output process sends the quoted process, :code:`@Q`, on :code:`x`. In parallel, the input process waits for an arbitrary pattern, :code:`ptrn` to arrive on :code:`x`. Upon matching the pattern, it executes continuation :code:`P`. After reduction, the simplified term denotes :code:`P`, which will execute in an environment where :code:`@Q` is bound to :code:`ptrn`. That is, :code:`@Q` is substituted for every occurrence of the :code:`ptrn`,  in the body of :code:`P`.
+Note, this model assumes that at least the sender possesses the address of :code:`Contract2`. Note also, after it sends :code:`v`, :code:`Contract1`, has been run to termination. Thus, it is incapable of sending anything else unless prompted. Similarly, after it invokes its continuation, :code:`Contract2` has been run to termination, and it is incapable of receiving further messages.
+
+.. figure:: ../img/82846984.png
+   :align: center
+   :width: 926
+   :height: 124
+   :scale: 80
+
+Executing in parallel with a number of other processes, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel :code:`address` i.e. the address of :code:`Contract2`. If :code:`Contract1` has no value to send, it blocks. If :code:`Contract2` has not received a value, it blocks and the continuation is not triggered.
+
+For an example of how this model is adaptable to industry trends in reactive programming, observe the following two contracts, which interact over live data feeds:
+
+
+.. figure:: ../img/21300107.png
+   :width: 1014
+   :height: 142
+   :align: center
+   :scale: 80
+
+
+:code:`Contract1` is prompted to send a set of  values, :code:`vN`, on the channel :code:`address` i.e. the address of :code:`Contract2`. In this scenario, :code:`Contract2` is like a thread. It recieves a set of values from the head of a stream that is dual to a set of values being produced at its tail. When the set of values, :code:`v1...vN`, is witnessed at the channel, :code:`address`, a continuation is invoked with :code:`v1...vN` as an argument. While the interaction between :code:`Contract1` and :code:`Contract2` is asynchronous, the input operation :code:`address?(v1...vN)` and :code:`Continuation(v)` of :code:`Contract2` are necessarily sequential. :code:`address?(v1...vN)` is said to "pre-fix" :code:`Continuation(v)` in every execution instance.
+
+We have presented a high-level depiction of contract interaction on the RChain platform. Next, we outline the formal method which derives these interactions.
+
+x!( chan ) | for( ptrn1 <- x ){ ptrn1!( y ) } -> ptrn1!( y ){ chan/ptrn1 }
+
+| for( ptrn2 <- chan ){ for( ptrn3 <- ptrn2).P } -> for( ptrn3 <- ptrn2 ).P { 
+
 
 The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable.
 
