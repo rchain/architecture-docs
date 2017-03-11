@@ -85,6 +85,8 @@ This representation depicts the quoted process, :code:`@Q`, being bound to :code
     
     3. Because channels may be bound to a number of data sources, the output and input terms may be implemented as the producer and              consumer of a "live" data feed analogous to those leverged in reactive paradigms. 
 
+These, and additional safety mechanisms, are further demonstrated in the next section on use-cases.
+
 The next term is structural, describing concurrency:
 
 * :code:`P|Q` is the form of a process that is the *parallel composition* of two processes, :code:`P` and :code:`Q`.
