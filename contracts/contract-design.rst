@@ -29,7 +29,7 @@ A process:
 
 1. Has an associated name (identifier).
 2. Is of arbitrary complexity; a process could be a sub-routine, a smart contract, an application etc.
-3. May be serialized/deserialized and passed as a variable.
+3. May be serialized/deserialized to/from storage.
 
 A process can be stateful but does not assume persistent state and can therefore be thought of as the more general form of a “smart contract”, which is necessarily stateful[#]_. Hence, every smart contract is a process, but not every process is a smart contract.
 
@@ -48,6 +48,8 @@ Channels vary greatly in their implementations, but consistently represent acces
 In terms of implementation, a named channel is nothing more than a variable name that is shared between a read-only and write-only process, and the rho-calculus model *only* allows computation when those processes meet at a channel. But channels (and processes) can be passed between processes as well, so they become an exceptionally useful tool to dynamically manage the internal structure of processes at runtime.
 
 Processes interact by sending and receiving messages over channels, where **a message may be any supported data type, ranging from a literal, to a data structure, to the code of a process.**
+
+.. [#] The coming sections will describe smart contracts as processes with persistent state, consistent with an interpretation of values as linear resources.
 
 Formal Syntax and Semantics
 ---------------------------------------------------
@@ -77,11 +79,14 @@ This representation depicts the quoted process, :code:`@Q`, being bound to :code
 
 * The input process, :code:`for( ptrn <- x ; if cond. ).P`, searches for values satisfying a defined pattern, :code:`ptrn`, on the channel :code:`x`. On matching that pattern, the continuation, :code:`P`, is invoked with that value as an argument[#]_. This is a unique implementation of an input term that is improved from other message-passing based languages in three respects:
 
-1. A channel is a monadically structured, unbounded, and persistent queue[#]_. In simple terms, :code:`x` is like a container that holds a range of values, where the output term :code:`x!( @Q )` introduces those values. The "for-comprehension" filters that range for values satisfying a pre-defined structural pattern.
 
-2. The input term applies an (optional) if-conditional to examine the result returned from the pattern match. Only if the result satisfies additional properties, *which may not be structural*, can the continuation :code:`P` execute. **The input term is effectively an atomic and mobile firewall that stipulates some state must be observed at :code:`x` before the continuation :code:`P` is trigged.**
+    1. A channel is a monadically structured, unbounded, and persistent queue[#]_. In simple terms, :code:`x` is like a container that    holds a range of values, where the output term :code:`x!( @Q )` introduces those values. The "for-comprehension" filters that range for values satisfying a pre-defined structural pattern.
 
-3. **An input term is the consumer of a live data feed, and the ouput term produces the feed.** One channel may be bound to a number of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive paradigm so popular.
+
+    2. The input term applies an (optional) if-conditional to examine the result returned from the pattern match. Only if the result satisfies additional properties, *which may not be structural*, can the continuation :code:`P` execute. **The input term is effectively an atomic and mobile firewall that stipulates some state must be observed at** :code:`x` **before the continuation** :code:`P` **is triggered.**
+
+
+    3. **An input term is the consumer of a live data feed, and the ouput term produces the feed.** One channel may be bound to a number of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive paradigm so popular.
 
 The next term is structural, describing concurrency:
 
@@ -101,8 +106,6 @@ In total, there are six very simple, yet enormously powerful language primitives
 * Reactive evaluation on live data feeds; and
 * Serialization/deserialization primitives for code mobility
 
-.. [#] The coming sections will describe smart contracts as processes with persistent state, consistent with an interpretation of values as linear resources.
-
 Evaluation Model - Reduction
 -------------------------------------------------------
 
@@ -111,7 +114,7 @@ Finally, the rho-calculus gives a single evaluation rule to realize computation,
 
 .. code-block::
 
-  for( ptrn <- x ).P | x!( @Q ) -> P { @Q/ptrn } //COMM rule
+  for( ptrn <- x ).P | x!( @Q ) -> P { @Q := ptrn } //COMM rule
 
 
 It says that if :code:`for( ptrn <- x ).P` and :code:`x!(@Q)` are executing in parallel composition, and the value :code:`@Q` being sent on the channel :code:`x` matches a pattern, :code:`ptrn`, being searched for on :code:`x`, then the I/O pair reduces and the continuation :code:`P` executes in an environment where :code:`Q@` is bound to :code:`ptrn`. That is, where :code:`ptrn` is substituted for :code:`@Q` in the body of :code:`P`.
