@@ -124,15 +124,8 @@ It says that if :code:`for( ptrn <- x ).P` and :code:`x!(@Q)` are executing in p
 
 The COMM rule is *atomic*. If a value satisfying :code:`ptrn` is ever committed to :code:`x` *and* witnessed at :code:`x`, then computation must occur, but if either I/O process is absent, if :code:`ptrn` is not matched, or if the optional :code:`if-cond.` is not satisfied, then the I/O pair blocks and the system freezes. This is the only rule in the rho-calculus model that allows computation to continue ( hence “continuation” ), yet it’s fundamentally different from beta reduction given by the lambda calculus in that computation is a result of the *coordination* of two processes, rather than the sequential evaluation of one.
 
-
 Use-Cases: Contract Interaction
 ------------------------------------------------------------
-
-Reuse this in a use-case -> **In simple terms, :code:`x` is like a container that              holds a range of values, where the output term :code:`x!( @Q )` introduces those values. The "for-comprehension" filters that            range for values satisfying a pre-defined structural pattern.**
-
-This too -> **, can the continuation :code:`P` execute. The input term is              effectively an atomic and mobile firewall that stipulates some state must be observed at** :code:`x` **before the continuation**          :code:`P` **is triggered.**
-
-This too -> **One channel may be bound to a number        of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each          value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as          the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive        paradigm so popular.**
 
 This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
 
@@ -158,20 +151,6 @@ For an example of how this model is adaptable to industry trends in reactive pro
 
 :code:`Contract1` is prompted to send a set of  values, :code:`vN`, on the channel :code:`address` i.e. the address of :code:`Contract2`. In this scenario, :code:`Contract2` is like a thread. It recieves a set of values from the head of a stream that is dual to a set of values being produced at its tail. When the set of values, :code:`v1...vN`, is witnessed at the channel, :code:`address`, a continuation is invoked with :code:`v1...vN` as an argument. While the interaction between :code:`Contract1` and :code:`Contract2` is asynchronous, the input operation :code:`address?(v1...vN)` and :code:`Continuation(v)` of :code:`Contract2` are necessarily sequential. :code:`address?(v1...vN)` is said to "pre-fix" :code:`Continuation(v)` in every execution instance.
 
-We have presented a high-level depiction of contract interaction on the RChain platform. Next, we outline the formal method which derives these interactions.
-
-x!( chan ) | for( ptrn1 <- x ){ ptrn1!( y ) } -> ptrn1!( y ){ chan/ptrn1 }
-
-| for( ptrn2 <- chan ){ for( ptrn3 <- ptrn2).P } -> for( ptrn3 <- ptrn2 ).P { 
-
-
-The COMM rule implies the successful communication of a message over a channel. The reader may remember that successful communication of a message over a channel constitutes a verifiable transaction. In fact, **a reduction is a transaction** precisely because it verifies that a resource has been accessed and altered. As a result, **the number of reductions performed corresponds to the units of atomic computation performed, which are fundamentally tethered to the number of transactions committed to a block.** This correspondence ensures that all platform computation is indiscriminately quantifiable.
-
-Another implication of being able to investigate the internal structure of a name is that channels may encapsulate yet more channels. Though they are very light in an atomic sense, when channels possess internal structure, they may function as data stores, data structures, and provably unbounded queues of arbitrary depth. In fact, in almost all implementations, a contract’s persistent storage will consist of state value stored in a :code:`state` channel which takes requests to :code:`set` and :code:`get` a :code:`newValue`. We will demonstrate the wide-sweeping implications of internal structure on channels in the section on namespaces. For further details, see `A Reflective Higher-Order Calculus`_ and `Namespace Logic - A Logic for a Reflective Higher-Order Calculus`_.
-
-.. _A Reflective Higher-Order Calculus: http://www.sciencedirect.com/science/article/pii/S1571066105051893
-.. _Namespace Logic - A Logic for a Reflective Higher-Order Calculus: http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.95.9601
-
 Behavioral Types
 ----------------------------------------------------
 
@@ -190,11 +169,11 @@ In their seminal paper, `Logic as a Distributive Law`_, Mike Stay & Gregory Mere
 Significance
 =================================================
 
-This model has been peer reviewed multiple times over the last ten years. Prototypes demonstrating its soundness have been available for nearly a decade. The minimal rho-calculus syntax expresses six primitives - far fewer than found in Solidity, Ethereum’s smart contracting language, yet the model is far more expressive than Solidity. In particular, Solidity-based smart contracts do not enjoy internal concurrency, while Rholang-based contracts assume it.
+This model has been peer reviewed multiple times over the last ten years. Prototypes demonstrating its soundness have been available for nearly a decade. The minimal rho-calculus syntax expresses six primitives - far fewer than found in Solidity, Ethereum’s smart contracting language, yet the model is far more expressive than Solidity. In particular, Solidity-based smart contracts do not enjoy internal concurrency, whereas Rholang-based contracts assume it.
 
 To summarize, the rho-calculus formalism is the first computational model to:
 
-1. Realize maximal code mobility via ‘reflection’, which permits full-form, quoted processes to be passed as first-class-citizens to other network processes.
+1. Realize maximal code mobility *and* concurrency via ‘reflection’, which permits full-form, quoted processes to be passed as first-class-citizens to other network processes.
 
 2. Lend a framework to mathematically verify the behavior of reflective, communicating processes and fundamentally concurrent systems of dynamic network topology.
 
