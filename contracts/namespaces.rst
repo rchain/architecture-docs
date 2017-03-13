@@ -6,7 +6,9 @@ Namespace Logic
 
 RChain’s sharding mechanism is a natural and unique extension of the rho-calculus core model. In contrast to the two-level sharding approach taken by Ethereum, RChain’s virtual address space will be partitioned into "namespaces", where **a namespace is a collection of named processes and channels.**
 
-The rho-calculus constructs named processes and named channels in the traditional sense of a name as an identifier. RChain’s virtual address space can be modeled by the rho-calculus, as well, by extending the notion of a singular "name" into a plural setting to form a "namespace", where **a namespace is a collection of named processes and channels.**
+The rho-calculus constructs named processes and named channels in the traditional sense of a name as an identifier, but leaves the implementation of the identifier undefined deliberately so that the model can be used to reason about a variety of system layers.
+
+Namespaces exist at the network level as well:
 
 The value proposition of namespaces is that they provide a consistent and formal logic for exponential and dynamic "sharding" solutions on a variety of architectural levels.
 
