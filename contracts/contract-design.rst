@@ -4,6 +4,8 @@
 Contract Design
 ******************************************************************
 
+In this section on contract design, we investigate the formal model of computation that RChain uses to achieve concurrency on a variety of architectural layers. We demonstrate how that model extends to accomodate best-in-industry language attributes such as meta-programming, parallelization, asynchronicity, code mobility, reactive API's, and compile-time security-type checks.
+
 Rho-calculus: A Concurrent Model of Computation for the Blockchain
 ===================================================================
 
@@ -111,14 +113,16 @@ Evaluation Model - Reduction
 Finally, the rho-calculus gives a single evaluation rule to realize computation, known as the “COMM” rule. It is the only rule which directly reduces a rho-calculus term:
 
 
-.. code-block::
+::
+
 
   for( ptrn <- x ).P | x!( @Q ) -> P { @Q := ptrn } //COMM rule
 
 
+
 It says that if :code:`for( ptrn <- x ).P` and :code:`x!(@Q)` are executing in parallel composition, and the value :code:`@Q` being sent on the channel :code:`x` matches a pattern, :code:`ptrn`, being searched for on :code:`x`, then the I/O pair reduces and the continuation :code:`P` executes in an environment where :code:`Q@` is bound to :code:`ptrn`. That is, where :code:`ptrn` is substituted for :code:`@Q` in the body of :code:`P`.
 
-The COMM rule is *atomic*. If a value satisfying :code:`ptrn` is ever committed to :code:`x` *and* witnessed at :code:`x`, then computation must occur, but if either I/O process is absent, :code:`ptrn` is not matched, or the optional if-conditional is not satisfied, then the I/O pair blocks and the system freezes. This is the only rule in the rho-calculus model that allows for subsequent computation to continue ( hence “continuation” ), yet it’s fundamentally different from beta reduction given by the lambda calculus in that computation is a result of the *coordination* of two processes, rather than the sequential evaluation of one.
+The COMM rule is *atomic*. If a value satisfying :code:`ptrn` is ever committed to :code:`x` *and* witnessed at :code:`x`, then computation must occur, but if either I/O process is absent, if :code:`ptrn` is not matched, or if the optional :code:`if-cond.` is not satisfied, then the I/O pair blocks and the system freezes. This is the only rule in the rho-calculus model that allows computation to continue ( hence “continuation” ), yet it’s fundamentally different from beta reduction given by the lambda calculus in that computation is a result of the *coordination* of two processes, rather than the sequential evaluation of one.
 
 
 Use-Cases: Contract Interaction
@@ -129,8 +133,6 @@ Reuse this in a use-case -> **In simple terms, :code:`x` is like a container tha
 This too -> **, can the continuation :code:`P` execute. The input term is              effectively an atomic and mobile firewall that stipulates some state must be observed at** :code:`x` **before the continuation**          :code:`P` **is triggered.**
 
 This too -> **One channel may be bound to a number        of live data generators, which are placing values at :code:`x` in real-time. What's more, a new continuation is invoked for each          value matched at :code:`x`, respectively. Depending on complexity, a multiplicity of parallel continuations may be executing as          the feed is being consumed. Generally, the input process supports the same data streaming capabilities that have made the reactive        paradigm so popular.**
-
-In this section on contract design, we investigate the formal model of computation that RChain uses to achieve concurrency on a variety of architectural layers. We demonstrate how that model extends to accomodate best-in-industry language attributes such as meta-programming, parallelization, asynchronicity, code mobility, reactive API's, and compile-time security-type checks.
 
 This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
 
@@ -242,6 +244,6 @@ For a more complete historical narrative leading up to Rholang, see `Mobile Proc
 .. [#] In addition to selecting a formally verifiable model of computation,  are investigating a few verification frameworks such as the `K-Framework`_ to achieve this. 
 .. _K-Framework: http://www.kframework.org/index.php/Main_Page
 .. [#] See Scala Documentation: Reflection
-.. [#] See Scala Documentation: For-Comprehensions
+.. [#] See Scala Documentation: Sequence-Comprehensions
 .. [#] See Scala Documentation: Delimited Continuations
 .. [#] See Scala Documentation: Case Classes
