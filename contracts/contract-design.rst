@@ -127,7 +127,42 @@ The COMM rule is *atomic*. If a value satisfying :code:`ptrn` is ever committed 
 Use-Cases: Contract Interaction
 ------------------------------------------------------------
 
-This model depicts two contracts, both of which may receive and send messages. At some point, an external actor prompts :code:`Contract1` to send a value, :code:`v`, on the channel, :code:`address`, which is the address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :code:`address` channel for some value :code:`v`. After it receives :code:`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an argument. These last two steps occur sequentially.
+This case contructs a system of four processes operating in parallel: a decentralized application server process, :code:`L`, and three clients, :code:`P`, :code:`Q`, and :code:`R`, submitting work requests to :code:`L`:
+
+[ Diagram ]
+
+This interaction assumes that :code:`P`, :code:`Q` and :code:`R` have been previously given the name of a channel, :code:`bookMe`, which is the location where :code:`L` listens for input. In parallel, :code:`P`, :code:`Q`, and :code:`R` each commit a work requests and a return channel, :code:`(WrkReqP, addr)`, :code:`(WrkReqQ, foo)`, and :code:`(WrkReqR, bar)`, respectively, to :code:`bookMe`. The order-arrival of the work requests is non-deterministic, yet request processing efficacy remains unhindered because the model makes no commitment to sequencialization. 
+
+The application process filters through the :code:`bookMe` channel for input that matches that matches a generic pattern, :code:`(WrkReq, rtn)`, which consists of (i) a work request, :code:`WrkReq`, which is some typed collection of fields consisting of meta-data and a process to be evaluated, and (ii) a typed return channel, :code:`rtn`, where it can return the result. 
+
+Out of :code:`P,Q` and :code:`R`, only the input from :code:`P`, :code:`(WrkReqP, addr)`, satisfies the full pattern definition. Although the work requests of :code:`Q` and :code:`R` may satisfy the pattern for :code:`WrkReq`, their return addresses, :code:`foo` and :code:`bar`, are invalid.
+
+After the application process witnesses the input :code:`(WrkReqP, addr)`, satisfying :code:`(WrkReq, rtn)`, at :code:`bookMe`, a reduction must occur. The I/O processes cancel and the continuation, :code:`rtn!(*WrkReq)`, executes with :code:`(WrkReqP, addr)` as arguments:
+
+[ Diagram ]
+
+After reduction, both I/O processes have halted. The application evaluates the work request and returns the results, :code:`addr!(*WrkReqP)`. Note that :code:`L` does not recurse, so, for all intents and purposes, no more work requests can be processed. The two clients, :code:`Q` and :code:`R` committed work requests which did not observe the input pattern defined by :code:`L`, so the two output operations block indefinitely and no computation occurs on those input.
+
+There are two key insights here:
+
+1. This interaction pattern between P and L is indiscriminant of channel implementation.
+2. The reduction between :code:`P` and :code:`L` faithfully encodes an atomic transaction.
+
+In reality, this very naive example would consist of many lower-level reductions/transactions/computations that are not depicted. For example, not only does :code:`P` execute in parallel with an arbitrary number of other clients, but the work request, :code:`WrkReqP`, of :code:`P` itself contains a process that must be evaluated via the same reduction rule. Furthermore, this example depicts :code:`L` returning the evaluation results of the work request, but it constructs no process for :code:`P` to receive the results. If such existed, it would witness another reduction/transaction on return.
+
+Formally unifies an atomic unit of computation with an atomic transaction, such that all computation on the platform is provably provably tied to an economic mechanism, making the RChain a provably concurrent and parallel, reflective, indefinitely scalable, micro-transaction supporting, blockchain-powered, smart contracts platform
+
+Notice that the model side-steps sequentialization by committing to process-independence. It does so by defining a generic(formal) continuation, :code:`{ rtn!(*WrkReq) }`, that is parametric on the input of each independent client. This is analogous to a formal method definition that is automatically invoked when actual parameters are passed to it by another process, save this model allows each process to execute in parallel composition.
+
+This model assumes:
+
+ii. Server process does not recurse.
+iii. Output operation is no computationally significant without the input operation.
+iv. Their is no input process waiting on :code:`rtn` for the results of :code:`*WrkReqP`
+
+:code:`WrkReq` itself defines a process, which means that it is possibly a smart contract and possibly stateful. For example, the request could include the value of an account balance that is decremented per evaluation step, or per booking fee, within the body of :code:`*WrkReq`. It could include a history of travel destinations with user preferences of that history. If :code:`Server` is processing requests for a DApp which generates an optimal travel destination given the users history of travel and cultural attributes of global locations, then persistence of travel history, and account balance, are obligatory.
+
+Contracts are persisted "from off of the stack", or post-execution.
 
 Note, this model assumes that at least the sender possesses the address of :code:`Contract2`. Note also, after it sends :code:`v`, :code:`Contract1`, has been run to termination. Thus, it is incapable of sending anything else unless prompted. Similarly, after it invokes its continuation, :code:`Contract2` has been run to termination, and it is incapable of receiving further messages.
 
