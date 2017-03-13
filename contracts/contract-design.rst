@@ -131,24 +131,30 @@ This case contructs a system of four processes operating in parallel: a decentra
 
 [ Diagram ]
 
-This interaction assumes that :code:`P`, :code:`Q` and :code:`R` have been previously given the name of a channel, :code:`bookMe`, which is the location where :code:`L` listens for input. In parallel, :code:`P`, :code:`Q`, and :code:`R` each commit a work requests and a return channel, :code:`(WrkReqP, addr)`, :code:`(WrkReqQ, foo)`, and :code:`(WrkReqR, bar)`, respectively, to :code:`bookMe`. The order-arrival of the work requests is non-deterministic, yet request processing efficacy remains unhindered because the model makes no commitment to sequencialization. 
+This interaction assumes that :code:`P`, :code:`Q` and :code:`R` have been previously given the name of a channel, :code:`bookMe`, which is the location where :code:`L` listens for input. In parallel, :code:`P`, :code:`Q`, and :code:`R` bind a work request and a return channel, :code:`(WrkReqP, addr)`, :code:`(WrkReqQ, foo)`, and :code:`(WrkReqR, bar)`, respectively, to :code:`bookMe`. 
 
-The application process filters through the :code:`bookMe` channel for input that matches that matches a generic pattern, :code:`(WrkReq, rtn)`, which consists of (i) a work request, :code:`WrkReq`, which is some typed collection of fields consisting of meta-data and a process to be evaluated, and (ii) a typed return channel, :code:`rtn`, where it can return the result. 
+:code:`L` searches :code:`bookMe` for a pair of bindings that fit the pattern, :code:`(WrkReq, rtn)`. The pattern consists of (i) a work request, :code:`WrkReq`, that defines a process to be evaluated and (ii) a return channel, :code:`rtn`, where :code:`L` can return the result.
 
-Out of :code:`P,Q` and :code:`R`, only the input from :code:`P`, :code:`(WrkReqP, addr)`, satisfies the full pattern definition. Although the work requests of :code:`Q` and :code:`R` may satisfy the pattern for :code:`WrkReq`, their return addresses, :code:`foo` and :code:`bar`, are invalid.
+Out of :code:`P`, :code:`Q` and :code:`R`, only the binding, :code:`(WrkReqP, addr)`, coming from :code:`P`, satisfies the pattern definition. :code:`WrkReqQ` and :code:`WrkReqR` may satisfy :code:`WrkReq`, but their return addresses, :code:`foo` and :code:`bar`, are invalid.
 
-After the application process witnesses the input :code:`(WrkReqP, addr)`, satisfying :code:`(WrkReq, rtn)`, at :code:`bookMe`, a reduction must occur. The I/O processes cancel and the continuation, :code:`rtn!(*WrkReq)`, executes with :code:`(WrkReqP, addr)` as arguments:
+After :code:`L` witnesses :code:`(WrkReqP, addr)` satsify the pattern, :code:`(WrkReq, rtn)`, at :code:`bookMe`, reduction conditions are satisfied and a reduction must occur. The I/O processes cancel and the continuation of :code:`L` executes such that :code:`rtn!( *WrkReq ){ addr/rtn, WrkReqP/WrkReq }`:
 
 [ Diagram ]
 
-After reduction, both I/O processes have halted. The application evaluates the work request and returns the results, :code:`addr!(*WrkReqP)`. Note that :code:`L` does not recurse, so, for all intents and purposes, no more work requests can be processed. The two clients, :code:`Q` and :code:`R` committed work requests which did not observe the input pattern defined by :code:`L`, so the two output operations block indefinitely and no computation occurs on those input.
+After reduction, both I/O processes have halted. :code:`addr!(*WrkReqP)` evaluates the work request and returns the result to :code:`P`. 
+
+Note:
+
+  1. :code:`L` does not recurse, so no more work requests can be processed. The two clients, :code:`Q` and :code:`R`, that committed invalid work requests block indefinitely, and no computation occurs on those input.
+
+  2. No input process exists for :code:`P` to receive the results of the work request from :code:`L`. If such a process existed, another reduction would occur.
 
 There are two key insights here:
 
 1. This interaction pattern between P and L is indiscriminant of channel implementation.
 2. The reduction between :code:`P` and :code:`L` faithfully encodes an atomic transaction.
 
-In reality, this very naive example would consist of many lower-level reductions/transactions/computations that are not depicted. For example, not only does :code:`P` execute in parallel with an arbitrary number of other clients, but the work request, :code:`WrkReqP`, of :code:`P` itself contains a process that must be evaluated via the same reduction rule. Furthermore, this example depicts :code:`L` returning the evaluation results of the work request, but it constructs no process for :code:`P` to receive the results. If such existed, it would witness another reduction/transaction on return.
+In reality, this very naive example would consist of many lower-level reductions/transactions/computations that are not depicted. For example, not only does :code:`P` execute in parallel with an arbitrary number of other clients, but the work request, :code:`WrkReqP`, of :code:`P` itself contains a process that must be evaluated via the same reduction rule.
 
 Formally unifies an atomic unit of computation with an atomic transaction, such that all computation on the platform is provably provably tied to an economic mechanism, making the RChain a provably concurrent and parallel, reflective, indefinitely scalable, micro-transaction supporting, blockchain-powered, smart contracts platform
 
