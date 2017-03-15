@@ -4,25 +4,39 @@
 Namespace Logic
 *****************************************************************
 
-RChain’s sharding mechanism is a natural and unique extension of the rho-calculus core model. In contrast to the two-level sharding approach taken by Ethereum, RChain’s virtual address space will be partitioned into "namespaces", where **a namespace is a collection of named processes and channels.**
+For a blockchain solution of internet scale to be realizable, it, like the internet, must possess an logic to reason about the “location” of a resource. Specifically, how do we reference a resource? How do we determine which agents can access that resource under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
 
-The rho-calculus constructs named processes and named channels in the traditional sense of a name as an identifier, but leaves the implementation of the identifier undefined deliberately so that the model can be used to reason about a variety of system layers.
+We have established that two processes must share a named channel to communicate, but what if multiple processes share the same channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
 
-Namespaces exist at the network level as well:
+::
 
-The value proposition of namespaces is that they provide a consistent and formal logic for exponential and dynamic "sharding" solutions on a variety of architectural levels.
+                                    for(ptrn <- x){P1} | x!(@Q) | for(ptrn <- x){P2} 
 
-Within the storage component of RhoVM, names are implemented as keys in a key-value store that maintains the virtual address space for RChain.[ Stuff about key values ]
 
-If a name is implemented as the ROOT_HASH key of a Merkle tree, and ROOT_HASH is not a terminal node, then ROOT_HASH is in fact a *namespace* that consists of the key-value bindings of its child nodes:
- 
-[ Diagram ]
+The first race condition occurs when multiple clients in parallel composition compete to *receive* a data resource on a named channel. In this case :code:`P1` and :code:`P2` , are waiting, on the named channel :code:`x`,  for the resource :code:`@Q` being sent on :code:`x` by another process. The clients will execute their continuations if and only if the correct value is witnessed at that location. In other cases where many clients are competing, many reductions may be possible, but, in this case, only one of two may result. One where :code:`P1` receives :code:`@Q` first and one where :code:`P2` receives :code:`@Q` first, both of which may return different results when :code:`@Q` is substituted into their respective protocol bodies.
 
-Namespaces are morally equivalent to shards in that their motivation is to partition the blockchain’s address space into many smaller units which store contracts, execute transactions, and reach consensus independently of others.
+::
 
-Namespaces, however, are not limited to key-value stores. In fact, the rho-calculus leaves the implementation of an identifier undefined deliberately so that the model can be used to reason about a variety of system layers. Namespaces exist at the network level as well:
+                                          x!(@Q1) | for(ptrn <- x){P} | x!(@Q2)
+                                          
+                                          
+The second race condition occurs when two clients compete to *send* a data resource on a named channel. In this case, two clients are each competing to send a data resource :code:`@Q` to the client at the named channel :code:`x`, but only one of two transactions may occur - one where the receiving client receives :code:`@Q1` first and one where it receives :code:`@Q2` first, both of which may return different results when substituted into the protocol body of :code:`P`.
 
-Sets of transactions that execute in separate namespaces may execute in parallel:
+For protocols which compete for resources, this level of nondeterminism is unavoidable. Later, in the section on consensus, we will describe how the consensus algorithm maintains replicated state by converging on one of the many possible transaction occurrences in a nondeterministic process. For now, observe how simply redefining a name constrains reduction in the first race condition:
+
+::
+
+            for(ptrn <- x){P1} | x!(@Q) |  for(ptrn <- v){P2} → P1{ @Q/ptrn } | for(ptrn <- v){P2}
+
+
+--and the second race condition:
+
+::
+
+                        x!(@Q1) | for(ptrn <- x){P} |u!(@Q2) → P{ @Q1/ptrn } | u!(@Q2)
+                            
+                            
+In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they are now communicating over two distinct, named channels. In other words, they are in separate namespaces. Additionally, names are provably unguessable, so they can only be acquired when a discretionary external process gives them. Because a name is unguessable, a resource is only visible to the processes/contracts that have knowledge of that name [5]_. Hence, sets of processes that execute over non-conflicting sets of named channels i.e sets of transactions that execute in separate namespaces, may execute in parallel, as demonstrated below:
 
 ::
 
@@ -31,9 +45,7 @@ Sets of transactions that execute in separate namespaces may execute in parallel
  | for(ptrn1 <- v1){P1} | v1!(@Q1) | ... | for(ptrnn <- vn){Pn} | vn!(@Q1) → P1{ @Q1/ptrn1} | ... | Pn{ @Qn/ptrnn }
 
 
-The set of transactions executing over :code:`x`, and the set of transactions executing over :code:`v`, are double-blind; they are anonymous. Both sets of transactions communicate the same resource, :code:`@Q`, and noth match the same structural pattern, :code:`ptrn`, but no race condition occurs because the interactions occur in separate namespaces.
-
-This approach to isolating sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel.
+The set of transactions executing in parallel in the namespace :code:`x`, and the set of transactions executing in the namespace :code:`v`, are double-blind; they are anonymous to each other unless introduced by an auxillary process. Both sets of transactions are communicating the same resource, :code:`@Q`, and even requiring that :code:`@Q` meets the same :code:`ptrn`, yet no race conditions arise because each output has a single input counter-part, and the transactions occur in separate namespaces. This approach to isolating sets of process/contract interactions essentially partitions RChain’s address space into many independent transactional environments, each of which are internally concurrent and may execute in parallel with one another.
 
 
 .. figure:: .. /img/blocks-by-namespace.png
@@ -44,12 +56,7 @@ This approach to isolating sets of process/contract interactions essentially par
     Figure - Namespaces as Isolated Transactional Environments
     
 
-Of course, one issue with this approach is that resources are (possibly) available to processes/contracts which:
-
-  i. know the name of the channel; and 
-  ii. satisfy a pattern match.
-
-If the address space has been partitioned into many isolated transactional environments, how can each of those environments further refine the type of contracts that interface with it? For that, we turn to definitions.
+Still, in this representation, the fact remains that resources are visible to processes/contracts which know the name of a channel and satisfy a pattern match. After partitioning the address space into a multiplex of isolated transactional environments, how do we further refine the type of process/contract that can interact with a resource in a similar environment? -- under what conditions, and to what extent, may it do so? For that we turn to definitions.
 
 Namespace Definitions
 ============================================================
