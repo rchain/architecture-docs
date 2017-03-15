@@ -129,7 +129,14 @@ Use-Cases: Contract Interaction
 
 This case contructs a system of four processes operating in parallel: a decentralized application server process, :code:`L`, and three clients, :code:`P`, :code:`Q`, and :code:`R`, submitting work requests to :code:`L`:
 
-[ Diagram ]
+
+.. figure:: ../img/use_case1
+    :align: center
+    :width: 1560
+    
+     *Figure - Pattern Matching Over Concurrent Input*
+
+
 
 This interaction assumes that :code:`P`, :code:`Q` and :code:`R` have been previously given the name of a channel, :code:`bookMe`, which is the location where :code:`L` listens for input. In parallel, :code:`P`, :code:`Q`, and :code:`R` bind a work request and a return channel, :code:`(WrkReqP, addr)`, :code:`(WrkReqQ, foo)`, and :code:`(WrkReqR, bar)`, respectively, to :code:`bookMe`. 
 
@@ -139,7 +146,14 @@ Out of :code:`P`, :code:`Q` and :code:`R`, only the binding, :code:`(WrkReqP, ad
 
 After :code:`L` witnesses :code:`(WrkReqP, addr)` satsify the pattern, :code:`(WrkReq, rtn)`, at :code:`bookMe`, reduction conditions are satisfied and a reduction must occur. The I/O processes cancel and the continuation of :code:`L` executes such that :code:`rtn!( *WrkReq ){ addr/rtn, WrkReqP/WrkReq }`:
 
-[ Diagram ]
+
+.. figure:: ../img/use_case1.2
+    :align: center
+    :width: 1339
+    
+     *Figure - Reduction Upon Message Witness*
+
+
 
 After reduction, both I/O processes have halted. :code:`addr!(*WrkReqP)` evaluates the work request and returns the result to :code:`P`. 
 
