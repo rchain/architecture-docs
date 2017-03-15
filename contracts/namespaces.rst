@@ -4,21 +4,9 @@
 Namespace Logic
 *****************************************************************
 
-RChain’s sharding mechanism is a natural and unique extension of the rho-calculus core model. In contrast to the two-level sharding approach taken by Ethereum, RChain’s virtual address space will be partitioned into "namespaces", where **a namespace is a collection of named processes and channels.**
-
 The rho-calculus constructs named processes and named channels in the traditional sense of a name as an identifier, but leaves the implementation of the identifier undefined deliberately so that the model can be used to reason about a variety of system layers.
 
 Namespaces exist at the network level as well:
-
-The value proposition of namespaces is that they provide a consistent and formal logic for exponential and dynamic "sharding" solutions on a variety of architectural levels.
-
-Within the storage component of RhoVM, names are implemented as keys in a key-value store that maintains the virtual address space for RChain.[ Stuff about key values ]
-
-If a name is implemented as the ROOT_HASH key of a Merkle tree, and ROOT_HASH is not a terminal node, then ROOT_HASH is in fact a *namespace* that consists of the key-value bindings of its child nodes:
- 
-[ Diagram ]
-
-Namespaces are morally equivalent to shards in that their motivation is to partition the blockchain’s address space into many smaller units which store contracts, execute transactions, and reach consensus independently of others.
 
 Namespaces, however, are not limited to key-value stores. In fact, the rho-calculus leaves the implementation of an identifier undefined deliberately so that the model can be used to reason about a variety of system layers. Namespaces exist at the network level as well:
 
