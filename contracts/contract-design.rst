@@ -9,9 +9,11 @@ In this section on contract design, we investigate the formal model of computati
 Rho-calculus: A Concurrent Model of Computation for the Blockchain
 ===================================================================
 
-Despite the growing body of knowledge in support of concurrency, there are relatively few programming languages that address concurrent processing in their core model. Generally speaking, *concurrency is a structural property that allows processes to execute with maximum order-independence*. RChain, and any other BC-based platform, admits the inevitable and significant computational overhead of a consensus mechanism. With the consensus overhead in mind, RChain chose the **rho-calculus** model of concurrent computation.
+Despite the growing body of knowledge in support of concurrency, there are relatively few programming languages that address concurrent processing in their core model. Generally speaking, *concurrency is a structural property that allows processes to execute with maximum independence*. Concurrent design practices commit to abstracting as much as possible into each process, leaving finely structured touch points for them to communicate when necessary and complete when they don't.
 
-The rho-calculus is one constitutent of a mucher larger class of formal systems known as the **process calculi**. It was introduced as a variant of the **π-calculus** in 2004 by Greg Meredith. Like the π-calculus, the rho-calculus is an formal abstraction based on the interaction of processes, but the rho-calculus is distinguished from the π-calculus in that it supports "reflection". “Rho-calculus” stands for reflective, higher-order calculus.
+RChain, and any other Blockchain(BC)-based platform, admits the inevitable and significant computational overhead of a consensus mechanism. With the consensus overhead in mind, RChain chose the **rho-calculus** model of concurrent computation.
+
+The rho-calculus is one constitutent of a mucher larger class of formal systems known as the **process calculi**. It was introduced as a variant of the **π-calculus** in 2004 by Greg Meredith. Like the π-calculus, the rho-calculus is an formal abstraction based on the interaction of processes, but, unlike the π-calculus, the rho-calculus supports "reflection". “Rho-calculus” stands for reflective, higher-order calculus.
 
 For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category Models of the Pi-Calculus`_.
 
@@ -25,7 +27,7 @@ Preamble: Basic Rho-calculus Constructs
 
 The rho-calculus constructs *processes* and *channels* where processes may only interact by passing messages over channels.
 
-A process can be thought of as **an abstraction of an independent thread of control.** 
+A process can be thought of as **an abstraction of an independent thread of control.**
 
 A process:
 
@@ -33,7 +35,7 @@ A process:
 2. Is of arbitrary complexity; a process could be a sub-routine, a smart contract, an application etc.
 3. May be serialized/deserialized to/from storage.
 
-A process can be stateful but does not assume persistent state and can therefore be thought of as the more general form of a “smart contract”, which is necessarily stateful[#]_. Hence, every smart contract is a process, but not every process is a smart contract.
+A process can be stateful but does not assume state and can therefore be thought of as the more general form of a “smart contract”, which is stateful by definition[#]_. Hence, every smart contract is a process, but not every process is a smart contract.
 
 A channel can be thought of as **an abstraction of a communication link between two processes.**
 
@@ -83,21 +85,21 @@ This representation depicts the quoted process, :code:`@Q`, being bound to :code
 
     1. A channel is a statically typed, monadically structured, and provably persistent queue subject to structural pattern matching.
 
-    2. The input term applies an (optional) if-conditional to examine the result of the pattern match for properties *which may not be          structural.*
+    2. The input term applies an (optional) if-conditional to examine the result of the pattern match for properties which may not be          structural.
     
-    3. Because channels may be bound to a number of data sources, the output and input terms may be implemented as the producer and              consumer of a "live" data feed analogous to those leverged in reactive paradigms. 
+    3. Because channels may be bound to a number of data sources, the output and input terms may be implemented as the producer and              consumer of a live data feed analogous to those leverged in reactive paradigms. 
 
 These, and additional safety mechanisms, are further demonstrated in the next section on use-cases.
 
 The next term is structural, describing concurrency:
 
-* :code:`P|Q` is the form of a process that is the *parallel composition* of two processes, :code:`P` and :code:`Q`.
+* The "par" operator :code:`P|Q` is the form of a process that is the *parallel composition* of two processes, :code:`P` and :code:`Q`. The par syntax will serve as a parallelism marker for multi-threading optimization during the compilation pipeline.
 
 Two additional terms are introduced to provide reflection:
 
 * :code:`@`, the “Reflect" operation serializes or "quotes" the code of a process. This allows processes to send other processes as messages.
 
-* :code:`*`, the “Reify” operation deserializes or "unquotes" and evaluates the code of a process.
+* :code:`*`, the “Reify” operation deserializes or "unquotes" and evaluates the code of a process. It can be thought of as a function pointer.
 
 In total, there are six very simple, yet enormously powerful language primitives which provide built-in support for functions that are otherwise absent in the blockchain space:
 
