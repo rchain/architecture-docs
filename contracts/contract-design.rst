@@ -25,7 +25,7 @@ Reflection is widely recognized as a key feature of practical programming langua
 Preamble: Basic Rho-calculus Constructs
 --------------------------------------------------------------------------
 
-The rho-calculus constructs *processes* and *channels* where processes may only interact by passing messages over channels.
+The rho-calculus constructs *processes* and *channels*. Processes may only interact by passing messages over channels.
 
 A process can be thought of as **an abstraction of an independent thread of control.**
 
@@ -81,7 +81,7 @@ Each of the above terms are processes. The first three terms denote I/O, describ
 
 This representation depicts the quoted process, :code:`@Q`, being bound to :code:`x`, but any supported data type, simple or complex, is subject to binding, including a serialized process.
 
-* The input process, :code:`for( ptrn <- x ; if cond. ).P`, searches for values satisfying a defined pattern, :code:`ptrn`, on the        channel :code:`x`. On matching that pattern, the continuation, :code:`P`, is invoked with that value as an argument[#]_. In line with traditional "find and remove" concurrent methodology, the input process has an atomicity guarantee that if a suitable message is received that it is necessarily removed and passed to the continuation.
+* The input process, :code:`for( ptrn <- x ; if cond. ).P`, searches for values satisfying a defined pattern, :code:`ptrn`, on the        channel :code:`x`. On matching that pattern, the continuation, :code:`P`, is invoked with that value as an argument[#]_. In line with traditional "find and remove" concurrent methodology, the input process has an atomicity guarantee that, if a suitable message is received, it is necessarily removed and passed to the continuation.
 
 This is a unique implementation of an input process that is improved from other message-passing based languages in three respects:
 
@@ -89,7 +89,7 @@ This is a unique implementation of an input process that is improved from other 
 
     2. The input term applies an (optional) if-conditional to examine the result of the pattern match for properties which may not be          structural.
     
-    3. Channels may be bound to a number of data sources, thus the output and input terms may be implemented as the producer and                consumer of a live data feed analogous to those leverged in reactive paradigms. 
+    3. Channels may be bound to a number of data generators, thus the output and input terms may be implemented as the producer and            consumer of a live data feed analogous to those leverged in reactive paradigms. 
 
 These, and additional type-amendable safety mechanisms, are further demonstrated in the next section on use-cases.
 
