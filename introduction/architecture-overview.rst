@@ -24,7 +24,7 @@ The **RChain Runtime System** manages contract execution, thread execution, code
 
 RChain’s runtime environment includes essential **System Contracts** which are also written in Rholang and executed in the RhoVM. System processes include those for loadbalancing, managing dApp contracts, tokens, node trust, namespace registration, and many others.
 
-RChain will support ne, or possibly more, native economics-based protocol access tokens (PATs), similar to BitCoin, Ether etc. It will also support a single resource-based protocol access token, correllated to units of computation consumed, similar to Gas. **DApp contracts** will require economics-based PATs that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based PAT, dubbed “Phlogiston”.
+RChain will support one, or possibly more, native economics-based protocol access tokens (PATs), similar to BitCoin, Ether etc. It will also support a single resource-based protocol access token, correllated to units of computation consumed, similar to Gas. **DApp contracts** will require economics-based PATs that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based PAT, dubbed “Phlogiston”.
 
 The **Rho API** provides access to the RhoVM, System Contracts, and Agent Services.
 
