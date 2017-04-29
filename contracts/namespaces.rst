@@ -4,7 +4,7 @@
 Namespace Logic
 *****************************************************************
 
-For a blockchain solution of internet scale to be realizable, it, like the internet, must possess an logic to reason about the “location” of a resource. Specifically, how do we reference a resource? How do we determine which agents can access that resource under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
+For a blockchain solution of internet scale to be realizable, it, like the internet, must possess a logic to reason about the “location” of a resource. Specifically, how do we reference a resource? How do we determine which agents can access that resource under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
 
 We have established that two processes must share a named channel to communicate, but what if multiple processes share the same channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
 
@@ -26,14 +26,14 @@ For protocols which compete for resources, this level of nondeterminism is unavo
 
 ::
 
-            for(ptrn <- x){P1} | x!(@Q) |  for(ptrn <- v){P2} → P1{ @Q/ptrn } | for(ptrn <- v){P2}
+            for(ptrn <- x){P1} | x!(@Q) | for(ptrn <- v){P2} → P1{ @Q/ptrn } | for(ptrn <- v){P2}
 
 
 --and the second race condition:
 
 ::
 
-                        x!(@Q1) | for(ptrn <- x){P} |u!(@Q2) → P{ @Q1/ptrn } | u!(@Q2)
+                        x!(@Q1) | for(ptrn <- x){P} | u!(@Q2) → P{ @Q1/ptrn } | u!(@Q2)
                             
                             
 In both cases, the channel, and the data resource being communicated, is no longer contentious simply because they are now communicating over two distinct, named channels. In other words, they are in separate namespaces. Additionally, names are provably unguessable, so they can only be acquired when a discretionary external process gives them. Because a name is unguessable, a resource is only visible to the processes/contracts that have knowledge of that name [5]_. Hence, sets of processes that execute over non-conflicting sets of named channels i.e sets of transactions that execute in separate namespaces, may execute in parallel, as demonstrated below:
@@ -62,7 +62,7 @@ Namespace Definitions
 ============================================================
 **A namespace definition is a formulaic description of the minimum conditions required for a process/contract to function in a namespace.** In point of fact, the consistency of a namespace is immediately and exclusively dependent on how that space defines a name, which may vary greatly depending on the intended function of the contracts the namespace definition describes.
 
-A name satisfies a definition, or it does not; it functions, or it does not. The following namespace definition is implemented as an ‘if conditional’ in the interaction which depicts a set of processes sending a set of contracts to set of named addresses that comprise a namespace:
+A name satisfies a definition, or it does not; it functions, or it does not. The following namespace definition is implemented as an ‘if conditional’ in the interaction which depicts a set of processes sending a set of contracts to a set of named addresses that comprise a namespace:
 
 
 .. figure:: .. /img/namespace-definitions.png
@@ -80,7 +80,7 @@ A name satisfies a definition, or it does not; it functions, or it does not. The
 
 3. When a contract is received on any one of the channels, it is supplied to :code:`if cond.`, which checks the namespace origin, the address of sender, the behavior of the contract, the structure of the contract, as well as the size of data the contract carries. 
 
-4. If those properties are consistent with those denoted by the, :code:`address`, namespace definition, continuation :code:`P` is executed with :code:`contract` as its argument.
+4. If those properties are consistent with those denoted by the :code:`address` namespace definition, continuation :code:`P` is executed with :code:`contract` as its argument.
 
 A namespace definition effectively bounds the types of interactions that may occur in a namespace - with every contract existing in the space demonstrating a common and predictable behavior. That is, the state alterations invoked by a contract residing in a namespace are necessarily authorized, defined, and correct for that namespace. This design choice makes fast datalog-style queries against namespaces very convenient and exceedingly useful.
 
@@ -126,7 +126,7 @@ Then adapt syntax to the I/O actions of the rho-calculus:
 
                                                       s!( a(b(c,d)) )
 
-                                                      for( a(b(c,d) <- s; if cond ){ P }
+                                                      for( a(b(c,d)) <- s; if cond ){ P }
           
           
 The top expression denotes output - place the resource address :code:`a(b(c,d)` at the named channel :code:`s`. The bottom expression denotes input. For the pattern that matches the form :code:`a(b(c,d))`, coming in on channel :code:`s`, if some precondition is met, execute continuation :code:`P`, with the address :code:`a(b(c,d)` as an argument. Of course, this expression implicates :code:`s`, as a named channel. So the adapted channel structure is represented:
@@ -144,7 +144,7 @@ Given an existing address structure, and namespace access, a client may query fo
 
 ::
 
-                                            for( a(b(c,d) ) <- s; if cond){ P } | s!( a(b(@Q,@R)) )
+                                            for( a(b(c,d)) <- s; if cond ){ P } | s!( a(b(@Q,@R)) )
 
 
 The evaluation step is written symbolically:
