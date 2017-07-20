@@ -31,12 +31,12 @@ A contract is triggered by a message from an external network agent, where an ex
 **A Named Channel:**
 
 1. Is a "location" where otherwise independent processes synchronize.
-2. Is used by processes to send and receieve messages between each other.
+2. Is used by processes to send and receive messages between each other.
 3. Is provably unguessable and anonymous unless deliberately introduced by a process.
 
 A channel is implemented as a variable that is shared between a "read-only" and a "write-only" process. Therefore, the functionality of a channel is only limited by the interpretation of what a variable may be. As a channel represents the abstract notion of "location", it may take different forms. For our early interpretation, a named channel's function may range from the local memory address (variable) of a single machine, to the network address of a machine in a distributed system.
 
-Consistent with that interpretation, **A blockchain address is a named channel** i.e. a location(s) where an agent may be reached.
+Consistent with that interpretation, **a blockchain address is a named channel** i.e. a location(s) where an agent may be reached.
 
 Two contracts sending and receiving a message on the channel named ‘Address’:
 
@@ -71,9 +71,9 @@ Transactions
 
 How do transaction semantics fit into our description of contracts? **From the process level, a transaction is an acknowledgment that a message has been "witnessed" at a channel**
 
-Messages themselves are virtual objects, but the pre-state and post-state of a contract, referring to the states before and after a message is sent by one agent and witnessed by another, are recorded an timestamped in storage, also known (in a moral sense) as the "blockchain".
+Messages themselves are virtual objects, but the pre-state and post-state of a contract, referring to the states before and after a message is sent by one agent and witnessed by another, are recorded and timestamped in storage, also known (in a moral sense) as the "blockchain".
 
-Message passing is an atomic operation. Either a message is witnessed, or it is not, and only the successful witnessing of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on ten’s of thousand’s of channels at runtime. Hence, when the value of some resource is altered and witnessed by a process, there is record of when and where it was witnessed by what agent. This implementation is consistent with an interpretation of data as a linear resource.
+Message passing is an atomic operation. Either a message is witnessed, or it is not, and only the successful witnessing of a message qualifies as a verifiable transaction that can be included in a block. Examples hitherto depict atomic protocols, but full-bodied applications may spawn, send, and receive on tens of thousands of channels at runtime. Hence, when the value of some resource is altered and witnessed by a process, there is record of when and where it was witnessed by what agent. This implementation is consistent with an interpretation of data as a linear resource.
 
 
 .. figure:: ../img/10156345.png
