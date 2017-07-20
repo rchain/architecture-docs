@@ -26,7 +26,7 @@ The execution of a contract affects the *environment* and *state* of an instance
     :scale: 50
     :width: 1017
     
-    *Figure - Two-stage binding from Names to values*
+    *Figure - Two-stage binding from names to values*
 
 
 RhoVM operates against a key-value data store. **A state change of RhoVM is realized by an operation that modifies which key maps to what value.** Since, like Rholang, RhoVM is derived from the rho-calculus model of computation, that operation is the low-level rho-calculus reduction rule. Effectively, the reduction rule, known as the "COMM" rule, is a substitution that defines a computation :code:`P` to be performed if a new value is observed at a key. A key is analogous to a name in that it references a location in memory which holds the value being substituted. In the following example, :code:`key` is a key and :code:`val` is the value being substituted:
@@ -63,7 +63,7 @@ It has been demonstrated that an application of the rho-calculus reduction rule,
 
 Each key maps to a list of reductions which is, in fact, the "transaction history" of an address. The history of transactions :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1), ... , for(valn <- keyn).Pn | keyn!(@Qn) } -> { P1{@Q1/val1}, ... , Pn{@Qn/valn} }` denotes the modifications that have been made to the contract :code:`@Q`, where :code:`@Qn` is the most current version in store. It is important to recognize that this scheme is a top-level transaction on the RChain platform. The messages being passed are contracts themselves, which most often occurs in client-system, or system-system interactions. However, each contract :code:`@Q` may, itself, execute many lower-level transactions on simpler values.
 
-After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistently replicated across all nodes running that instance of RhoVM. Once transaction histories are verified, the most transaction is added to the transaction history. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
+After a transaction/reduction is applied, it is subjected to consensus. Consensus verifies that the transaction history, :code:`{ for(val1 <- keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of :code:`keyn`, is consistently replicated across all nodes running that instance of RhoVM. Once transaction histories are verified, the most recent transaction is added to the transaction history. The same consensus protocol is applied over the range of keys :code:`{ key1 -> val1 … keyn -> valn }` as transactions are committed to those locations.
 
 By extension, transaction blocks represent sets of reductions that have been applied to elements of the persistent key-value store, and transaction histories represent verifiable snapshots of the state configurations and transitions of an instance of the Rho Virtual Machine. Note that the consensus algorithm is applied if, and only if, node operators propose conflicting reduction histories.
 
@@ -100,7 +100,7 @@ In the RhoVM and potentially in upstream contracting languages, there are a vari
 Discovery Service
 ----------------------------------------------------
 
-An advanced discovery feature that will ultimately be implemented enables searching for compatible contracts and assembling a new composite contract from of other contracts. With the formal verification techniques, the author of the new contract can be guaranteed that when working contracts are plugged together they will work as well as a single contract.
+An advanced discovery feature that will ultimately be implemented enables searching for compatible contracts and assembling a new composite contract from other contracts. With the formal verification techniques, the author of the new contract can be guaranteed that when working contracts are plugged together they will work as well as a single contract.
 
 Compilation
 ================================================
