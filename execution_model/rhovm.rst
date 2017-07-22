@@ -146,6 +146,6 @@ The compilation pipeline will implement a rate-limiting mechanism that is relate
 For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Compiler work can be seen on `GitHub`_.
 
 .. _GitHub: https://github.com/rchain/Rosette-VM
-.. _#rhovm: https://ourchain.slack.com/messages/coop/
+.. _#rhovm: https://ourchain.slack.com/messages/rhovm/
 .. _join: http://slack.rchain.coop/
 

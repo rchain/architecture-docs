@@ -5,34 +5,48 @@ The primary components of the architecture are depicted below:
 
 
 .. figure:: ../img/Node.png
-   :scale: 50
    :align: center
-   :width: 600
+   :width: 90%
 
    Figure - The RChain Architecture
 
 
-Introducing this from the bottom-up:
+The execution architecture may rely on some operating-specific external components, but these are kept to a minium by running on the JVM. The RhoVM Execution Envirionment runs on the JVM, and then the individual RhoVM instances run within the RhoVM Execution Environment.
 
-A **P2P messaging network** & **key-value datastore** sit at the foundation of the architecture to support base-line node-to-node communications (node stream) and file management (datastore).
+The **RhoVM Execution Environment** provides the context for contract execution, the lifecycle of individual RhoVM instances.   
 
-Above that, the **SpecialK Access Pattern Language** and the **KVDB Data & Continuation Access** layers are an evolution of the existing SpecialK technology (including its decentralized content delivery, key-value database, inter-node messaging, data access patterns, and privacy protecting agent model). KVDB will be implemented in Rholang and so relies on an instance of RhoVM and Rholang’s **Foreign Function Interface** to access node-to-node networking and the datastore.
+Describing the remaining layers depicted, from the bottom-up:
 
-**Casper Proof-of-Stake** validation/consensus Protocol assures node consensus on the state of a RhoVM instance.
+**P2P Communication** supports node-to-node communications. This will be a TBD commercial-grade, open-source component such as ZeroMQ or RabbitMQ.
 
-The **RChain Runtime System** manages contract execution, thread execution, code safety (security-type) verification, compilation, as well as the synchronization of contracts and their metadata between the KVDB/SpecialK storage layer and RhoVM.
+**Storage** is via MongoDB, a key-value datastore. The primary in-memory data structure is a radix tree (trie).
 
-RChain’s runtime environment includes essential **System Contracts** which are also written in Rholang and executed in the RhoVM. System processes include those for loadbalancing, managing dApp contracts, tokens, node trust, namespace registration, and many others.
+**Data Abastraction Layer** provides monadic access to data and other nodes consistently, as if they were local. This layer is an evolution of the SpecialK technology (including its decentralized content delivery, key-value database, inter-node messaging, and data access patterns). This layer is being implemented in Rholang, and so it relies on the RhoVM-EE and Rholang’s **Foreign Function Interface** to access P2P Communication and Storage.
 
-RChain will support one, or possibly more, native economics-based protocol access tokens (PATs), similar to BitCoin, Ether etc. It will also support a single resource-based protocol access token, correllated to units of computation consumed, similar to Gas. **DApp contracts** will require economics-based PATs that will be managed by the RChain token-issuance contract and ultimately exchanged for RChain’s resource-based PAT, dubbed “Phlogiston”.
+**Consensus** (Casper Proof-of-Stake validation/consensus Protocol) assures node consensus on the state of each blockchain.
 
-The **Rho API** provides access to the RhoVM, System Contracts, and Agent Services.
+All RChain nodes include essential **System Contracts**, which are written in Rholang. System processes include those for running RhoVM instances, load balancing, managing dApp contracts, tokens, node trust, and others. 
+
+The Token system contracts include those required to run protocols that interact beyond the local node. These are *protocol access tokens*. There are two types of PATs:
+ * **Staking tokens** are those required to run consensus, including the **RChain Rev** token. Additional staking tokens may be introduced through official software releases. A staking token is required to pay for node *resources*. **Phlogiston** is RChain's measure of the cost of resources (similar to *gas* in Ethereum), and it is multi-dimensional and depends on usage of compute (depending on instruction), storage (depending on size and duration), and bandwidth (quality-of-service and throughput) resources.
+
+ + **Application tokens** are optional and may be required to run certain dApps. New application tokens can be introduced at any time by a dApp developer, and are similar to Ethereum's ERC20 tokens.
+
+The **Rho API** provides access to Execution Environment and the Node. **Language Bindings** will be available for programming languages written against the JVM, and potentially others.  A **REPL** (Read, Execute, Print, and Loop) development tool will be provided. Each node will have a **Command Line Interface** CLI.  A **Node API** will expose features via http and json RPC.
 
 Concurrency vs. Parallelism
 ----------------------------------------
-It is of the utmost importance that the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not referring to the simultaneous execution of multiple processes. That is parallelism.
+It is essential the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not referring to the simultaneous execution of multiple processes. That is parallelism. *Concurrency* is a structural property which allows independent processes to compose into complex processes. Processes are considered independent if they do not compete for resources.
 
-**Concurrency is a structural property which allows independent processes to compose into complex processes. Processes are considered independent if they do not compete for resources.**
+Since RChain has committed to concurrency in Rholang and RhoVM, we'll see that we will get parallelism and asynchronicity as “free” emergent properties. Whether the platform is running on one processor or 1,000,000 processors, the RChain design is scalable. Having said that, the reader of this document will notice design patterns of concurrent computation throughout.
 
-We’ll see that, when we commit to concurrency, we get parallelism and asynchronicity for free. Whether the platform is running on one processor or 1,000,000 processors, the RChain design is scalable. Having said that, design patterns of concurrent computation will be frequent to the astute reader.
+###################################
+Node and Blockchain Semantics
+###################################
+The following UML class diagram depicts the primary conceptual classes and structural relationships.
 
+.. figure:: ../img/RChainBlockchainStructuralSemantics.png
+   :align: center
+   :width: 90%
+
+   Figure - RChain Blockchain Structural Semantics

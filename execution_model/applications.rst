@@ -23,8 +23,12 @@ The purpose of this next discussion is to illustrate how namespaces allow for he
 
 For example, the following diagram depicts some of the possible development, test, and deployment configurations and considerations, and how release management is enabled using namespaces and sharding.
 
+.. figure:: ../img/contract-development.png
+  :align: center
+  :width: 3446
+  :scale: 80
 
-*Figure - Development & Deployment Possibilities*
+  *Figure - Development & Deployment Possibilities*
 
 
 We’ll collaborate with IDE tool vendors to integrate Rholang and validation tools. 

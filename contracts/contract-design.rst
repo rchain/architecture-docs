@@ -4,9 +4,9 @@
 Contract Design
 ******************************************************************
 
-An RChain contract is a well-specified, well-behaved, and formally verified program that interacts with other well-specified, well-behaved, and formally verified programs.
+An RChain contract is a well-specified, well-behaved, and formally verified program that interacts with other such programs.
 
-In this section on contract design, we cover contract interaction through the production of Rholang. To begin, we give an overview of contract interaction on the RChain platform. Afterwards, we describe the core formalism RChain uses to achieve formal verification and to model concurrency on many of RChain’s system layers. Then, we explore how that core model extends to accomodate best-in-industry surface-language standards such as reflection, parallelism, asynchronicity, reactive data streams, and compile-time security-type checks.
+In this section, we cover contract interaction through the production of Rholang. To begin, we give an overview of contract interaction on the RChain platform. Afterwards, we describe the core formalism RChain uses to achieve formal verification and to model concurrency on many of RChain’s system layers. Then, we explore how that core model extends to accomodate best-in-industry surface-language standards such as reflection, parallelism, asynchronicity, reactive data streams, and compile-time security-type checks.
 
 Contract Overview
 ======================================================================================
@@ -15,18 +15,18 @@ Used loosely as ‘contract’, **a smart contract is a process with:**
 
 1. Persistent state
 2. Associated code
-3. An associated RChain address(s)
+3. Associated RChain address(es)
 
-Important to remember is that a smart contract is of arbitrary complexity; it may refer to an atomic operation, or to a superset of protocols which compose to form a complex protocol.
+Important to remember is that a smart contract is of arbitrary complexity. It may refer to an atomic operation or to a superset of protocols which compose to form a complex protocol.
 
 A contract is triggered by a message from an external network agent, where an external agent may be a contract or a network user.
 
 **A Message:**
 
-1. Is issued over a named channel(s) that may be public or private.
-2. May be typed and may range, in format, from a simple value, to an unordered array of bytes, to a variable, to a data structure, to **the code of a process**, and most things in between.
+1. Is issued over a named channel(s), which may be public or private.
+2. May be typed and may range in format from a simple value to an unordered array of bytes, to a variable, to a data structure, to *the code of a process*, and most things in between.
 
-**Agents send and receive messages on named communication links known as ‘named channels’.**  
+**An Agent** sends and receives messages on named communication links known as ‘named channels’.  
 
 **A Named Channel:**
 
@@ -36,7 +36,7 @@ A contract is triggered by a message from an external network agent, where an ex
 
 A channel is implemented as a variable that is shared between a "read-only" and a "write-only" process. Therefore, the functionality of a channel is only limited by the interpretation of what a variable may be. As a channel represents the abstract notion of "location", it may take different forms. For our early interpretation, a named channel's function may range from the local memory address (variable) of a single machine, to the network address of a machine in a distributed system.
 
-Consistent with that interpretation, **a blockchain address is a named channel** i.e. a location(s) where an agent may be reached.
+Consistent with that interpretation, **a blockchain address is a named channel**, i.e., a location(s) where an agent may be reached.
 
 Two contracts sending and receiving a message on the channel named ‘Address’:
 
@@ -212,10 +212,10 @@ To summarize, the rho-calculus formalism is the first computational model to:
 
 3. Denote a fully scalable design which naturally accommodates industry trends in structural pattern matching, process continuation, Reactive API’s, parallelism, asynchronicity, and behavioral types.
 
-RhoLang - A Concurrent Blockchain Language
+RhoLang - A Concurrent Language
 =========================================================
 
-Rholang is a fully featured, general purpose, Turing complete programming
+Rholang is a fully featured, general purpose, Turing-complete programming
 language built from the rho-calculus. It is a behaviorally typed, **r**-eflective,
 **h**-igher **o**-rder process language and the official smart contracting language
 of RChain. Its purpose is to concretize fine-grained, programmatic concurrency.

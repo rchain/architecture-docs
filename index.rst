@@ -8,7 +8,7 @@ RChain Platform Architecture
 ###############################################
 
 :Authors: Ed Eykholt, Lucius Meredith, Joseph Denman
-:Date: 1.13.2017
+:Date: 2017-07-22
 :Organization: RChain Cooperative
 :Copyright: This document is licensed under a `Creative Commons Attribution 4.0 International (CC BY 4.0) License`_
 
@@ -18,11 +18,9 @@ RChain Platform Architecture
 Abstract
 ===============================================
 
-The RChain platform architecture description provides a high-level blueprint to build a decentralized, economically sustainable public compute infrastructure. While the RChain design is inspired by that of earlier blockchains, it alone realizes decades of research across the fields of concurrent and distributed computation, mathematics, and programming language design. The platform boasts a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility. 
+The RChain Platform Architecture description provides a high-level blueprint of the RChain decentralized, economically sustainable public compute infrastructure. While the RChain design is inspired by that of earlier blockchains, it also realizes decades of research across the fields of concurrent and distributed computation, mathematics, and programming language design. The platform includes a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility. 
 
-**Intended audience:** This document is written primarily for software designers and
-developers who want to help see this vision realized, and for others who want to
-support these efforts.
+**Intended audience:** This document is written for software developers and innovators who are interested in decentralized systems.
 
 .. toctree::
    :maxdepth: 2
