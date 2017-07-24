@@ -26,7 +26,7 @@ For example, the following diagram depicts some of the possible development, tes
 .. figure:: ../img/contract-development.png
   :align: center
   :width: 3446
-  :scale: 80
+  :scale: 70
 
   *Figure - Development & Deployment Possibilities*
 

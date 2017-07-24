@@ -42,10 +42,9 @@ Two contracts sending and receiving a message on the channel named ‘Address’
 
 
 .. figure:: ../img/57444266.png
-   :height: 170
    :width: 844
    :align: center
-   :scale: 80
+   :scale: 60
 
 
 
@@ -59,8 +58,7 @@ RChain contracts enjoy fine-grain, internal concurrency, which means that these 
 .. figure:: ../img/82846984.png
    :align: center
    :width: 926
-   :height: 124
-   :scale: 80
+   :scale: 60
 
 
 
@@ -80,7 +78,7 @@ Message passing is an atomic operation. Either a message is witnessed, or it is 
    :align: center
    :width: 918
    :height: 460
-   :scale: 80
+   :scale: 60
 
 
 The ability to place a message at either end of a channel before and after the message is sent, and therefore to view the serialized form of messages, is an attribute specific to RChain. Additionally, by stating successful messages as transactions, all messages, whether from external user to contract or between contracts, are accounted for. Thus, we balance the extensible autonomy of contracts with accountability.
@@ -92,7 +90,7 @@ For an example of how this model is adaptable to industry trends in reactive pro
    :width: 1014
    :height: 142
    :align: center
-   :scale: 80
+   :scale: 50
 
 
 Executing in parallel composition with a number of other processes, :code:`Contract1` is prompted to send a set of  values, :code:`vN`, on the channel :code:`address` i.e. the address of :code:`Contract2`. In this scenario, the reader will notice :code:`Contract2` as a thread which listens for a set of values as input from a single data stream that is dual to a set of values being output from a stream at its tail. When the set of values, :code:`v1...vN`, is witnessed at the channel, :code:`address`, a continuation is invoked with :code:`v1...vN` as an argument. While the interaction between :code:`Contract1` and :code:`Contract2` is asynchronous, the input operation :code:`address?(v1...vN)` and :code:`Continuation(v)` of :code:`Contract2` are necessarily sequential. :code:`address?(v1...vN)` is said to "pre-fix" :code:`Continuation(v)` in every instance.

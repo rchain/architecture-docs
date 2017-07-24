@@ -51,7 +51,8 @@ The set of transactions executing in parallel in the namespace :code:`x`, and th
 .. figure:: .. /img/blocks-by-namespace.png
     :align: center
     :width: 1950
-    :scale: 80
+	:height: 1050
+    :scale: 40
     
     Figure - Namespaces as Isolated Transactional Environments
     
@@ -68,7 +69,8 @@ A name satisfies a definition, or it does not; it functions, or it does not. The
 .. figure:: .. /img/namespace-definitions.png
     :align: center
     :width: 2659
-    :scale: 80
+	:height: 1588
+    :scale: 40
     
     Figure - A Namespace Definition Implemented as an ‘If-conditional’
     
@@ -108,7 +110,7 @@ Observe, however, that URL paths do not always compose. Take :code:`scheme://a/b
 .. figure:: .. /img/namespaces-as-tree-paths.png
     :align: center
     :width: 1617
-    :scale: 80
+    :scale: 40
     
     Figure - Composable Tree Paths
     
@@ -135,7 +137,7 @@ The top expression denotes output - place the resource address :code:`a(b(c,d)` 
 .. figure:: .. /img/namespaces-as-trees.png
     :align: center
     :width: 567
-    :scale: 60
+    :scale: 40
     
     Figure - URL Scheme as Nested Channels in Tree Structure
     
@@ -160,7 +162,7 @@ That is, :code:`P` is executed in an environment in which :code:`c` is substitut
 .. figure:: .. /img/tree-structure-substituted.png
     :align: center
     :width: 1688
-    :scale: 80
+    :scale: 30
     
     Figure - Placing Processes at Channels
 

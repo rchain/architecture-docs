@@ -4,9 +4,10 @@ Architecture Overview
 The primary components of the architecture are depicted below:
 
 
-.. figure:: ../img/Node.png
+.. figure:: ../img/architecture-overview.png
    :align: center
-   :width: 90%
+   :width: 1135
+   :scale: 50
 
    Figure - The RChain Architecture
 
@@ -28,7 +29,7 @@ Describing the remaining layers depicted, from the bottom-up:
 All RChain nodes include essential **System Contracts**, which are written in Rholang. System processes include those for running RhoVM instances, load balancing, managing dApp contracts, tokens, node trust, and others. 
 
 The Token system contracts include those required to run protocols that interact beyond the local node. These are *protocol access tokens*. There are two types of PATs:
- * **Staking tokens** are those required to run consensus, including the **RChain Rev** token. Additional staking tokens may be introduced through official software releases. A staking token is required to pay for node *resources*. **Phlogiston** is RChain's measure of the cost of resources (similar to *gas* in Ethereum), and it is multi-dimensional and depends on usage of compute (depending on instruction), storage (depending on size and duration), and bandwidth (quality-of-service and throughput) resources.
+ * **Staking tokens** are those required to run consensus, including the **RChain Rev** token. Additional staking tokens may be introduced through official software releases. A staking token is required to pay for node *resources*. **Phlogiston** is RChain's measure of the cost of resources (similar to *gas* in Ethereum), and it is multi-dimensional and depends on usage of compute (depending on instruction), storage (depending on size and duration), and bandwidth (quality-of-service and throughput) resources.  See also section entitled "Rate-limiting Mechanism."
 
  + **Application tokens** are optional and may be required to run certain dApps. New application tokens can be introduced at any time by a dApp developer, and are similar to Ethereum's ERC20 tokens.
 

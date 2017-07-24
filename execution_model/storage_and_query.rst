@@ -7,7 +7,7 @@ Storage and Query
 Overview
 ----------------------------------------
 
-The Storage and Query network layer *appears* to each node as a local, asynchronously accessed database with leased storage. Behind the scenes, however, the Storage and Query layer is fully decentralized and subject to the consensus algorithm. In accordance with the micro-transaction capabilities inherent to blockchain solutions, dApp users on RChain pay for resources (compute, bandwidth, storage) using tokens. The RChain design considers all storage “conserved”, although not all data will be conserved forever. Instead, data storage will be leased and will cost producers of that data in proportion to its size, complexity, and lease duration. Consumers will also pay for retrieval access. Data producers and consumers indirectly pay node operators.
+The Storage and Query network layer *appears* to each node as a local, asynchronously accessed database with rented storage. Behind the scenes, however, the Storage and Query layer is fully decentralized and subject to the consensus algorithm. In accordance with the micro-transaction capabilities inherent to blockchain solutions, dApp users on RChain pay for resources (compute, bandwidth, storage) using tokens. The RChain design considers all storage “conserved”, although not all data will be conserved forever. Instead, data storage will be rented and will cost producers of that data in proportion to its size, complexity, and lease duration. Consumers may also be required to pay for retrieval access. Data producers and consumers indirectly pay node operators.
 
 The simple economic reason justifying leasing is that storage must be paid by someone; otherwise it cannot be stored reliably or “forever”. We’ve chosen to make the economic mechanism direct. It is an environmentally unfriendly idea that storage is made "free" only to subsidize it by an unrelated process. A small part of the real cost is measurable in the heat signatures of the data centers that are growing to staggering size. This charging for data as it is accessed also helps reduce "attack" storage i.e the storage of illegal content to discredit the technology.
 
@@ -21,7 +21,7 @@ The RChain blockchain will store the state, local transaction history, and the a
 .. _Recursion from Cyclic Sharing:Traced Monoidal Categories and Models of Cyclic Lambda Calculi: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.52.31&rep=rep1&type=pdf
 
 ============================================
-SpecialK: DSL for Data Access
+Data Access Layer and Domain Specific Language
 ============================================
 
 SpecialK is the DSL for data access, while KVDB is a distributed-memory data structure behind the DSL. SpecialK defines distributed data-access patterns in a consistent way, as shown below:
@@ -65,7 +65,7 @@ Data will be accessed using the SpecialK semantics, while physically being store
 .. figure:: ../img/specialk.png
   :align: center
   :width: 3446
-  :scale: 80
+  :scale: 25
   
   *Figure - Decentralized Data Access in SpecialK*
   

@@ -23,7 +23,7 @@ The execution of a contract affects the *environment* and *state* of an instance
 
 .. figure:: ../img/bindings_diagram.png
     :align: center
-    :scale: 50
+    :scale: 40
     :width: 1017
     
     *Figure - Two-stage binding from names to values*
@@ -44,6 +44,7 @@ Barring consensus, this is the computational model of a concurrent protocol that
 .. figure:: ../img/io_binding.png
     :align: center
     :width: 1650
+	:scale: 80
     
     *Figure - Reduction effecting a key-value data store*
 
@@ -54,9 +55,9 @@ It has been demonstrated that an application of the rho-calculus reduction rule,
 
 
 .. figure:: ../img/transaction_history.png
-    :align: left
+    :align: center
     :width: 2175
-    :scale: 80
+    :scale: 30
     
     *Figure - Reduction/transaction history of a location in memory*
 
@@ -111,7 +112,7 @@ To allow clients to execute contracts on the RhoVM, RChain has developed a compi
 .. figure:: ../img/compilation_strategy.png
     :width: 1109
     :align: center
-    :scale: 50
+    :scale: 40
     
     *Figure - RChain compilation strategy*
     
