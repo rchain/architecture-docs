@@ -2,7 +2,7 @@
 RChain-Architecture
 *****************************
 
-The RChain platform architecture description provides a high-level blueprint to build a decentralized, economically sustainable public compute infrastructure. While the RChain design is inspired by that of earlier blockchains, it alone realizes decades of research across the fields of concurrent and distributed computation, mathematics, and programming language design. The platform boasts a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility.
+The RChain platform architecture description provides a high-level blueprint to build a decentralized, economically sustainable public compute infrastructure. The RChain design is inspired by that of earlier blockchains; it unifies decades of research across the fields of concurrent and distributed computation, formal semantics, and programming language design. The RChain platform boasts a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility.
 
 GETTING STARTED
 ======================
