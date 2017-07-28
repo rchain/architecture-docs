@@ -30,4 +30,4 @@ The blockchain contracts (aka smart contracts, processes, or programs), includin
  
 Since nodes are internally concurrent, and each need not run all namespaces (blockchains), the system will be *scalable*.
 
-Since the contract language and its VM are build from the formal specifications of provable mathmatics, and since the compiler pipeline and engineering approach is *correct by construction*, we expect the platform will be regarded as *trustworthy*.
+Since the contract language and its VM are build from the formal specifications of provable mathematics, and since the compiler pipeline and engineering approach is *correct by construction*, we expect the platform will be regarded as *trustworthy*.
