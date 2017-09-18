@@ -6,6 +6,39 @@ Namespace Logic
 
 For a blockchain solution of internet scale to be realizable, it, like the internet, must possess a logic to reason about the “location” of a resource. Specifically, how do we reference a resource? How do we determine which agents can access that resource under what conditions? In contrast to many other blockchains, where addresses are flat public keys (or hashes thereof), RChain’s virtual address space will be partitioned into namespaces. **In a very general explanation, a namespace is a set of named channels.** Because channels are quite often implemented as data stores, a namespace is equivalently a set of contentious resources.
 
+.. sidebar:: Q & A: Namespaces and double-spending
+
+   Q: Suppose Alice, Bob, and Carol are each in distinct namespaces
+   and we have two payments: Alice-to-Bob and Alice-to-Carol.  If I'm
+   a node that only wants to care about Alice, how can I know that
+   Alice doesn't double-spend?
+
+   A: A namespace is just a collection of names. All blockchain
+   addresses are names.  A collection can be described in a few ways.
+   One of them is extensionally by explicitly spelling out each item
+   in the collection.  Another way is intensionally by providing a
+   rule or program that either generates the collection or recognizes
+   when an item is in the collection or out of the collection.  The
+   more interesting namespaces are the intensionally specified ones.
+
+   Now, the next step is to relate those to users, contracts, and
+   nodes.  Both users and contracts interact with each other via
+   names.  Nodes verify transactions in given namespaces, and
+   transactions are i/o events across names ( which are used as
+   channels ). Any transaction that involves two separate
+   namespaces must be served by a collection of nodes that handles
+   those namespaces.  If there are no nodes that handle transactions
+   that combine the namespaces, then the transaction cannot happen.
+
+   If there are nodes that combine the namespaces, then the consensus
+   algorithm guarantees that all the nodes agree on the transactions.
+   More specifically, they agree on the winners of every race.  Thus,
+   there can never be double spend.  The biggest threat is to find
+   composite namespaces that served by few validators.  Fortunately,
+   you can see the validator power behind a namespace and decide
+   whether to trust that namespace.
+
+
 We have established that two processes must share a named channel to communicate, but what if multiple processes share the same channel? Transactional nondeterminism is introduced under two general conditions which render a resource contentious and susceptible to race conditions:
 
 ::
