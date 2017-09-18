@@ -34,7 +34,7 @@ For a blockchain solution of internet scale to be realizable, it, like the inter
    algorithm guarantees that all the nodes agree on the transactions.
    More specifically, they agree on the winners of every race.  Thus,
    there can never be double spend.  The biggest threat is to find
-   composite namespaces that served by few validators.  Fortunately,
+   composite namespaces that is served by few validators.  Fortunately,
    you can see the validator power behind a namespace and decide
    whether to trust that namespace.
 
