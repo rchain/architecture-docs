@@ -1,0 +1,98 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../execution_model/applications.rst:5
+msgid "Applications"
+msgstr ""
+
+#: ../../execution_model/applications.rst:7
+msgid ""
+"Any number and variety of applications can be built on top of the RChain "
+"Platform that provide a decentralized public compute utility. These "
+"include, for example:"
+msgstr ""
+
+#: ../../execution_model/applications.rst:9
+msgid "Wallets"
+msgstr ""
+
+#: ../../execution_model/applications.rst:10
+msgid "Exchanges"
+msgstr ""
+
+#: ../../execution_model/applications.rst:11
+msgid "Oracles & External Adapters"
+msgstr ""
+
+#: ../../execution_model/applications.rst:12
+msgid "Custom Protocols"
+msgstr ""
+
+#: ../../execution_model/applications.rst:13
+msgid "Smart Contracts"
+msgstr ""
+
+#: ../../execution_model/applications.rst:14
+msgid "Smart Properties"
+msgstr ""
+
+#: ../../execution_model/applications.rst:15
+msgid "DAOs"
+msgstr ""
+
+#: ../../execution_model/applications.rst:16
+msgid "Social Networks"
+msgstr ""
+
+#: ../../execution_model/applications.rst:17
+msgid "Marketplaces"
+msgstr ""
+
+#: ../../execution_model/applications.rst:20
+msgid "Contract Development & Deployment"
+msgstr ""
+
+#: ../../execution_model/applications.rst:22
+msgid ""
+"The purpose of this next discussion is to illustrate how namespaces allow"
+" for heterogeneous deployment of contracts and contract state. Namespaces"
+" is one of the crucial features for sharding, and with that we get the "
+"benefits analogous of sidechains, private chains, consortium chains, as "
+"well as the distinction between test and production, all under one "
+"rubric."
+msgstr ""
+
+#: ../../execution_model/applications.rst:24
+msgid ""
+"For example, the following diagram depicts some of the possible "
+"development, test, and deployment configurations and considerations, and "
+"how release management is enabled using namespaces and sharding."
+msgstr ""
+
+#: ../../execution_model/applications.rst:31
+msgid "*Figure - Development & Deployment Possibilities*"
+msgstr ""
+
+#: ../../execution_model/applications.rst:34
+msgid ""
+"We’ll collaborate with IDE tool vendors to integrate Rholang and "
+"validation tools."
+msgstr ""
+

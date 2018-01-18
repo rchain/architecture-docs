@@ -1,0 +1,230 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../execution_model/consensus_protocol.rst:5
+msgid "Casper Consensus Algorithm"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:6
+msgid ""
+"Nodes that take on the validation role have the function to achieve "
+"consensus on the blockchain state. Validators also assure a blockchain is"
+" self-consistent and hasn’t been tampered with and protect against Sybil "
+"attack."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:8
+msgid ""
+"The Casper consensus protocol includes stake-based bonding, unbonding, "
+"and betting cycles that result in consensus. The purpose of a "
+"decentralized consensus protocol is to assure consistency of blockchains "
+"or partial blockchains (based on namespaces), across multiple nodes. To "
+"achieve this any consensus protocol should produce an outcome that is a "
+"proof of the safety and termination properties of class of consensus "
+"protocols, under a wide class of fault and network conditions."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:10
+msgid ""
+"RChain’s consensus protocol uses stake-based betting, similar to "
+"Ethereum’s Casper design. This is called a “proof-of-stake” protocol by "
+"the broader blockchain community, but that label leads to some "
+"misperceptions including overstated centralization risks. Validators are "
+"bonded with a stake, which is a security deposit placed in an escrow-like"
+" contract. Unlike Ethereum’s betting on a whole blocks, RChain’s betting "
+"is on logical propositions. A proposition is a set of statements about "
+"the blockchain, for example: which transactions (i.e. proposed state "
+"transitions) must be included, in which order, which transactions should "
+"not be included, or other properties. A concrete example of a proposition"
+" is: “transaction t should occur before transaction s” and “transaction r"
+" should not be included”. For more information, see the draft "
+"specification `Logic for Betting on Propositions (v0.7)`_."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:14
+msgid ""
+"At certain rendezvous points validators compute a maximally consistent "
+"subset of propositions. In some cases, this can be computationally hard "
+"and take a long time. Because of this a time-out will exist, which, if "
+"reached forces validators to submit smaller propositions. Once there is "
+"consensus among the validators on the maximally consistent subset of "
+"propositions, the next block can easily be materialized by finding a "
+"minimal model under which the propositions are valid. Because of this "
+"design and because of the transactional isolation per namespace, most "
+"blocks can be synthesized in parallel."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:16
+msgid "Let’s walk through the typical sequence:"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:18
+msgid ""
+"A validator is a node role. Validators each put up a stake, which is akin"
+" to a bond, in order to assure the other validators that they will be "
+"good actors. The stake is at risk if they aren’t a good actor."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:19
+msgid "Clients send transaction requests to validators."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:20
+msgid ""
+"Receiving validators then create a proposition including a recent "
+"transaction."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:22
+msgid ""
+"*Note: consensus is executed only when transactional history is "
+"inconsistent between nodes*"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:24
+msgid "There are sets of betting cycles among nodes:"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:26
+msgid "The originating validator prepares a bet, which includes the following:"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:28
+msgid "*source* = the origin of the bet"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:29
+msgid "*target* = the destination or target for the bet"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:30
+msgid ""
+"*claim* = the claim of the bet. This is a block, a proposition, or "
+"maximally consistent subset of propositions"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:31
+msgid ""
+"*belief* = the player’s confidence in the claim given the evidence in the"
+" justification. This is a denotation of the betting        strategy used "
+"by the validator."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:32
+msgid "justification. This is evidence for why it is a reasonable bet."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:34
+msgid "The validator places the bet."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:36
+msgid ""
+"The receiving validator evaluates the bet. Note, these justification "
+"structures can be used to determine various properties of the network. "
+"For example, an algorithm can detect equivocation, or create a "
+"justification graph, or detect when too much information is in the bet. "
+"Note how attack vectors are considered, and how game theory discipline "
+"has been applied to the protocol design."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:38
+msgid "The betting cycles continue working toward a proof. Note:"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:40
+msgid ""
+"The goal of the betting cycle is for the validator nodes to reach "
+"consensus on a maximally consistent set of propositions."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:41
+msgid ""
+"A prerequisite condition for the proof is that ⅔ of the validators are "
+"behaving in a reasonable fashion."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:42
+msgid "Eventually the betting cycle will and must converge."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:43
+msgid "The processing is partially synchronous during convergence."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:44
+msgid ""
+"With by-proposition betting, the design will be able to synthesize much "
+"bigger chunks of the blockchain all at once. Cycles can converge quickly "
+"when there are no conflicts. The point of the by-proposition approach is "
+"that several blocks can be materialized all at once. This proposal gets "
+"around block size limits. There's no argument about it because the "
+"maximal consistent set of propositions might allow for hundreds or even "
+"thousands of blocks to be agreed all at once. This will create a huge "
+"speed advantage over existing blockchains."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:45
+msgid ""
+"For each betting cycle a given validator node may win or lose their bet "
+"amount."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:47
+msgid ""
+"6. Scalability is achieved via a fine-grained partitioning of proposals "
+"and via nesting (recursion) of the consensus protocol. Blocks are "
+"synthesized by the protocol when there is agreement on the set of "
+"maximally-consistent propositions, and this occurs when there is a proof "
+"of convergence among the bets. The current betting cycle then collapses."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:50
+msgid "For additional information, see:"
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:52
+msgid ""
+"`Consensus Games`_: An Axiomatic Framework for Analyzing and Comparing a "
+"Wide Range of Consensus Protocols."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:53
+msgid ""
+"For more detail on RChain’s consensus protocol, see `Logic for Betting --"
+" On Betting on Propositions`_."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:54
+msgid ""
+"To find out more about Ethereum’s Casper and discussions in the `Ethereum"
+" Research Gitter`_ and `Reddit/ethereum`_."
+msgstr ""
+
+#: ../../execution_model/consensus_protocol.rst:55
+msgid ""
+"The math underlying the betting cycle is an Iterated Function System. "
+"Convergence corresponds to having attractors (fix-points) to IFS. With "
+"this, we can prove things about convergence with awards and punishments. "
+"We can give validator-node-betters maximum freedom. The only ones that "
+"are left standing are validators that are engaged in convergent betting "
+"behavior."
+msgstr ""
+

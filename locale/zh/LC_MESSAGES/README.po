@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../README.rst:3
+msgid "RChain Architecture"
+msgstr ""
+
+#: ../../README.rst:5
+msgid ""
+"The RChain platform architecture description provides a high-level "
+"blueprint to build a decentralized, economically sustainable public "
+"compute infrastructure. The RChain design is inspired by that of earlier "
+"blockchains; it unifies decades of research across the fields of "
+"concurrent and distributed computation, formal semantics, and programming"
+" language design. The RChain platform boasts a modular, end-to-end design"
+" that commits to correct-by-construction software and industrial "
+"extensibility."
+msgstr ""
+
+#: ../../README.rst:8
+msgid "GETTING STARTED"
+msgstr ""
+
+#: ../../README.rst:10
+msgid ""
+"This project uses Sphinx (http://www.sphinx-doc.org/en/stable/index.html)"
+" to build html that is published to Read the Docs. To run this "
+"documentation on your computer, you should do the following:"
+msgstr ""
+
+#: ../../README.rst:13
+msgid "Prerequisites"
+msgstr ""
+
+#: ../../README.rst:14
+msgid "Python 2.6 or later"
+msgstr ""
+
+#: ../../README.rst:15
+msgid "git"
+msgstr ""
+
+#: ../../README.rst:18
+msgid "Install Sphinx, etc"
+msgstr ""
+
+#: ../../README.rst:19
+msgid ""
+"For OSX/Linux users (based on instructions here: https://read-the-"
+"docs.readthedocs.org/en/latest/getting_started.html)"
+msgstr ""
+
+#: ../../README.rst:21
+msgid "From command line: ``sudo pip install sphinx``"
+msgstr ""
+
+#: ../../README.rst:23
+msgid "For Windows users:"
+msgstr ""
+
+#: ../../README.rst:25
+msgid ""
+"http://www.sphinx-doc.org/en/stable/install.html#windows-install-python-"
+"and-sphinx"
+msgstr ""
+
+#: ../../README.rst:28
+msgid "Get source code"
+msgstr ""
+
+#: ../../README.rst:29
+msgid "git clone: https://github.com/rchain/architecture-docs.git"
+msgstr ""
+
+#: ../../README.rst:32
+msgid "Build and view html"
+msgstr ""
+
+#: ../../README.rst:33
+msgid "In a terminal window, go to your architecture-docs directory."
+msgstr ""
+
+#: ../../README.rst:34
+msgid "``make html``"
+msgstr ""
+
+#: ../../README.rst:35
+msgid "``cd build/html``"
+msgstr ""
+
+#: ../../README.rst:36
+msgid "``open index.html`` (open in web browser)"
+msgstr ""
+
+#: ../../README.rst:37
+msgid ""
+"Tip: each time you run ``make html``, just reload your browser to view "
+"changes"
+msgstr ""
+

@@ -1,0 +1,143 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../introduction/motivation.rst:3
+msgid "Motivation"
+msgstr ""
+
+#: ../../introduction/motivation.rst:5
+msgid ""
+"The decentralization movement is ambitious and will provide awesome "
+"opportunities for new social and economic interactions. Decentralization "
+"also provides a counterbalance to abuses and corruption that occasionally"
+" occur in large organizations where power is concentrated. "
+"Decentralization supports self-determination and the rights of "
+"individuals to self-organize. Of course, the realities of a more "
+"decentralized world will also have its challenges and issues, such as how"
+" the needs of international law, public good, and compassion will be "
+"honored."
+msgstr ""
+
+#: ../../introduction/motivation.rst:7
+msgid ""
+"We admire the awesome innovations of Bitcoin, Ethereum, and other "
+"platforms that have dramatically advanced the state of decentralized "
+"systems and ushered in this new age of cryptocurrency and smart "
+"contracts. However, we also see symptoms that those projects did not use "
+"the best engineering and formal models for scaling and correctness in "
+"order to support mission-critical solutions. The ongoing debates about "
+"scaling and reliability are symptomatic of foundational architectural "
+"issues. For example, is it a scalable design to insist on an explicit "
+"serialized processing order for all of a blockchain's transactions "
+"conducted on planet earth?"
+msgstr ""
+
+#: ../../introduction/motivation.rst:9
+msgid ""
+"To become a blockchain solution with industrial-scale utility, RChain "
+"must provide content delivery at the scale of Facebook and support "
+"transactions at the speed of Visa. After due diligence on the current "
+"state of many blockchain projects, after deep collaboration with other "
+"blockchain developers, and after understanding their respective roadmaps,"
+" we concluded that the current and near-term Blockchain architectures "
+"cannot meet these requirements. In mid-2016, we resolved to build a "
+"better blockchain architecture."
+msgstr ""
+
+#: ../../introduction/motivation.rst:11
+msgid ""
+"Together with the blockchain industry, we are still at the dawn of this "
+"decentralized movement. Now is the time to lay down a solid architectural"
+" foundation. The journey ahead for those who share this ambitious vision "
+"is as challenging as it is worthwhile, and this document summarizes that "
+"vision and how we seek to accomplish it."
+msgstr ""
+
+#: ../../introduction/motivation.rst:15
+msgid "Approach"
+msgstr ""
+
+#: ../../introduction/motivation.rst:16
+msgid "We began by admitting the following minimal requirements:"
+msgstr ""
+
+#: ../../introduction/motivation.rst:18
+msgid "Dynamic, responsive, and provably correct smart contracts."
+msgstr ""
+
+#: ../../introduction/motivation.rst:20
+msgid "Concurrent execution of independent smart contracts."
+msgstr ""
+
+#: ../../introduction/motivation.rst:22
+msgid ""
+"Data separation to reduce unnecessary data replication of otherwise "
+"independent tokens and smart contracts."
+msgstr ""
+
+#: ../../introduction/motivation.rst:24
+msgid "Dynamic and responsive node-to-node communication."
+msgstr ""
+
+#: ../../introduction/motivation.rst:26
+msgid "Computationally non-intensive consensus/validation protocol."
+msgstr ""
+
+#: ../../introduction/motivation.rst:28
+msgid ""
+"Building quality software is challenging. It is easier to build "
+"\"clever\" software; however, the resulting software is often of poor "
+"quality, riddled with bugs, difficult to maintain, and difficult to "
+"evolve. Inheriting and working on such software can be hellish for "
+"development teams, not to mention their customers. When building an open-"
+"source system to support a mission-critical economy, we reject a minimal-"
+"success mindset in favor of end-to-end correctness."
+msgstr ""
+
+#: ../../introduction/motivation.rst:30
+msgid "To accomplish the requirements above, our design approach is committed to:"
+msgstr ""
+
+#: ../../introduction/motivation.rst:32
+msgid ""
+"A computational model that assumes fine-grained concurrency and dynamic "
+"network topology."
+msgstr ""
+
+#: ../../introduction/motivation.rst:34
+msgid "A composable and dynamic resource addressing scheme."
+msgstr ""
+
+#: ../../introduction/motivation.rst:36
+msgid ""
+"The functional programming paradigm, as it more naturally accommodates "
+"distributed and parallel processing."
+msgstr ""
+
+#: ../../introduction/motivation.rst:38
+msgid ""
+"Formally verified, correct-by-construction protocols which leverage model"
+" checking and theorem proving."
+msgstr ""
+
+#: ../../introduction/motivation.rst:40
+msgid "The principles of intension and compositionality."
+msgstr ""
+

@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../introduction/architecture-overview.rst:3
+msgid "Architecture Overview"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:4
+msgid "The primary components of the architecture are depicted below:"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:12
+msgid "Figure - The RChain Architecture"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:15
+msgid ""
+"The execution architecture may rely on some operating-specific external "
+"components, but these are kept to a minium by running on the JVM. The "
+"RhoVM Execution Envirionment runs on the JVM, and then the individual "
+"RhoVM instances run within the RhoVM Execution Environment."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:17
+msgid ""
+"The **RhoVM Execution Environment** provides the context for contract "
+"execution, the lifecycle of individual RhoVM instances."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:19
+msgid "Describing the remaining layers depicted, from the bottom-up:"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:21
+msgid ""
+"**P2P Communication** supports node-to-node communications. This will be "
+"a TBD commercial-grade, open-source component such as ZeroMQ or RabbitMQ."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:23
+msgid ""
+"**Storage** is via MongoDB, a key-value datastore. The primary in-memory "
+"data structure is a radix tree (trie)."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:25
+msgid ""
+"**Data Abastraction Layer** provides monadic access to data and other "
+"nodes consistently, as if they were local. This layer is an evolution of "
+"the SpecialK technology (including its decentralized content delivery, "
+"key-value database, inter-node messaging, and data access patterns). This"
+" layer is being implemented in Rholang, and so it relies on the RhoVM-EE "
+"and Rholang’s **Foreign Function Interface** to access P2P Communication "
+"and Storage."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:27
+msgid ""
+"**Consensus** (Casper Proof-of-Stake validation/consensus Protocol) "
+"assures node consensus on the state of each blockchain."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:29
+msgid ""
+"All RChain nodes include essential **System Contracts**, which are "
+"written in Rholang. System processes include those for running RhoVM "
+"instances, load balancing, managing dApp contracts, tokens, node trust, "
+"and others."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:34
+msgid ""
+"The Token system contracts include those required to run protocols that "
+"interact beyond the local node. These are *protocol access tokens*. There"
+" are two types of PATs:"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:32
+msgid ""
+"**Staking tokens** are those required to run consensus, including the "
+"**RChain Rev** token. Additional staking tokens may be introduced through"
+" official software releases. A staking token is required to pay for node "
+"*resources*. **Phlogiston** is RChain's measure of the cost of resources "
+"(similar to *gas* in Ethereum), and it is multi-dimensional and depends "
+"on usage of compute (depending on instruction), storage (depending on "
+"size and duration), and bandwidth (quality-of-service and throughput) "
+"resources.  See also section entitled \"Rate-limiting Mechanism.\""
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:34
+msgid ""
+"**Application tokens** are optional and may be required to run certain "
+"dApps. New application tokens can be introduced at any time by a dApp "
+"developer, and are similar to Ethereum's ERC20 tokens."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:36
+msgid ""
+"The **Rho API** provides access to Execution Environment and the Node. "
+"**Language Bindings** will be available for programming languages written"
+" against the JVM, and potentially others.  A **REPL** (Read, Execute, "
+"Print, and Loop) development tool will be provided. Each node will have a"
+" **Command Line Interface** CLI.  A **Node API** will expose features via"
+" http and json RPC."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:39
+msgid "Concurrency vs. Parallelism"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:40
+msgid ""
+"It is essential the reader understand the implications of concurrent "
+"execution. When we say, “concurrency”, we are not referring to the "
+"simultaneous execution of multiple processes. That is parallelism. "
+"*Concurrency* is a structural property which allows independent processes"
+" to compose into complex processes. Processes are considered independent "
+"if they do not compete for resources."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:42
+msgid ""
+"Since RChain has committed to concurrency in Rholang and RhoVM, we'll see"
+" that we will get parallelism and asynchronicity as “free” emergent "
+"properties. Whether the platform is running on one processor or 1,000,000"
+" processors, the RChain design is scalable. Having said that, the reader "
+"of this document will notice design patterns of concurrent computation "
+"throughout."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:46
+msgid "Node and Blockchain Semantics"
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:47
+msgid ""
+"The following UML class diagram depicts the primary conceptual classes "
+"and structural relationships."
+msgstr ""
+
+#: ../../introduction/architecture-overview.rst:53
+msgid "Figure - RChain Blockchain Structural Semantics"
+msgstr ""
+

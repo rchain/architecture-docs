@@ -1,0 +1,390 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../contracts/namespaces.rst:5
+msgid "Namespace Logic"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:7
+msgid ""
+"For a blockchain solution of internet scale to be realizable, it, like "
+"the internet, must possess a logic to reason about the “location” of a "
+"resource. Specifically, how do we reference a resource? How do we "
+"determine which agents can access that resource under what conditions? In"
+" contrast to many other blockchains, where addresses are flat public keys"
+" (or hashes thereof), RChain’s virtual address space will be partitioned "
+"into namespaces. **In a very general explanation, a namespace is a set of"
+" named channels.** Because channels are quite often implemented as data "
+"stores, a namespace is equivalently a set of contentious resources."
+msgstr ""
+
+#: ../../contracts/namespaces.rst
+msgid "Q & A: Namespaces and double-spending"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:11
+msgid ""
+"Q: Suppose Alice, Bob, and Carol are each in distinct namespaces and we "
+"have two payments: Alice-to-Bob and Alice-to-Carol.  If I'm a node that "
+"only wants to care about Alice, how can I know that Alice doesn't double-"
+"spend?"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:16
+msgid ""
+"A: A namespace is just a collection of names. All blockchain addresses "
+"are names.  A collection can be described in a few ways. One of them is "
+"extensionally by explicitly spelling out each item in the collection.  "
+"Another way is intensionally by providing a rule or program that either "
+"generates the collection or recognizes when an item is in the collection "
+"or out of the collection.  The more interesting namespaces are the "
+"intensionally specified ones."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:24
+msgid ""
+"Now, the next step is to relate those to users, contracts, and nodes.  "
+"Both users and contracts interact with each other via names.  Nodes "
+"verify transactions in given namespaces, and transactions are i/o events "
+"across names ( which are used as channels ). Any transaction that "
+"involves two separate namespaces must be served by a collection of nodes "
+"that handles those namespaces.  If there are no nodes that handle "
+"transactions that combine the namespaces, then the transaction cannot "
+"happen."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:33
+msgid ""
+"If there are nodes that combine the namespaces, then the consensus "
+"algorithm guarantees that all the nodes agree on the transactions. More "
+"specifically, they agree on the winners of every race.  Thus, there can "
+"never be double spend.  The biggest threat is to find composite "
+"namespaces that is served by few validators.  Fortunately, you can see "
+"the validator power behind a namespace and decide whether to trust that "
+"namespace."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:42
+msgid ""
+"We have established that two processes must share a named channel to "
+"communicate, but what if multiple processes share the same channel? "
+"Transactional nondeterminism is introduced under two general conditions "
+"which render a resource contentious and susceptible to race conditions:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:49
+msgid ""
+"The first race condition occurs when multiple clients in parallel "
+"composition compete to *receive* a data resource on a named channel. In "
+"this case :code:`P1` and :code:`P2` , are waiting, on the named channel "
+":code:`x`,  for the resource :code:`@Q` being sent on :code:`x` by "
+"another process. The clients will execute their continuations if and only"
+" if the correct value is witnessed at that location. In other cases where"
+" many clients are competing, many reductions may be possible, but, in "
+"this case, only one of two may result. One where :code:`P1` receives "
+":code:`@Q` first and one where :code:`P2` receives :code:`@Q` first, both"
+" of which may return different results when :code:`@Q` is substituted "
+"into their respective protocol bodies."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:56
+msgid ""
+"The second race condition occurs when two clients compete to *send* a "
+"data resource on a named channel. In this case, two clients are each "
+"competing to send a data resource :code:`@Q` to the client at the named "
+"channel :code:`x`, but only one of two transactions may occur - one where"
+" the receiving client receives :code:`@Q1` first and one where it "
+"receives :code:`@Q2` first, both of which may return different results "
+"when substituted into the protocol body of :code:`P`."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:58
+msgid ""
+"For protocols which compete for resources, this level of nondeterminism "
+"is unavoidable. Later, in the section on consensus, we will describe how "
+"the consensus algorithm maintains replicated state by converging on one "
+"of the many possible transaction occurrences in a nondeterministic "
+"process. For now, observe how simply redefining a name constrains "
+"reduction in the first race condition:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:65
+msgid "--and the second race condition:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:72
+msgid ""
+"In both cases, the channel, and the data resource being communicated, is "
+"no longer contentious simply because they are now communicating over two "
+"distinct, named channels. In other words, they are in separate "
+"namespaces. Additionally, names are provably unguessable, so they can "
+"only be acquired when a discretionary external process gives them. "
+"Because a name is unguessable, a resource is only visible to the "
+"processes/contracts that have knowledge of that name [5]_. Hence, sets of"
+" processes that execute over non-conflicting sets of named channels i.e "
+"sets of transactions that execute in separate namespaces, may execute in "
+"parallel, as demonstrated below:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:81
+msgid ""
+"The set of transactions executing in parallel in the namespace :code:`x`,"
+" and the set of transactions executing in the namespace :code:`v`, are "
+"double-blind; they are anonymous to each other unless introduced by an "
+"auxillary process. Both sets of transactions are communicating the same "
+"resource, :code:`@Q`, and even requiring that :code:`@Q` meets the same "
+":code:`ptrn`, yet no race conditions arise because each output has a "
+"single input counter-part, and the transactions occur in separate "
+"namespaces. This approach to isolating sets of process/contract "
+"interactions essentially partitions RChain’s address space into many "
+"independent transactional environments, each of which are internally "
+"concurrent and may execute in parallel with one another."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:93
+msgid ""
+"Still, in this representation, the fact remains that resources are "
+"visible to processes/contracts which know the name of a channel and "
+"satisfy a pattern match. After partitioning the address space into a "
+"multiplex of isolated transactional environments, how do we further "
+"refine the type of process/contract that can interact with a resource in "
+"a similar environment? -- under what conditions, and to what extent, may "
+"it do so? For that we turn to definitions."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:96
+msgid "Namespace Definitions"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:97
+msgid ""
+"**A namespace definition is a formulaic description of the minimum "
+"conditions required for a process/contract to function in a namespace.** "
+"In point of fact, the consistency of a namespace is immediately and "
+"exclusively dependent on how that space defines a name, which may vary "
+"greatly depending on the intended function of the contracts the namespace"
+" definition describes."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:99
+msgid ""
+"A name satisfies a definition, or it does not; it functions, or it does "
+"not. The following namespace definition is implemented as an ‘if "
+"conditional’ in the interaction which depicts a set of processes sending "
+"a set of contracts to a set of named addresses that comprise a namespace:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:112
+msgid ""
+"A set of contracts, :code:`contract1...contractn` , are sent to the set "
+"of channels (namespace) :code:`address1...addressn`."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:114
+msgid ""
+"In parallel, a process listens for input on every channel in the "
+":code:`address` namespace."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:116
+msgid ""
+"When a contract is received on any one of the channels, it is supplied to"
+" :code:`if cond.`, which checks the namespace origin, the address of "
+"sender, the behavior of the contract, the structure of the contract, as "
+"well as the size of data the contract carries."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:118
+msgid ""
+"If those properties are consistent with those denoted by the "
+":code:`address` namespace definition, continuation :code:`P` is executed "
+"with :code:`contract` as its argument."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:120
+msgid ""
+"A namespace definition effectively bounds the types of interactions that "
+"may occur in a namespace - with every contract existing in the space "
+"demonstrating a common and predictable behavior. That is, the state "
+"alterations invoked by a contract residing in a namespace are necessarily"
+" authorized, defined, and correct for that namespace. This design choice "
+"makes fast datalog-style queries against namespaces very convenient and "
+"exceedingly useful."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:122
+msgid ""
+"A namespace definition may control the interactions that occur in the "
+"space, for example, by specifying:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:124
+msgid "Accepted Addresses"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:125
+msgid "Accepted Namespaces"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:126
+msgid "Accepted Behavioral Types"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:127
+msgid "Max/Min Data Size"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:128
+msgid "I/O Structure"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:130
+msgid ""
+"A definition may, and often will, specify a set of accepted namespaces "
+"and addresses which can communicate with the agents it defines."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:132
+msgid ""
+"Note the check against behavioral types in the graphic above. This exists"
+" to ensure that the sequence of operations expressed by the contract is "
+"consistent with the safety specification of the namespace. Behavioral "
+"type checks may evaluate properties of liveness, termination, deadlock "
+"freedom, and resource synchronization - all properties which ensure "
+"maximally “safe” state alterations of the resources within the namespace."
+" Because behavioral types denote operational sequencing, the behavioral "
+"type criteria may specify post-conditions of the contract, which may, in "
+"turn, satisfy the preconditions of a subsequent namespace. As a result, "
+"the namespace framework supports the safe composition, or \"chaining\" "
+"together, of transactional environments."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:135
+msgid "Composable Namespaces - Resource Addressing"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:136
+msgid ""
+"Until this point, we’ve described named channels as flat, atomic entities"
+" of arbitrary breadth. With reflection, and internal structure on named "
+"channels, we achieve depth."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:138
+msgid ""
+"A namespace can be thought of as a URI (Uniform Resource Identifier), "
+"while the address of a resource can be thought of as a URL (Uniform "
+"Resource Locator). The path component of the URL, :code:`scheme://a/b/c`,"
+" for example, may be viewed as equivalent to an RChain address. That is, "
+"a series of nested channels that each take messages, with the named "
+"channel, :code:`a`, being the “top” channel."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:140
+msgid ""
+"Observe, however, that URL paths do not always compose. Take "
+":code:`scheme://a/b/c` and :code:`scheme://a/b/d`. In a traditional URL "
+"scheme, the two do not compose to yield a path. However, every flat path "
+"is automatically a tree path, and, as trees, these *do* compose to yield "
+"a new tree :code:`scheme://a/b/c+d`. Therefore, trees afford a composable"
+" model for resource addressing."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:148
+msgid "Figure - Composable Tree Paths"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:151
+msgid ""
+"Above, unification works as a natural algorithm for matching and "
+"decomposing trees, and unification-based matching and decomposition "
+"provides the basis of query. To explore this claim let us rewrite our "
+"path/tree syntax in this form:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:158
+msgid "Then adapt syntax to the I/O actions of the rho-calculus:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:167
+msgid ""
+"The top expression denotes output - place the resource address "
+":code:`a(b(c,d)` at the named channel :code:`s`. The bottom expression "
+"denotes input. For the pattern that matches the form :code:`a(b(c,d))`, "
+"coming in on channel :code:`s`, if some precondition is met, execute "
+"continuation :code:`P`, with the address :code:`a(b(c,d)` as an argument."
+" Of course, this expression implicates :code:`s`, as a named channel. So "
+"the adapted channel structure is represented:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:175
+msgid "Figure - URL Scheme as Nested Channels in Tree Structure"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:178
+msgid ""
+"Given an existing address structure, and namespace access, a client may "
+"query for and send to names within that address structure. For example, "
+"when the rho-calculus I/O processes are placed in concurrent execution, "
+"the following expression denotes a function that places the quoted "
+"processes, :code:`(@Q,@R)` at the location, :code:`a(b(c,d))`:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:185
+msgid "The evaluation step is written symbolically:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:192
+msgid ""
+"That is, :code:`P` is executed in an environment in which :code:`c` is "
+"substituted for :code:`@Q`, and :code:`d` is substituted for :code:`@R`. "
+"The updated tree structure is represented as follows:"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:200
+msgid "Figure - Placing Processes at Channels"
+msgstr ""
+
+#: ../../contracts/namespaces.rst:203
+msgid ""
+"In addition to a flat set of channels e.g :code:`s1...sn` qualifying as a"
+" namespace, every channel with internal structure is, in itself, a "
+"namespace. Therefore, :code:`s`, :code:`a`, and :code:`b` may "
+"incrementally impose individual namespace definitions analogous to those "
+"given by a flat namespace. In practice, the internal structure of a named"
+" channel is an n-ary tree of arbitrary depth and complexity where the "
+"\"top\" channel, in this case :code:`s`, is but one of many possible "
+"names in :code:`s1...sn` that possess internal structure."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:205
+msgid ""
+"This resource addressing framework represents a step-by-step adaptation "
+"to what is the most widely used internet addressing standard in history. "
+"RChain achieves the compositional address space necessary for private, "
+"public, and consortium visibility by way of namespaces, but the obvious "
+"use-case addresses scalability. Not by chance, and not surprisingly, "
+"namespaces also offer a framework for RChain’s sharding solution."
+msgstr ""
+
+#: ../../contracts/namespaces.rst:208
+msgid "Namespace Logic - A Logic for a Reflective Higher-Order Calculus."
+msgstr ""
+

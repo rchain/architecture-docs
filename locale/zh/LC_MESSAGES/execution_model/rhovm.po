@@ -1,0 +1,386 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../execution_model/rhovm.rst:5
+msgid "Execution Model"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:8
+msgid "Overview"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:10
+msgid ""
+"Each instance of the **Rho Virtual Machine** (RhoVM) maintains an "
+"environment that repeatedly applies the low-level rho-calculus reduction "
+"rule, expressed in the high-level Rholang contracting language, to the "
+"elements of a persistent key-value data store [#]_. The \"state\" of "
+"RhoVM is analogous to the state of the blockchain."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:18
+msgid "*Figure - RhoVM as a back-to-back key-value store and execution engine*"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:21
+msgid ""
+"The execution of a contract affects the *environment* and *state* of an "
+"instance of RhoVM. In this case, the usage of the term \"environment\" "
+"does not refer to the execution environment exclusively, but to the "
+"configuration of the key-value structure. Environment and state are the "
+"mapping of names to locations in memory, and of locations in memory to "
+"values, respectively. Variables directly reference locations, which means"
+" that environment is equivalently a mapping of names to variables. A "
+"program typically modifies one or both of these associations at runtime. "
+"Environmental modifications occur with the lexical scoping rules of "
+"Rholang, and values may be simple or complex i.e. primitive values or "
+"complete programs."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:29
+msgid "*Figure - Two-stage binding from names to values*"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:32
+msgid ""
+"RhoVM operates against a key-value data store. **A state change of RhoVM "
+"is realized by an operation that modifies which key maps to what value.**"
+" Since, like Rholang, RhoVM is derived from the rho-calculus model of "
+"computation, that operation is the low-level rho-calculus reduction rule."
+" Effectively, the reduction rule, known as the \"COMM\" rule, is a "
+"substitution that defines a computation :code:`P` to be performed if a "
+"new value is observed at a key. A key is analogous to a name in that it "
+"references a location in memory which holds the value being substituted. "
+"In the following example, :code:`key` is a key and :code:`val` is the "
+"value being substituted:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:41
+msgid ""
+"Barring consensus, this is the computational model of a concurrent "
+"protocol that stores a contract on the blockchain. On some thread, the "
+"output process :code:`key!` stores the code of a contract :code:`@Q` at "
+"the location denoted by :code:`key`. On another thread running "
+"concurrently, the input process :code:`for ( val <- key )P` waits for a "
+"new value :code:`val` to appear at :code:`key`. When some :code:`val` "
+"appears at :code:`key`, in this case :code:`@Q`, :code:`P` is executed in"
+" an environment where :code:`@Q` is substituted for every occurrance of "
+":code:`val`. This operation modifies the value that :code:`key` "
+"references i.e. :code:`key` previously mapped to a generic :code:`val` "
+"but now it maps to the code of a contract :code:`@Q`, which qualifies a "
+"reduction as a state transition of the RhoVM."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:52
+msgid ""
+"The synchronization of an input and output process at :code:`key` is the "
+"event that triggers a state transition of RhoVM. At first glance, the "
+"output process, which stores the contract :code:`@Q` to the location "
+"denoted by :code:`key`, appears to constitute a state transition in "
+"itself. However, the rho-calculus reduction semantics have an "
+"*observability* requirement. For any future computation :code:`P` to "
+"occur, the reduction rule requires that the input process :code:`for ( "
+"val <- key) P` *observes* the assignment at :code:`key`. This is because "
+"only the input term defines future computation, which means that the "
+"output term alone is computationally insignificant. Therefore, no "
+"*observable* state transition occurs until the input and output terms "
+"synchronize at :code:`key`. This obvservability requirement is enforced "
+"at compile-time to prevent DDoS attacks by repeated output "
+":code:`key!(@Q)` invocation."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:54
+msgid ""
+"It has been demonstrated that an application of the rho-calculus "
+"reduction rule, to a data element of a key-value data store, constitutes "
+"a state transition of an instance of the RhoVM. The goal, however, is to "
+"verify and maintain every state transition that is specified by any "
+"contract to ever execute on an instance of the RhoVM. This means that the"
+" configuration history of the key-value data store must be maintained "
+"through modification, hence it being a *persistent* data structure. "
+"Therefore, each key must map to the verified history of reductions to "
+"occur at that location:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:62
+msgid "*Figure - Reduction/transaction history of a location in memory*"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:65
+msgid ""
+"Each key maps to a list of reductions which is, in fact, the "
+"\"transaction history\" of an address. The history of transactions "
+":code:`{ for(val1 <- keyn).P1 | keyn!(@Q1), ... , for(valn <- keyn).Pn | "
+"keyn!(@Qn) } -> { P1{@Q1/val1}, ... , Pn{@Qn/valn} }` denotes the "
+"modifications that have been made to the contract :code:`@Q`, where "
+":code:`@Qn` is the most current version in store. It is important to "
+"recognize that this scheme is a top-level transaction on the RChain "
+"platform. The messages being passed are contracts themselves, which most "
+"often occurs in client-system, or system-system interactions. However, "
+"each contract :code:`@Q` may, itself, execute many lower-level "
+"transactions on simpler values."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:67
+msgid ""
+"After a transaction/reduction is applied, it is subjected to consensus. "
+"Consensus verifies that the transaction history, :code:`{ for(val1 <- "
+"keyn).P1 | keyn!(@Q1) … for(valn <- keyn).Pn | keyn!(@Qn) }`, of "
+":code:`keyn`, is consistently replicated across all nodes running that "
+"instance of RhoVM. Once transaction histories are verified, the most "
+"recent transaction is added to the transaction history. The same "
+"consensus protocol is applied over the range of keys :code:`{ key1 -> "
+"val1 … keyn -> valn }` as transactions are committed to those locations."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:69
+msgid ""
+"By extension, transaction blocks represent sets of reductions that have "
+"been applied to elements of the persistent key-value store, and "
+"transaction histories represent verifiable snapshots of the state "
+"configurations and transitions of an instance of the Rho Virtual Machine."
+" Note that the consensus algorithm is applied if, and only if, node "
+"operators propose conflicting reduction histories."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:71
+msgid "To summarize:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:73
+msgid ""
+"RhoVM is the composition of the rho-calculus reduction semantics, "
+"expressed in Rholang, and a persistent key-value data store."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:74
+msgid ""
+"The rho-calculus reduction rule substitutes the value at a key for "
+"another value, where a named channel corresponds to a key, and values may"
+" be simple or complex."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:75
+msgid ""
+"Substitutions are transactions, which manifest as differences in the "
+"bytecode stored at a key. The accurate replication of those bytecode "
+"differences, across all nodes operating that instance of RhoVM, is "
+"verified via the consensus algorithm."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:77
+msgid ""
+"The RhoVM \"Execution Environment\" will later be introduced as the "
+"\"Rosette VM\". The choice to use Rosette VM hinged on two factors. "
+"First, the Rosette system has been in commercial production for over 20 "
+"years. Second, Rosette VM's memory model, model of computation, and "
+"runtime systems provide the support for concurrency that RhoVM requires. "
+"RChain has pledged to perform a modernized re-implementation of Rosette "
+"VM, in Scala, to serve as the initial RhoVM execution environment."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:80
+msgid "A Brief Aside on Scalability"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:82
+msgid ""
+"From the perspective of a traditional software platform, the notion of "
+"“parallel” VM instances is redundant. It is assumed that VM instances "
+"operate independently of each other. Accordingly, there is no \"global\" "
+"RhoVM. Instead, there is a multiplex of independently operating RhoVM "
+"instances running on nodes across the network at any given moment - each "
+"executing and validating transactions for their associated shards, or as "
+"we have been referring to them, namespaces."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:84
+msgid ""
+"This design choice constitutes system-level concurrency on the RChain "
+"platform, where instruction-level concurrency is given by Rholang. Hence,"
+" when this publication refers to a single instance of RhoVM, it is "
+"assumed that there are a multiplex of RhoVM instances simultaneously "
+"executing a different set of contracts for a different namespace."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:87
+msgid "Execution Environment"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:90
+msgid "What Is Rosette?"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:92
+msgid ""
+"Rosette is a reflective, object-oriented language that achieves "
+"concurrency via actor semantics. The Rosette system (including the "
+"Rosette virtual machine) has been in commercial production since 1994 in "
+"Automated Teller Machines. Because of Rosette's demonstrated reliability,"
+" RChain Cooperative has committed to completing a clean-room "
+"reimplementation of Rosette VM in Scala (targeting the JVM). There are "
+"two main benefits of doing so. First, the Rosette language satisfies the "
+"instruction-level concurrency semantics expressed in Rholang. Second, "
+"Rosette VM was intentionally designed to support a multi-computer "
+"(distributed) system operating on an arbitrary number of processors. For "
+"more information, see `Mobile Process Calculi for Programming the "
+"Blockchain`_."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:97
+msgid "Model Checking and Theorem Proving"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:99
+msgid ""
+"In the RhoVM and potentially in upstream contracting languages, there are"
+" a variety of techniques and checks that will be applied during compile-"
+"time and runtime. These help address requirements such as how a developer"
+" and the system itself can know a priori that contracts that are well-"
+"typed will terminate. Formal verification will assure end-to-end "
+"correctness via model checking (such as in SLMC) and theorem proving "
+"(such as in Pro Verif). Additionally, these same checks can be applied "
+"during runtime as newly proposed assemblies of contracts are evaluated."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:102
+msgid "Discovery Service"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:104
+msgid ""
+"An advanced discovery feature that will ultimately be implemented enables"
+" searching for compatible contracts and assembling a new composite "
+"contract from other contracts. With the formal verification techniques, "
+"the author of the new contract can be guaranteed that when working "
+"contracts are plugged together they will work as well as a single "
+"contract."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:107
+msgid "Compilation"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:109
+msgid ""
+"To allow clients to execute contracts on the RhoVM, RChain has developed "
+"a compiler pipeline that starts with Rholang source-code. Rholang source-"
+"code first undergoes transcompilation into Rosette source-code. After "
+"analysis, the Rosette source-code is compiled into a Rosette intermediate"
+" representation (IRs), which undergoes optimization. From the Rosette IR,"
+" Rosette bytecode is synthesized and passed to the VM for local "
+"execution. Each translation step within the compilation pipeline is "
+"either provably correct, commercially tested in production systems, or "
+"both. This pipeline is illustrated in the figure below:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:117
+msgid "*Figure - RChain compilation strategy*"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:120
+msgid ""
+"**Analysis**: From Rholang source-code, or from another smart contract "
+"language that compiles to Rholang, this step includes:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:122
+msgid "analysis of computational complexity"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:123
+msgid "injection of code for the rate-limiting mechanism"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:124
+msgid "formal verification of transaction semantics"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:125
+msgid "desugaring of syntax"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:126
+msgid "simplification of functional equivalencies"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:128
+msgid "**Transcompilation**: From Rholang source-code, the compiler:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:130
+msgid ""
+"performs a source-to-source translation from Rholang to Rosette source-"
+"code."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:132
+msgid "**Analysis**: From Rosette source-code, the compiler performs:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:134
+msgid ""
+"lexical, syntactic, and semantic analysis of the Rosette syntax, "
+"construction of the AST; and"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:135
+msgid "synthesizes a Rosette intermediate representation"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:137
+msgid "**Optimization**: From Rosette IR, the compiler:"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:139
+msgid ""
+"optimizes the IR via redundancy elimination, subexpression elimination, "
+"dead-code elimination, constant folding, induction variable "
+"identification and strength simplification"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:140
+msgid "synthesizes bytecode to be executed by the Rosette VM"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:143
+msgid "Rate-limiting Mechanism"
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:145
+msgid ""
+"The compilation pipeline will implement a rate-limiting mechanism that is"
+" related to some calculation of processing, memory, storage, and "
+"bandwidth resources. Because the rho-calculus reduction rule is the "
+"atomic unit of computation on the RChain platform, the calculation of "
+"computation complexity is necessarily correlated to the amount of "
+"reductions performed per contract. This mechanism is needed in order to "
+"recover costs for the hardware and related operations. Although Ethereum "
+"(Gas) has similar needs, the mechanisms are different. Specifically, the "
+"metering will not be done at the VM level, but will be injected in the "
+"contract code during the analysis phase of compilation."
+msgstr ""
+
+#: ../../execution_model/rhovm.rst:147
+msgid ""
+"For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. "
+"Compiler work can be seen on `GitHub`_."
+msgstr ""
+

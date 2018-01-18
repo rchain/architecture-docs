@@ -1,0 +1,68 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../index.rst:8
+msgid "RChain Platform Architecture"
+msgstr ""
+
+#: ../../index.rst:10
+msgid "Ed Eykholt, Lucius Meredith, Joseph Denman"
+msgstr ""
+
+#: ../../index.rst:11
+msgid "2017-07-22"
+msgstr ""
+
+#: ../../index.rst:12
+msgid "RChain Cooperative"
+msgstr ""
+
+#: ../../index.rst:13
+msgid ""
+"This document is licensed under a `Creative Commons Attribution 4.0 "
+"International (CC BY 4.0) License`_"
+msgstr ""
+
+#: ../../index.rst:19
+msgid "Abstract"
+msgstr ""
+
+#: ../../index.rst:21
+msgid ""
+"The RChain Platform Architecture description provides a high-level "
+"blueprint of the RChain decentralized, economically sustainable public "
+"compute infrastructure. While the RChain design is inspired by that of "
+"earlier blockchains, it also realizes decades of research across the "
+"fields of concurrent and distributed computation, mathematics, and "
+"programming language design. The platform includes a modular, end-to-end "
+"design that commits to correct-by-construction software and industrial "
+"extensibility."
+msgstr ""
+
+#: ../../index.rst:23
+msgid ""
+"**Intended audience:** This document is written for software developers "
+"and innovators who are interested in decentralized systems."
+msgstr ""
+
+#: ../../index.rst:25
+msgid "Contents:"
+msgstr ""
+
