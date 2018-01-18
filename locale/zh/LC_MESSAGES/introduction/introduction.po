@@ -29,7 +29,7 @@ msgid ""
 "will host and execute programs popularly referred to as \"smart "
 "contracts\". It will be trustworthy, scalable, concurrent, with proof-of-"
 "stake consensus and content delivery."
-msgstr ""
+msgstr "测试"
 
 #: ../../introduction/introduction.rst:8
 msgid ""
