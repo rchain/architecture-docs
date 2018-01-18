@@ -4,31 +4,32 @@
 # package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: RChain Architecture 0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-18 16:26+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2018-01-18 21:53+0800\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.5\n"
+"Language: zh_CN\n"
 
 #: ../../introduction/architecture-overview.rst:3
 msgid "Architecture Overview"
-msgstr ""
+msgstr "架构概览"
 
 #: ../../introduction/architecture-overview.rst:4
 msgid "The primary components of the architecture are depicted below:"
-msgstr ""
+msgstr "RChain架构的主要构成组件如下所示："
 
 #: ../../introduction/architecture-overview.rst:12
 msgid "Figure - The RChain Architecture"
-msgstr ""
+msgstr "RChain架构图"
 
 #: ../../introduction/architecture-overview.rst:15
 msgid ""
@@ -37,45 +38,59 @@ msgid ""
 "RhoVM Execution Envirionment runs on the JVM, and then the individual "
 "RhoVM instances run within the RhoVM Execution Environment."
 msgstr ""
+"RChain的执行架构可能会依赖一些操作相关的外部组件，但是当运行在JVM上时，这"
+"些因素会被控制到最小的程度。RhoVM的执行环境运行在JVM之上，每一个RhoVM实例"
+"都拥有自己的执行环境。"
 
 #: ../../introduction/architecture-overview.rst:17
 msgid ""
 "The **RhoVM Execution Environment** provides the context for contract "
 "execution, the lifecycle of individual RhoVM instances."
 msgstr ""
+"**RhoVM执行环境**为合约的执行提供了上下文，以及一个RhoVM实例的生命周期。"
 
 #: ../../introduction/architecture-overview.rst:19
 msgid "Describing the remaining layers depicted, from the bottom-up:"
-msgstr ""
+msgstr "接下来自底向上地介绍架构中的每一层结构。"
 
 #: ../../introduction/architecture-overview.rst:21
 msgid ""
 "**P2P Communication** supports node-to-node communications. This will be "
 "a TBD commercial-grade, open-source component such as ZeroMQ or RabbitMQ."
 msgstr ""
+"**P2P 网络交互层** 提供了节点间进行信息交互的机制。具体采用那种方案需要根"
+"据商业级别进行确定，例如采用开源项目ZeroMQ或者RabbitMQ。"
 
 #: ../../introduction/architecture-overview.rst:23
 msgid ""
 "**Storage** is via MongoDB, a key-value datastore. The primary in-memory "
 "data structure is a radix tree (trie)."
 msgstr ""
+"**存储** RChain采用一种KV数据库MongoDB进行数据的存储，而内存中的数据主要"
+"通过前缀树来进行维护。"
 
 #: ../../introduction/architecture-overview.rst:25
 msgid ""
 "**Data Abastraction Layer** provides monadic access to data and other "
 "nodes consistently, as if they were local. This layer is an evolution of "
 "the SpecialK technology (including its decentralized content delivery, "
-"key-value database, inter-node messaging, and data access patterns). This"
-" layer is being implemented in Rholang, and so it relies on the RhoVM-EE "
-"and Rholang’s **Foreign Function Interface** to access P2P Communication "
-"and Storage."
+"key-value database, inter-node messaging, and data access patterns). "
+"This layer is being implemented in Rholang, and so it relies on the "
+"RhoVM-EE and Rholang’s **Foreign Function Interface** to access P2P "
+"Communication and Storage."
 msgstr ""
+"**数据抽象层** 提供了对本地节点或者远端节点数据访问的一致性。数据抽象层是"
+"SpecialK技术演变得来（包括去中心化内容传递，键值数据库，节点间消息传递和"
+"数据访问模式）。这一层将使用Rholang进行实现，因此该层将依赖于RhoVM执行环"
+"境以及Rholang的外部函数接口来实现P2P节点信息交互以及本地数据的访问。"
 
 #: ../../introduction/architecture-overview.rst:27
 msgid ""
 "**Consensus** (Casper Proof-of-Stake validation/consensus Protocol) "
 "assures node consensus on the state of each blockchain."
 msgstr ""
+"**共识** （Capser 一种基于权益证明的共识协议）将确保区块链网络中所有节点"
+"状态的一致性。"
 
 #: ../../introduction/architecture-overview.rst:29
 msgid ""
@@ -84,25 +99,37 @@ msgid ""
 "instances, load balancing, managing dApp contracts, tokens, node trust, "
 "and others."
 msgstr ""
+"在RChain网络中，所有节点都将包含最基本的使用Rholang进行开发的系统合约。系"
+"统启动过程中将使用这些系统合约来实现RhoVM实例的运行，负载均衡，dApp合约的"
+"管理，代币系统，节点信任以及其他一些功能。"
 
 #: ../../introduction/architecture-overview.rst:34
 msgid ""
 "The Token system contracts include those required to run protocols that "
-"interact beyond the local node. These are *protocol access tokens*. There"
-" are two types of PATs:"
+"interact beyond the local node. These are *protocol access tokens*. "
+"There are two types of PATs:"
 msgstr ""
+"代币系统合约包括了那些运行在本地节点之外进行协议交互所需的合约，这些是*协"
+"议访问代币*，他们可以分为以下两类："
 
 #: ../../introduction/architecture-overview.rst:32
 msgid ""
 "**Staking tokens** are those required to run consensus, including the "
-"**RChain Rev** token. Additional staking tokens may be introduced through"
-" official software releases. A staking token is required to pay for node "
-"*resources*. **Phlogiston** is RChain's measure of the cost of resources "
-"(similar to *gas* in Ethereum), and it is multi-dimensional and depends "
-"on usage of compute (depending on instruction), storage (depending on "
-"size and duration), and bandwidth (quality-of-service and throughput) "
-"resources.  See also section entitled \"Rate-limiting Mechanism.\""
+"**RChain Rev** token. Additional staking tokens may be introduced "
+"through official software releases. A staking token is required to pay "
+"for node *resources*. **Phlogiston** is RChain's measure of the cost of "
+"resources (similar to *gas* in Ethereum), and it is multi-dimensional "
+"and depends on usage of compute (depending on instruction), storage "
+"(depending on size and duration), and bandwidth (quality-of-service and "
+"throughput) resources.  See also section entitled \"Rate-limiting "
+"Mechanism.\""
 msgstr ""
+"**权益代币** 是用来运行共识算法的，包括了**RChain Rev**代币。另外权益代币"
+"可能会通过运行的rchain节点来进行分发。权益代币是用来支付对节点的资源使"
+"用。在RChain中，**燃料**用来测量系统资源的消耗（与以太坊中Gas的概念类"
+"似），这种机制是多维的，取决于计算资源（执行的指令数量），存储资源（存储"
+"数据的大小以及存储时间），网络带宽资源（网络服务质量以及吞吐量）的使用。"
+"其他可见“流量控制机制”一节。"
 
 #: ../../introduction/architecture-overview.rst:34
 msgid ""
@@ -110,52 +137,66 @@ msgid ""
 "dApps. New application tokens can be introduced at any time by a dApp "
 "developer, and are similar to Ethereum's ERC20 tokens."
 msgstr ""
+"**应用代币**，这类代币是可选的，用来运行特定的dApp。新的应用代币可以由"
+"dApp的开发者进行分发，这类代币与以太坊的ERC20代币类似。"
 
 #: ../../introduction/architecture-overview.rst:36
 msgid ""
 "The **Rho API** provides access to Execution Environment and the Node. "
-"**Language Bindings** will be available for programming languages written"
-" against the JVM, and potentially others.  A **REPL** (Read, Execute, "
-"Print, and Loop) development tool will be provided. Each node will have a"
-" **Command Line Interface** CLI.  A **Node API** will expose features via"
-" http and json RPC."
+"**Language Bindings** will be available for programming languages "
+"written against the JVM, and potentially others.  A **REPL** (Read, "
+"Execute, Print, and Loop) development tool will be provided. Each node "
+"will have a **Command Line Interface** CLI.  A **Node API** will expose "
+"features via http and json RPC."
 msgstr ""
+"**Rho API**为用户提供了访问执行环境以及节点信息的能力。 **语言绑定**使得"
+"所有基于JVM开发的编程语言以及其他潜在的编程语言都可以用来开发智能合约。一"
+"个**REPL**（读取、执行、输出、循环）开发工具将会提供给合约开发者。此外，"
+"每个节点都会有一个命令行界面。节点所有的API都会通过HTTP以及JSON RPC暴露给"
+"外部用户。"
 
 #: ../../introduction/architecture-overview.rst:39
 msgid "Concurrency vs. Parallelism"
-msgstr ""
+msgstr "并发 VS 并行"
 
 #: ../../introduction/architecture-overview.rst:40
 msgid ""
 "It is essential the reader understand the implications of concurrent "
 "execution. When we say, “concurrency”, we are not referring to the "
 "simultaneous execution of multiple processes. That is parallelism. "
-"*Concurrency* is a structural property which allows independent processes"
-" to compose into complex processes. Processes are considered independent "
-"if they do not compete for resources."
+"*Concurrency* is a structural property which allows independent "
+"processes to compose into complex processes. Processes are considered "
+"independent if they do not compete for resources."
 msgstr ""
+"读者理解并发执行的含义是至关重要。当我们说“并发”时，我们并不是指同时执行"
+"多个进程，这种情况应该用“并行”来描述。“并发”是一个结构化的属性，它允许多"
+"个独立的进程组成复杂的进程。当多个进程之间相互不竞争资源，我们称这些进程"
+"是独立的。"
 
 #: ../../introduction/architecture-overview.rst:42
 msgid ""
-"Since RChain has committed to concurrency in Rholang and RhoVM, we'll see"
-" that we will get parallelism and asynchronicity as “free” emergent "
-"properties. Whether the platform is running on one processor or 1,000,000"
-" processors, the RChain design is scalable. Having said that, the reader "
-"of this document will notice design patterns of concurrent computation "
-"throughout."
+"Since RChain has committed to concurrency in Rholang and RhoVM, we'll "
+"see that we will get parallelism and asynchronicity as “free” emergent "
+"properties. Whether the platform is running on one processor or "
+"1,000,000 processors, the RChain design is scalable. Having said that, "
+"the reader of this document will notice design patterns of concurrent "
+"computation throughout."
 msgstr ""
+"由于RChain致力于在Rholang和RhoVM中实现并发性，所以我们将看到并且获得并行"
+"性和异步性作为一个自由且重要的属性。 无论节点是在一个处理器还是在一百万个"
+"处理器上运行，RChain设计都是可扩展的。 话虽如此，本文档的读者将会注意到并"
+"发计算的设计模式。"
 
 #: ../../introduction/architecture-overview.rst:46
 msgid "Node and Blockchain Semantics"
-msgstr ""
+msgstr "节点和区块链语义"
 
 #: ../../introduction/architecture-overview.rst:47
 msgid ""
 "The following UML class diagram depicts the primary conceptual classes "
 "and structural relationships."
-msgstr ""
+msgstr "下面的UML类图描述了主要的概念类和结构之间的关系。"
 
 #: ../../introduction/architecture-overview.rst:53
 msgid "Figure - RChain Blockchain Structural Semantics"
-msgstr ""
-
+msgstr "RChain区块链结构语意图"
