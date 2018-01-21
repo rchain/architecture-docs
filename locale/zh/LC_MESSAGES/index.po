@@ -4,23 +4,24 @@
 # package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: RChain Architecture 0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-18 16:26+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2018-01-18 23:10+0800\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh\n"
+"X-Generator: Poedit 2.0.5\n"
 
 #: ../../index.rst:8
 msgid "RChain Platform Architecture"
-msgstr ""
+msgstr "RChain平台架构"
 
 #: ../../index.rst:10
 msgid "Ed Eykholt, Lucius Meredith, Joseph Denman"
@@ -32,17 +33,17 @@ msgstr ""
 
 #: ../../index.rst:12
 msgid "RChain Cooperative"
-msgstr ""
+msgstr "RChain社区"
 
 #: ../../index.rst:13
 msgid ""
 "This document is licensed under a `Creative Commons Attribution 4.0 "
 "International (CC BY 4.0) License`_"
-msgstr ""
+msgstr "本文档的授权证书为`知识共享署名4.0国际（CC BY 4.0）许可证书`。"
 
 #: ../../index.rst:19
 msgid "Abstract"
-msgstr ""
+msgstr "摘要"
 
 #: ../../index.rst:21
 msgid ""
@@ -55,14 +56,18 @@ msgid ""
 "design that commits to correct-by-construction software and industrial "
 "extensibility."
 msgstr ""
+"基于RChain的去中心化、经济可持续的公共计算基础设施，RChain平台架构描述提"
+"供了一个顶层的设计蓝图。在受到早期区块链设计的启发的同时，RChain还对并行"
+"与分布式计算、数学、编程语言设计这些领域的数十年研究成果进行了实现。"
+"RChain平台包含一个模块化的端到端设计，承诺交付设计期正确的软件和保证工业"
+"上的可扩展性。"
 
 #: ../../index.rst:23
 msgid ""
 "**Intended audience:** This document is written for software developers "
 "and innovators who are interested in decentralized systems."
-msgstr ""
+msgstr "**目标受众：**本文档提供给对分布式系统感兴趣的软件开发者与创新者。"
 
 #: ../../index.rst:25
 msgid "Contents:"
 msgstr ""
-
