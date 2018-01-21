@@ -66,8 +66,8 @@ msgstr ""
 msgid ""
 "**Intended audience:** This document is written for software developers "
 "and innovators who are interested in decentralized systems."
-msgstr "**目标受众：**本文档提供给对分布式系统感兴趣的软件开发者与创新者。"
+msgstr "**目标受众：** 本文档提供给对分布式系统感兴趣的软件开发者与创新者。"
 
 #: ../../index.rst:25
 msgid "Contents:"
-msgstr ""
+msgstr "内容:"
