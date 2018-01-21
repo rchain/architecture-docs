@@ -2,142 +2,160 @@
 # Copyright (C) 2017, RChain Cooperative
 # This file is distributed under the same license as the RChain Architecture
 # package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: RChain Architecture 0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-18 16:26+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2018-01-19 19:27+0800\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../../introduction/motivation.rst:3
 msgid "Motivation"
-msgstr ""
+msgstr "动机"
 
 #: ../../introduction/motivation.rst:5
 msgid ""
 "The decentralization movement is ambitious and will provide awesome "
-"opportunities for new social and economic interactions. Decentralization "
-"also provides a counterbalance to abuses and corruption that occasionally"
-" occur in large organizations where power is concentrated. "
-"Decentralization supports self-determination and the rights of "
-"individuals to self-organize. Of course, the realities of a more "
-"decentralized world will also have its challenges and issues, such as how"
-" the needs of international law, public good, and compassion will be "
-"honored."
+"opportunities for new social and economic interactions. Decentralization also "
+"provides a counterbalance to abuses and corruption that occasionally occur in "
+"large organizations where power is concentrated. Decentralization supports self-"
+"determination and the rights of individuals to self-organize. Of course, the "
+"realities of a more decentralized world will also have its challenges and "
+"issues, such as how the needs of international law, public good, and compassion "
+"will be honored."
 msgstr ""
+"去中心化运动雄心勃勃，将为新的社会和经济提供绝佳的机遇。同时，去中心化平衡了权力"
+"集中的大型组织偶尔发生的滥权和腐败。去中心化运动使得自我决策，分散的社区组织大量"
+"出现。当然，分散的社区组织也将会面临挑战和问题，如法律问题，公共利益如何兑现等问"
+"题。"
 
 #: ../../introduction/motivation.rst:7
 msgid ""
-"We admire the awesome innovations of Bitcoin, Ethereum, and other "
-"platforms that have dramatically advanced the state of decentralized "
-"systems and ushered in this new age of cryptocurrency and smart "
-"contracts. However, we also see symptoms that those projects did not use "
-"the best engineering and formal models for scaling and correctness in "
-"order to support mission-critical solutions. The ongoing debates about "
-"scaling and reliability are symptomatic of foundational architectural "
-"issues. For example, is it a scalable design to insist on an explicit "
-"serialized processing order for all of a blockchain's transactions "
+"We admire the awesome innovations of Bitcoin, Ethereum, and other platforms "
+"that have dramatically advanced the state of decentralized systems and ushered "
+"in this new age of cryptocurrency and smart contracts. However, we also see "
+"symptoms that those projects did not use the best engineering and formal models "
+"for scaling and correctness in order to support mission-critical solutions. The "
+"ongoing debates about scaling and reliability are symptomatic of foundational "
+"architectural issues. For example, is it a scalable design to insist on an "
+"explicit serialized processing order for all of a blockchain's transactions "
 "conducted on planet earth?"
 msgstr ""
+"我们非常欣赏比特币，以太坊和其他平台的巨大创新，这些平台大大推进了去中心化组织的"
+"发展，迎来了加密货币和智能合约的新时代。但是，我们也看到这些项目没有使用最好的工"
+"程模型以支持扩展。目前社区正在热烈讨论的扩容问题和可靠性问题正反应了这些平台底层"
+"架构的不足。例如，对于在地球上进行的所有区块链交易，坚持一个明确的序列化处理顺序"
+"是否是可扩展的设计？"
 
 #: ../../introduction/motivation.rst:9
 msgid ""
-"To become a blockchain solution with industrial-scale utility, RChain "
-"must provide content delivery at the scale of Facebook and support "
-"transactions at the speed of Visa. After due diligence on the current "
-"state of many blockchain projects, after deep collaboration with other "
-"blockchain developers, and after understanding their respective roadmaps,"
-" we concluded that the current and near-term Blockchain architectures "
-"cannot meet these requirements. In mid-2016, we resolved to build a "
-"better blockchain architecture."
+"To become a blockchain solution with industrial-scale utility, RChain must "
+"provide content delivery at the scale of Facebook and support transactions at "
+"the speed of Visa. After due diligence on the current state of many blockchain "
+"projects, after deep collaboration with other blockchain developers, and after "
+"understanding their respective roadmaps, we concluded that the current and near-"
+"term Blockchain architectures cannot meet these requirements. In mid-2016, we "
+"resolved to build a better blockchain architecture."
 msgstr ""
+"要成为具有工业规模的区块链解决方案，RChain必须以Facebook的规模提供内容支持，并以"
+"Visa的速度支持交易。对众多区块链项目的现状进行调查之后，与其他区块链开发团队的深"
+"入合作，了解了各自的路线图之后，我们得出结论：当前和近期的区块链架构不能满足这些"
+"要求。在2016年年中，我们决心设计一个更好的区块链架构。"
 
 #: ../../introduction/motivation.rst:11
 msgid ""
 "Together with the blockchain industry, we are still at the dawn of this "
-"decentralized movement. Now is the time to lay down a solid architectural"
-" foundation. The journey ahead for those who share this ambitious vision "
-"is as challenging as it is worthwhile, and this document summarizes that "
-"vision and how we seek to accomplish it."
+"decentralized movement. Now is the time to lay down a solid architectural "
+"foundation. The journey ahead for those who share this ambitious vision is as "
+"challenging as it is worthwhile, and this document summarizes that vision and "
+"how we seek to accomplish it."
 msgstr ""
+"与区块链行业一起，我们仍处于这种分散运动的曙光之中。现在是时候奠定坚实的基础。对"
+"于那些相信这个雄心勃勃的愿景的人来说，前进的道路是值得的，而且这份文件总结了这个"
+"愿景以及我们如何实现这一愿景。"
 
 #: ../../introduction/motivation.rst:15
 msgid "Approach"
-msgstr ""
+msgstr "途径"
 
 #: ../../introduction/motivation.rst:16
 msgid "We began by admitting the following minimal requirements:"
-msgstr ""
+msgstr "这个平台将实现以下最低要求："
 
 #: ../../introduction/motivation.rst:18
 msgid "Dynamic, responsive, and provably correct smart contracts."
-msgstr ""
+msgstr "动态的，响应式的，可证明正确的智能合约。"
 
 #: ../../introduction/motivation.rst:20
 msgid "Concurrent execution of independent smart contracts."
-msgstr ""
+msgstr "同时执行独立智能合约。"
 
 #: ../../introduction/motivation.rst:22
 msgid ""
-"Data separation to reduce unnecessary data replication of otherwise "
-"independent tokens and smart contracts."
-msgstr ""
+"Data separation to reduce unnecessary data replication of otherwise independent "
+"tokens and smart contracts."
+msgstr "数据分离以减少独立代币和智能合约的不必要的数据复制。"
 
 #: ../../introduction/motivation.rst:24
 msgid "Dynamic and responsive node-to-node communication."
-msgstr ""
+msgstr "保证节点到节点间通信的鲁棒性。"
 
 #: ../../introduction/motivation.rst:26
 msgid "Computationally non-intensive consensus/validation protocol."
-msgstr ""
+msgstr "非计算密集型的共识算法/验证协议。"
 
 #: ../../introduction/motivation.rst:28
 msgid ""
-"Building quality software is challenging. It is easier to build "
-"\"clever\" software; however, the resulting software is often of poor "
-"quality, riddled with bugs, difficult to maintain, and difficult to "
-"evolve. Inheriting and working on such software can be hellish for "
-"development teams, not to mention their customers. When building an open-"
-"source system to support a mission-critical economy, we reject a minimal-"
-"success mindset in favor of end-to-end correctness."
+"Building quality software is challenging. It is easier to build \"clever\" "
+"software; however, the resulting software is often of poor quality, riddled "
+"with bugs, difficult to maintain, and difficult to evolve. Inheriting and "
+"working on such software can be hellish for development teams, not to mention "
+"their customers. When building an open-source system to support a mission-"
+"critical economy, we reject a minimal-success mindset in favor of end-to-end "
+"correctness."
 msgstr ""
+"构建高质量的软件是非常具有挑战性的，相对来说构建一个看上去“聪明”的软件会容易的"
+"多。然而，由此产生的软件往往质量低劣，充满了缺陷，难以维护，难以发展。对于开发团"
+"队来说，继承和开发这样的软件对于他们以及他们的客户来说是残忍的。尤其是在构建一个"
+"用于支持重要任务的开源系统时，我们不会采用最小成功的思维模式，以此来保证软件的质"
+"量和正确性。"
 
 #: ../../introduction/motivation.rst:30
 msgid "To accomplish the requirements above, our design approach is committed to:"
-msgstr ""
+msgstr "为了达到上述要求，我们的设计致力于以下几个方面："
 
 #: ../../introduction/motivation.rst:32
 msgid ""
-"A computational model that assumes fine-grained concurrency and dynamic "
-"network topology."
-msgstr ""
+"A computational model that assumes fine-grained concurrency and dynamic network "
+"topology."
+msgstr "一个假定细粒度并行和动态网络拓扑的计算模型。"
 
 #: ../../introduction/motivation.rst:34
 msgid "A composable and dynamic resource addressing scheme."
-msgstr ""
+msgstr "一个可组合以及动态的资源寻址方案。"
 
 #: ../../introduction/motivation.rst:36
 msgid ""
 "The functional programming paradigm, as it more naturally accommodates "
 "distributed and parallel processing."
-msgstr ""
+msgstr "使用函数式编程范式，因为它更自然地适应分布式和并行处理。"
 
 #: ../../introduction/motivation.rst:38
 msgid ""
-"Formally verified, correct-by-construction protocols which leverage model"
-" checking and theorem proving."
-msgstr ""
+"Formally verified, correct-by-construction protocols which leverage model "
+"checking and theorem proving."
+msgstr "严谨正式的验证，利用模型检查和定理证明。"
 
 #: ../../introduction/motivation.rst:40
 msgid "The principles of intension and compositionality."
-msgstr ""
-
+msgstr "遵循内涵和复合性原则。"
