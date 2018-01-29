@@ -19,7 +19,7 @@ msgstr ""
 "Generated-By: Babel 2.3.4\n"
 
 #: ../../references.rst:6 ../../references.rst:9
-msgid "References"
+msgid "引用"
 msgstr ""
 
 #: ../../references.rst:10
