@@ -144,9 +144,8 @@ Rate-limiting Mechanism
 
 The compilation pipeline will implement a rate-limiting mechanism that is related to some calculation of processing, memory, storage, and bandwidth resources. Because the rho-calculus reduction rule is the atomic unit of computation on the RChain platform, the calculation of computation complexity is necessarily correlated to the amount of reductions performed per contract. This mechanism is needed in order to recover costs for the hardware and related operations. Although Ethereum (Gas) has similar needs, the mechanisms are different. Specifically, the metering will not be done at the VM level, but will be injected in the contract code during the analysis phase of compilation.
     
-For more details `join`_ the `#rhovm`_ channel on the RChain Slack here. Compiler work can be seen on `GitHub`_.
+For more details visit the `#developer wiki`_. Compiler work can be seen on `GitHub`_.
 
-.. _GitHub: https://github.com/rchain/Rholang/tree/master/src/main/scala/rholang/rosette
-.. _#rhovm: https://ourchain.slack.com/messages/rhovm/
-.. _join: http://slack.rchain.coop/
+.. _GitHub: https://github.com/rchain/rchain/tree/master/rholang
+.. _developer wiki: https://ourchain.slack.com/messages/rhovm/
 
