@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ../../references.rst:6 ../../references.rst:9
+msgid "References"
+msgstr "引用"
+
+#: ../../references.rst:10
+msgid ""
+"Miller, H., Burmako, E., Haller, P.: Reflection Overview, http://docs"
+".scala-lang.org/overviews/reflection/overview.html."
+msgstr ""
+
+#: ../../references.rst:11
+msgid ""
+"Scala: Sequence Comprehensions, http://docs.scala-lang.org/tutorials/tour"
+"/sequence-comprehensions.html."
+msgstr ""
+
+#: ../../references.rst:12
+msgid ""
+"Scala: Continuations, http://www.scala-lang.org/files/archive/api/2.11.8"
+"/scala-continuations-"
+"library/?_ga=1.83694417.619951421.1484537916#scala.util.continuations.package."
+msgstr ""
+
+#: ../../references.rst:13
+msgid ""
+"Scala: Case Classes, http://docs.scala-lang.org/tutorials/tour/case-"
+"classes."
+msgstr ""
+
+#: ../../references.rst:14
+msgid ""
+"Meredith, L., Radestock, M.: A Reflective Higher-order Calculus. "
+"Electronic Notes in Theoretical Computer Science. 141, 49–67, "
+"http://www.sciencedirect.com/science/article/pii/S1571066105051893?via%3Dihub"
+msgstr ""
+
+#: ../../references.rst:15
+msgid ""
+"Meredith L., Radestock M: Namespace Logic - A Logic for a Reflective "
+"Higher-Order Calculus. Trustworthy Global Computing Lecture Notes in "
+"Computer Science 353–369. doi: 10.1007/11580850_19, "
+"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.95.9601"
+msgstr ""
+

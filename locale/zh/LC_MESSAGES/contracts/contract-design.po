@@ -1,0 +1,876 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: 2018-01-29 21:05+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"X-Generator: Poedit 2.0.5\n"
+
+#: ../../contracts/contract-design.rst:5
+msgid "Contract Design"
+msgstr "合约设计"
+
+#: ../../contracts/contract-design.rst:7
+msgid ""
+"An RChain contract is a well-specified, well-behaved, and formally "
+"verified program that interacts with other such programs."
+msgstr ""
+"RChain合约是一个具有明确规定的、表现良好的并且被形式化验证过的程序，它可以"
+"与其他类似程序交互。"
+
+#: ../../contracts/contract-design.rst:9
+msgid ""
+"In this section, we cover contract interaction through the production of "
+"Rholang. To begin, we give an overview of contract interaction on the "
+"RChain platform. Afterwards, we describe the core formalism RChain uses to "
+"achieve formal verification and to model concurrency on many of RChain’s "
+"system layers. Then, we explore how that core model extends to accomodate "
+"best-in-industry surface-language standards such as reflection, "
+"parallelism, asynchronicity, reactive data streams, and compile-time "
+"security-type checks."
+msgstr ""
+"在本小节中，我们通过Rholang的诞生来覆盖智能合约交互的介绍。首先, 我们给出"
+"了 RChain 平台上智能合约交互的概述。之后, 我们描述了RChain用于实现形式化验"
+"证的核心形式化模型, 并在许多 RChain 系统层上对并发进行建模。然后, 我们将探"
+"讨如何将该核心模型进行扩展, 以适应业界最佳的接口语言标准, 如反射、并行、异"
+"步、响应式数据流和编译时安全类型检查。"
+
+#: ../../contracts/contract-design.rst:12
+msgid "Contract Overview"
+msgstr "合约概述"
+
+#: ../../contracts/contract-design.rst:14
+msgid "Used loosely as ‘contract’, **a smart contract is a process with:**"
+msgstr ""
+"作为 “合约” 的松耦合使用, 智能合约是一个具有以下内容的过程:\n"
+" "
+
+#: ../../contracts/contract-design.rst:16
+msgid "Persistent state"
+msgstr "持久化状态"
+
+#: ../../contracts/contract-design.rst:17
+msgid "Associated code"
+msgstr "相关代码"
+
+#: ../../contracts/contract-design.rst:18
+msgid "Associated RChain address(es)"
+msgstr "相关的RChain地址"
+
+#: ../../contracts/contract-design.rst:20
+msgid ""
+"Important to remember is that a smart contract is of arbitrary complexity. "
+"It may refer to an atomic operation or to a superset of protocols which "
+"compose to form a complex protocol."
+msgstr ""
+"要记住的一个要点是智能合约具有任意复杂度的特性。它可能是一个原子操作或是一"
+"个构成复杂协议的协议超集。"
+
+#: ../../contracts/contract-design.rst:22
+msgid ""
+"A contract is triggered by a message from an external network agent, where "
+"an external agent may be a contract or a network user."
+msgstr ""
+"一个合约可以被外部网络代理的信息所触发，外部代理可以是一个合约或一个网络用"
+"户。"
+
+#: ../../contracts/contract-design.rst:24
+msgid "**A Message:**"
+msgstr "一条信息："
+
+#: ../../contracts/contract-design.rst:26
+msgid "Is issued over a named channel(s), which may be public or private."
+msgstr "触发信息通过指定信道发布，该信道可以是公开的或私人的。"
+
+#: ../../contracts/contract-design.rst:27
+msgid ""
+"May be typed and may range in format from a simple value to an unordered "
+"array of bytes, to a variable, to a data structure, to *the code of a "
+"process*, and most things in between."
+msgstr ""
+"可以输入，也可能是格式范围内的任何值，从一个简单值到一个无序的字节数组、一"
+"个变量、一个数据结构、一个过程的代码以及介于该范围之间的大多数事物。"
+
+#: ../../contracts/contract-design.rst:29
+msgid ""
+"**An Agent** sends and receives messages on named communication links "
+"known as ‘named channels’."
+msgstr "代理在指定通信信道上发送和接收消息，该信道称为“命名信道”。"
+
+#: ../../contracts/contract-design.rst:31
+msgid "**A Named Channel:**"
+msgstr "一个命名信道："
+
+#: ../../contracts/contract-design.rst:33
+msgid "Is a \"location\" where otherwise independent processes synchronize."
+msgstr "是一个 “定位”, 独立进程将确保同步该位置。"
+
+#: ../../contracts/contract-design.rst:34
+msgid "Is used by processes to send and receive messages between each other."
+msgstr "用于节点之间信息发送和接受的过程。"
+
+#: ../../contracts/contract-design.rst:35
+msgid ""
+"Is provably unguessable and anonymous unless deliberately introduced by a "
+"process."
+msgstr "是不可猜测和匿名的，除非在处理过程中被特意引入。"
+
+#: ../../contracts/contract-design.rst:37
+msgid ""
+"A channel is implemented as a variable that is shared between a \"read-only"
+"\" and a \"write-only\" process. Therefore, the functionality of a channel "
+"is only limited by the interpretation of what a variable may be. As a "
+"channel represents the abstract notion of \"location\", it may take "
+"different forms. For our early interpretation, a named channel's function "
+"may range from the local memory address (variable) of a single machine, to "
+"the network address of a machine in a distributed system."
+msgstr ""
+"通道被实现为在“只读”和“只写”进程之间共享的变量。因此，信道的功能仅受限于解"
+"释一个变量的含义。由于信道代表了“定位”的抽象概念，因此可能会采用不同的形"
+"式。对于我们的早期解释，命名信道的功能可以从单个服务器的本地存储器地址（变"
+"量）到分布式系统中节点的网络地址。"
+
+#: ../../contracts/contract-design.rst:39
+msgid ""
+"Consistent with that interpretation, **a blockchain address is a named "
+"channel**, i.e., a location(s) where an agent may be reached."
+msgstr ""
+"与该解释一致，**一个区块链地址是经过命名的信道**，即一个代理可以到达的位"
+"置。"
+
+#: ../../contracts/contract-design.rst:41
+msgid ""
+"Two contracts sending and receiving a message on the channel named "
+"‘Address’:"
+msgstr "两个合约在名为“Address”的信道上发送和接收信息："
+
+#: ../../contracts/contract-design.rst:51
+msgid ""
+"This model depicts two contracts, both of which may receive and send "
+"messages. At some point, an external actor prompts :code:`Contract1` to "
+"send a value, :code:`v`, on the channel, :code:`address`, which is the "
+"address of :code:`Contract2`. Meanwhile, :code:`Contract2` listens on the :"
+"code:`address` channel for some value :code:`v`. After it receives :code:"
+"`v`, :code:`Contract2` invokes a process continuation with :code:`v` as an "
+"argument. These last two steps occur sequentially."
+msgstr ""
+"这个模型描述了两个合约，它们都可以接收和发送消息。在某个时刻，一个外部actor"
+"会提示 :code:`Contract1` 在信道 :code:`address` 上发送了一个值 :code:`v` ，"
+"该 :code:`address` 是 :code:`Contract2` 的地址。同时，:code:`Contract2` 监"
+"听 :code:`address` 信道上的值 :code:`v`。在收到 :code:`v` 后， :code:"
+"`Contract2` 继续将 :code:`v` 作为参数并调用后续操作。最后两个步骤是按序发生"
+"的。"
+
+#: ../../contracts/contract-design.rst:53
+msgid ""
+"Note that, this model assumes that at least the sender possesses the "
+"address of :code:`Contract2`. Also note that, after it sends :code:`v`, :"
+"code:`Contract1` has been run to termination, thus it is incapable of "
+"sending anything else unless prompted. Similarly, after it invokes its "
+"continuation, :code:`Contract2` has been run to termination, thus it is "
+"incapable of listening for any other messages."
+msgstr ""
+"注意，这个模型假设发送者拥有 :code:`Contract2` 的地址。还要注意的是，在发送"
+"者发送了 :code:`v` 后，:code:`Contract1` 已经运行终止。因此，除非提示，它不"
+"能再发送任何信息。类似地，在它继续调用后续操作之后，:code:`Contract2` 也运"
+"行到终止状态，因此它不能再监听任何其他消息。"
+
+#: ../../contracts/contract-design.rst:55
+msgid ""
+"RChain contracts enjoy fine-grain, internal concurrency, which means that "
+"these processes, and any processes that are not co-dependent, may be "
+"placed in parallel composition. So, we amend our notation:"
+msgstr ""
+"RChain合约用有良好的内部并发性，这意味着这些流程以及任何不相互依赖的流程都"
+"可以并行组合执行。所以我们修改了我们的符号："
+
+#: ../../contracts/contract-design.rst:65
+msgid ""
+"Executing in parallel with a number of other processes, an external actor "
+"prompts :code:`Contract1` to send a value, :code:`v`, on the channel :code:"
+"`address` i.e. the address of :code:`Contract2`. If :code:`Contract1` has "
+"no value to send, it blocks. If :code:`Contract2` has not received a "
+"value, it blocks and the continuation is not triggered."
+msgstr ""
+"与其他许多进程并行执行时，外部actor会提示 :code:`Contract1` 在信道 :code:"
+"`address` 上发送了一个值 :code:`v`，该信道即 :code:`Contract2` 的地址。如"
+"果 :code:`Contract1` 没有值要发送，该信道将会阻塞。如果 :code:`Contract2` "
+"没有收到任何值，它会阻塞信道且不会触发后续调用操作。"
+
+#: ../../contracts/contract-design.rst:68
+msgid "Transactions"
+msgstr "交易"
+
+#: ../../contracts/contract-design.rst:70
+msgid ""
+"How do transaction semantics fit into our description of contracts? **From "
+"the process level, a transaction is an acknowledgment that a message has "
+"been \"witnessed\" at a channel**"
+msgstr ""
+"交易语义如何符合我们对合约的描述？ 从过程层面上来看，一个交易就是确认一条消"
+"息已经被“见证”在一个信道上。"
+
+#: ../../contracts/contract-design.rst:72
+msgid ""
+"Messages themselves are virtual objects, but the pre-state and post-state "
+"of a contract, referring to the states before and after a message is sent "
+"by one agent and witnessed by another, are recorded and timestamped in "
+"storage, also known (in a moral sense) as the \"blockchain\"."
+msgstr ""
+"消息本身就是虚拟的对象，但一个合约的前置状态和后置状态指的是代理发送一条消"
+"息之前和之后的状态，这些状态被另一个代理见证，打上时间戳并被记录在存储器"
+"中，也被称为（在观念上）“区块链”。"
+
+#: ../../contracts/contract-design.rst:74
+msgid ""
+"Message passing is an atomic operation. Either a message is witnessed, or "
+"it is not, and only the successful witnessing of a message qualifies as a "
+"verifiable transaction that can be included in a block. Examples hitherto "
+"depict atomic protocols, but full-bodied applications may spawn, send, and "
+"receive on tens of thousands of channels at runtime. Hence, when the value "
+"of some resource is altered and witnessed by a process, there is record of "
+"when and where it was witnessed by what agent. This implementation is "
+"consistent with an interpretation of data as a linear resource."
+msgstr ""
+"消息传递是一个原子操作。无论一条信息是否被见证，只有成功见证的消息才有资格"
+"作为一条可验证的交易并被放入一个区块中。迄今为止，我们的例子描述了原子协议"
+"本身，但是完整的应用程序可以在运行时产生、发送和接收数以万计的信道。因此，"
+"当一些资源的价值被一个过程所改变和见证时，通过代理记录它在什么时间和地点被"
+"见证了该改变。这个实现与将数据解释为线性资源是一致的。"
+
+#: ../../contracts/contract-design.rst:84
+msgid ""
+"The ability to place a message at either end of a channel before and after "
+"the message is sent, and therefore to view the serialized form of "
+"messages, is an attribute specific to RChain. Additionally, by stating "
+"successful messages as transactions, all messages, whether from external "
+"user to contract or between contracts, are accounted for. Thus, we balance "
+"the extensible autonomy of contracts with accountability."
+msgstr ""
+"在发送消息之前和之后, RChain拥有在信道的任一端放置消息的能力,因此查看消息的"
+"序列化形式是RChain的特定属性。此外, 通过将成功的消息声明为交易, 所有消息 "
+"(无论是从外部用户到合约，还是在合约之间) 都将被解释。因此, 我们平衡了合约的"
+"可扩展自治性和职责。"
+
+#: ../../contracts/contract-design.rst:86
+msgid ""
+"For an example of how this model is adaptable to industry trends in "
+"reactive programming, observe the following two contracts, which model "
+"interaction over “live” data feeds:"
+msgstr ""
+"有关此模型如何适应响应式编程的行业趋势的范例, 请观察以下两个合约, 基于 “实"
+"时” 数据源上的交互模型:"
+
+#: ../../contracts/contract-design.rst:96
+msgid ""
+"Executing in parallel composition with a number of other processes, :code:"
+"`Contract1` is prompted to send a set of  values, :code:`vN`, on the "
+"channel :code:`address` i.e. the address of :code:`Contract2`. In this "
+"scenario, the reader will notice :code:`Contract2` as a thread which "
+"listens for a set of values as input from a single data stream that is "
+"dual to a set of values being output from a stream at its tail. When the "
+"set of values, :code:`v1...vN`, is witnessed at the channel, :code:"
+"`address`, a continuation is invoked with :code:`v1...vN` as an argument. "
+"While the interaction between :code:`Contract1` and :code:`Contract2` is "
+"asynchronous, the input operation :code:`address?(v1...vN)` and :code:"
+"`Continuation(v)` of :code:`Contract2` are necessarily sequential. :code:"
+"`address?(v1...vN)` is said to \"pre-fix\" :code:`Continuation(v)` in "
+"every instance."
+msgstr ""
+"与多个其他进程组合并行执行时, :code:`Contract1` 会被提示在信道 :code:"
+"`address` 上发送一组值 :code:`vN`，即 :code:`Contract2` 的地址。在这种情况"
+"下，读者将会注意到 :code:`Contract2` 作为一个线程，它监听一组值作为单个数据"
+"流的输入，这与一个流末端的输出的一组值是双向的。当信道 :code:`address` 见证"
+"了一组值 :code:`v1…vN` 时，将使用 :code:`v1…vN` 作为参数来调用后续一些操"
+"作。虽然 :code:`Contract1` 和 :code:`Contract2` 之间的交互是异步的，输入操"
+"作 :code:`address?(v1...vN)` 和 :code:`Contract2` 的 :code:"
+"`Continuation(v)` 必然是连续的。在每个实例中 :code:`address?(v1…vN)` 被称"
+"为 :code:`Continuation(v)` 的前缀。"
+
+#: ../../contracts/contract-design.rst:98
+msgid ""
+"We have presented a very basic depiction of concurrent contract "
+"interaction on the RChain platform to include contracts, recognizing "
+"addresses as channels of communication, and transactions as the successful "
+"transmission of a message over said channels. Next, we outline the core "
+"system which formally models these constructs."
+msgstr ""
+"我们对 RChain 平台上的并发合约的交互进行了非常基本的描述, 包括合约、将地址"
+"识别为通信信道以及把成功地通过上述信道传递的消息看作交易。接下来, 我们将概"
+"述形式化构建了这些结构的核心系统。"
+
+#: ../../contracts/contract-design.rst:101
+msgid "The Formalism: Rho-Calculus"
+msgstr "形式化模型: Rho演算"
+
+#: ../../contracts/contract-design.rst:103
+msgid ""
+"Formal verification is the *de facto* standard for many mission-critical "
+"technologies. Some of the earliest formal verification methods were "
+"applied to the two-level shutdown systems of nuclear generators [#]_. Many "
+"ATM software solutions verify performance by deriving solutions from "
+"models of linear temporal logic. Many military information and decision "
+"systems invoke Hoare logic to verify crash tolerance. An indiscriminate "
+"smart-contracting utility that desires to host mission-critical contracts "
+"bears the same responsibility of verifiability to its users. Therefore, "
+"our design approach to the surface-language and execution model is based "
+"on a provably correct model of computation [#]_."
+msgstr ""
+"形式化验证是许多关键任务技术的 **实际** 标准。一些最早的形式化验证方法被应"
+"用于核电机组的两级停堆系统 [#]_。许多ATM软件解决方案通过从线性时序逻辑模型"
+"推导解决方案来验证性能表现。许多军事信息和决策系统调用Hoare逻辑来验证碰撞容"
+"忍度。一个不加选择的智能合约工具, 它要求托管的关键任务合约, 对其用户负有相"
+"同的可验证责任。因此，我们的接口语言和执行模型的设计方法是基于一个可证明其"
+"正确性的计算模型 [#]_。"
+
+#: ../../contracts/contract-design.rst:105
+msgid ""
+"At the same time, there are relatively few programming paradigms and "
+"languages that handle concurrent processes in their core model. Instead, "
+"they bolt some kind of threading-based concurrency model on the side to "
+"address being able to scale by doing more than one thing at a time. By "
+"contrast, the Mobile process calculi provide a fundamentally different "
+"notion of what computing is. In these models, computing arises primarily "
+"from the interaction of processes. The ability to formally verify an "
+"execution model, and to allow that execution model to be fundamentally "
+"concurrent, is why we have chosen a process calculus for RChain's model of "
+"computation."
+msgstr ""
+"同时，能够处理其核心模型中并发进程的编程范式和语言也相对较少。相反, 他们不"
+"采用一些基于线程的并发模型, 而是通过一次做多个事情来解决可扩展性问题。相比"
+"之下，移动过程计算为“计算是什么”提出了一个完全不同的概念。在这些模型中，计"
+"算主要来自过程的交互。为了形式化验证一个执行模型，并允许该执行模型从根本上"
+"支持并发，这就是我们替RChain的计算模型选择了一个进程演算模型的原因。"
+
+#: ../../contracts/contract-design.rst:107
+msgid ""
+"Specifically, **the RChain execution model is derived from the syntax and "
+"semantics of rho-calculus.** The rho-calculus is a variant of the π-"
+"calculus that was introduced in 2004 to provide the first model of "
+"concurrent computation with reflection. “Rho” stands for reflective, "
+"higher-order."
+msgstr ""
+"具体来说，**RChain执行模型源于rho演算的语法和语义**。rho演算是π演算的一个变"
+"种，π演算于2004年被推出，它是第一个提出使用反射策略的并发计算模型。 “Rho”代"
+"表反射的，高阶的。"
+
+#: ../../contracts/contract-design.rst:109
+msgid ""
+"Though an understanding of the π-calculus isn’t necessary for the purposes "
+"of this document, those unfamiliar with the π-calculus are strongly "
+"encouraged to explore it. The π-calculus is the first formal system to "
+"successfully model networks where nodes may regularly join and drop from "
+"the network. It assumes fine-grained concurrency and process communication "
+"i.e. two processes may be introduced by a third process. The rho-calculus "
+"extension inherits all of those features and adds reflection."
+msgstr ""
+"虽然对本文的目的来说，理解π演算是不必要的，但还是强烈鼓励那些不熟悉π演算的"
+"人去学习和探索π演算相关知识。 π演算是第一个成功构建网络的形式化系统，其中节"
+"点可以定期加入网络并从网络中退出。它假设细粒度的并发和进程通信，即两个进程"
+"可能由第三个进程引入。 rho-calculus扩展继承了所有这些特性，并添加了反射。"
+
+#: ../../contracts/contract-design.rst:111
+msgid ""
+"For more information, see `The Polyadic Pi-Calculus`_ and `Higher Category "
+"Models of the Pi-Calculus`_."
+msgstr ""
+"有关更多信息, 请参见 `The Polyadic Pi-Calculus`_ 和 `Higher Category "
+"Models of the Pi-Calculus`_."
+
+#: ../../contracts/contract-design.rst:117
+msgid "Reflection"
+msgstr "反射"
+
+#: ../../contracts/contract-design.rst:119
+msgid ""
+"Reflection is now widely recognized as a key feature of practical "
+"programming languages, known broadly as \"meta-programming\". Reflection "
+"is a disciplined way to turn programs into data that programs can operate "
+"on and then turn the modified data back into new programs. Java, C#, and "
+"Scala eventually adopted reflection as a core feature, and even OCaml and "
+"Haskell have ultimately developed reflective versions [#]_. The reason is "
+"simple: at industrial scale, programmers use programs to write programs. "
+"Without that computational leverage, it would take too long to write "
+"advanced industrial scale programs."
+msgstr ""
+"目前，反射被广泛认为是实用编程语言的一个关键特性，广义上被称为“元编程”。反"
+"射是一种规范的方式，它将程序转换为程序可以操作的数据，然后将修改后的数据转"
+"换成新的程序。 Java、C＃和Scala最终都将反射作为其核心特性，甚至OCaml和"
+"Haskell最后也开发了反射版本 [#]_。原因很简单：在工业规模上，程序员使用程序"
+"来编写程序。如果没有这个计算杠杆，编写先进的工业规模的程序将花费太长的时"
+"间。"
+
+#: ../../contracts/contract-design.rst:123
+msgid "Syntax and Semantics"
+msgstr "语法和语义"
+
+#: ../../contracts/contract-design.rst:124
+msgid ""
+"The rho-calculus constructs “names” and “processes”. Similar to the π-"
+"calculus, **a name may be a channel of communication or a value. However, "
+"with the rho-calculus addition of ‘reflection’, a name may also be a "
+"‘quoted’ process, where a quoted process is the code of a process.** The "
+"genericity of names will become important in the coming sections."
+msgstr ""
+"rho演算构造“名字”和“进程”。类似于π演算， **名字可能是沟通的信道或一个值。 "
+"然而，在加入“反射”的rho演算中，一个名字也可能是一个“引用”的进程，其中一个引"
+"用的进程是一个进程的代码。** 在接下来的章节中，名字的通用性将变得尤为重要。"
+
+#: ../../contracts/contract-design.rst:126
+msgid ""
+"From the notion of names and processes, the calculus builds a few basic "
+"“processes”. A process may have persistent state but does not assume it. "
+"The term “process” is the more general term for “smart contract”. Hence, "
+"every contract is a process but not every process is smart contract."
+msgstr ""
+"从名称和过程的概念，该演算建立了一些基本的“进程”。 进程可能具有持久状态，但"
+"并不假设它一定成立。 术语“进程”是“智能合约”中较为通用的术语。 因此，每一个"
+"合约都是一个过程，但不是每一个进程都是智能合约。"
+
+#: ../../contracts/contract-design.rst:128
+msgid ""
+"Rho-calculus builds the following basic terms to describe interaction "
+"among processes:"
+msgstr "Rho演算构建了以下基本术语来描述进程之间的交互："
+
+#: ../../contracts/contract-design.rst:142
+msgid ""
+"The first three terms denote I/O, describing the actions of message "
+"passing:"
+msgstr "前三个术语用于表示I/O，用于描述消息传递的动作："
+
+#: ../../contracts/contract-design.rst:144
+msgid ""
+":code:`0` is the form of the inert or stopped process that is the ground "
+"of the model."
+msgstr ":code:`0` 表示惰性或停止进程的，是模型的基础"
+
+#: ../../contracts/contract-design.rst:147
+msgid ""
+"The input term, :code:`for( ptrn1 <- x1; … ; ptrnN <- xN )P`, is the form "
+"of an input-guarded process, :code:`P`, listening for a set of patterns, :"
+"code:`ptrnN`, on a set of channels, :code:`xN`. On receiving such a "
+"pattern, continuation P is invoked [#]_. Scala programmers will notice the "
+"'for-comprehension' as syntactic sugar for treating channel access "
+"monadically [#]_. The result is that all input-channels are subject to "
+"pattern matching, which constructs an input-guard of sorts."
+msgstr ""
+"输入项 :code:`for( ptrn1 <- x1; … ; ptrnN <- xN )P` 表示是输入守护进程 :"
+"code:`P` ，在一组信道 :code:`xN` 上监听一组模式 :code:`ptrnN`。在接收到这样"
+"的模式时, 调用附加部分P [#]_。Scala程序员会注意到“for-comprehension”是单子"
+"化处理信道访问的语法糖 [#]_。 结果就是所有的输入通道都服从于模式匹配，这就"
+"构成了各种输入守护。"
+
+#: ../../contracts/contract-design.rst:155
+msgid ""
+"The output term, :code:`x!( @Q )`, sends the name, :code:`@Q`, on "
+"channel, :code:`x`. Although the name being sent on :code:`x` may be a "
+"values, a channel, or a quoted process (which may itself contain many "
+"channels and values), our notation uses, :code:`@Q` to reiterate the "
+"expressiveness of names."
+msgstr ""
+"输出项 :code:`x!( @Q )` 在通道上 :code:`x` 发送名字 :code:`@Q`。 尽管在 :"
+"code:`x` 上发送的名字可能是一个值、一个通道或一个被引用的进程（它本身可能包"
+"含许多信道和值），我们的符号使用 :code:`@Q` 来重申名字的表达能力。"
+
+#: ../../contracts/contract-design.rst:157
+msgid "The next term is structural, describing concurrency:"
+msgstr "下一个项是一个结构性的，描述并发："
+
+#: ../../contracts/contract-design.rst:159
+msgid ""
+":code:`P|Q` is the form of a process that is the parallel composition of "
+"two processes P and Q where both processes are executing and communicating "
+"asynchronously."
+msgstr ""
+" code:`P|Q` 表示两个进程P和Q的并行组合的进程，这两个进程正在并行执行和异步"
+"通信。"
+
+#: ../../contracts/contract-design.rst:161
+msgid "Two additional terms are introduced to provide reflection:"
+msgstr "另外两个项被引入来提供反射："
+
+#: ../../contracts/contract-design.rst:163
+msgid ""
+":code:`@P` , the “Reflect\" term introduces the notion of a “quoted "
+"process”, which is the code ofa process that is serialized and sent over a "
+"channel."
+msgstr ""
+":code:`@P` 这个“反射”项引入了“引用进程”的概念，引用过程是一个进程的代码，它"
+"被序列化并且通过信道发送。"
+
+#: ../../contracts/contract-design.rst:165
+msgid ""
+":code:`x` , the “Reify” term, allows a quoted process to be deserialized "
+"from a channel."
+msgstr ":code:`x` 这个“修改”项，允许引用的进程从一个信道上接收并反序列化。"
+
+#: ../../contracts/contract-design.rst:167
+msgid ""
+"This syntax gives the basic term language that will comprise the Rholang  "
+"type system primitives. The rho-calculus assumes internal structure on "
+"names, which  is preserved as they’re passed between processes. One result "
+"of being able to investigate the internal structure of a name is that "
+"processes may be serialized to a channel and then deserialized upon being "
+"received, which means that processes may not only communicate signals to "
+"one another, they may communicate full-form processes to one another. "
+"Hence, the higher-order extension."
+msgstr ""
+"这个语法给出了包含Rholang类型系统原语的基本项。 rho演算假设名称上的内部结"
+"构，在进程之间传递时被保留下来。 能够探索名字的内部结构的一个结果是，进程可"
+"以被序列化到一个通道，然后在被接收时被反序列化，这意味着进程不仅可以相互传"
+"递信号，还可以将完整形式的进程发送给其他人。 因此是更高阶的扩展。"
+
+#: ../../contracts/contract-design.rst:170
+msgid ""
+"Rho-calculus also gives a single, reduction (substitution) rule to realize "
+"computation, known as the “COMM” rule. Reductions are atomic; they either "
+"happen, or they don’t. It is the only rule which directly reduces a rho-"
+"calculus term:"
+msgstr ""
+"Rho演算也给出了一个单一可归约（替代）规则来实现计算，被称为“COMM”规则。 归"
+"约是原子性的; 他们要么发生，要么不发生。 这是直接归约rho演算中项的唯一规"
+"则："
+
+#: ../../contracts/contract-design.rst:176
+msgid ""
+"The COMM rule requires that two processes are placed in concurrent "
+"execution. It also requires that the two are in a co-channel relationship. "
+"That is, one process is reading from channel, :code:`x`, while the other "
+"process is writing to the channel, :code:`x`. The two processes are said "
+"to \"synchronize\" at :code:`x`. The output process sends the quoted "
+"process, :code:`@Q`, on :code:`x`. In parallel, the input process waits "
+"for an arbitrary pattern, :code:`ptrn` to arrive on :code:`x`. Upon "
+"matching the pattern, it executes continuation :code:`P`. After reduction, "
+"the simplified term denotes :code:`P`, which will execute in an "
+"environment where :code:`@Q` is bound to :code:`ptrn`. That is, :code:`@Q` "
+"is substituted for every occurrence of the :code:`ptrn`,  in the body of :"
+"code:`P`."
+msgstr ""
+"COMM规则要求两个进程是位于并发执行的。它还要求两者处于同信道关系。也就是"
+"说，一个进程正在从通道 :code:`x` 中读取，而另一个进程正在写入通道 :code:"
+"`x`。这两个进程被称为“同步”于 :code:`x`。输入进程并行地在 :code:`x` 等待符"
+"合某模式，记为 :code:`ptrn` 的数据到来。在模式被匹配到后，执行后续代码 :"
+"code:`P`。 归约之后，简化的项表示 :code:`P`，它将在某个环境下运行，其中 :"
+"code:`P` 绑定到 :code:`ptrn`。也就是说，在 :code:`P` 的代码体中，出现的每一"
+"个 :code:`ptrn` 都会被替换为 :code:`@Q`。"
+
+#: ../../contracts/contract-design.rst:178
+msgid ""
+"The COMM rule implies the successful communication of a message over a "
+"channel. The reader may remember that successful communication of a "
+"message over a channel constitutes a verifiable transaction. In fact, **a "
+"reduction is a transaction** precisely because it verifies that a resource "
+"has been accessed and altered. As a result, **the number of reductions "
+"performed corresponds to the units of atomic computation performed, which "
+"are fundamentally tethered to the number of transactions committed to a "
+"block.** This correspondence ensures that all platform computation is "
+"indiscriminately quantifiable."
+msgstr ""
+"COMM规则意味着通过信道可以成功地传递消息。 读者可能还记得，通过一个信道成功"
+"传递一条信息可以构成一个可证实的交易。 事实上， **一个归约是一个事务** ，正"
+"是因为它证实了一个资源已被访问和修改。 结果， **归约执行的次数对应于所执行"
+"的原子计算数量，它们基本上与提交给一个块的事务数有关。** 这种对应确保所有平"
+"台计算都是可无区别可量化的。"
+
+#: ../../contracts/contract-design.rst:180
+msgid ""
+"Another implication of being able to investigate the internal structure of "
+"a name is that channels may encapsulate yet more channels. Though they are "
+"very light in an atomic sense, when channels possess internal structure, "
+"they may function as data stores, data structures, and provably unbounded "
+"queues of arbitrary depth. In fact, in almost all implementations, a "
+"contract’s persistent storage will consist of state value stored in a :"
+"code:`state` channel which takes requests to :code:`set` and :code:`get` "
+"a :code:`newValue`. We will demonstrate the wide-sweeping implications of "
+"internal structure on channels in the section on namespaces. For further "
+"details, see `A Reflective Higher-Order Calculus`_ and `Namespace Logic - "
+"A Logic for a Reflective Higher-Order Calculus`_."
+msgstr ""
+"能够探索名字的内部结构的另一个含义是，信道可能封装更多的信道。 虽然它们在原"
+"子意义上是非常轻的，但是当信道具有内部结构时，它们可以用作数据存储，数据结"
+"构，以及任意深度的可证明的无限队列。 实际上，在几乎所有的实现中，一个合约的"
+"持久存储由存储在一个通道 :code:`state` 中的状态值组成，接受请求 :code:"
+"`set` 来设置值，用 :code:`get` 来后去一个新的值 :code:`newValue`。 我们将在"
+"名称空间这一节中展示内部结构对信道的广泛影响。 更多详细信息，请参阅 `A "
+"Reflective Higher-Order Calculus`_ 和 `Namespace Logic - A Logic for a "
+"Reflective Higher-Order Calculus`_。"
+
+#: ../../contracts/contract-design.rst:186
+msgid "Behavioral Types"
+msgstr "行为类型"
+
+#: ../../contracts/contract-design.rst:188
+msgid ""
+"A behavioral type is a property of an object that binds it to a discrete "
+"range of action patterns. Behavioral types constrain not only the "
+"structure of input and output, but **the permitted order of inputs and "
+"outputs among communicating and (possibly) concurrent processes under "
+"varying conditions.**"
+msgstr ""
+"一个行为类型是一个对象的一个​​属性，它将对象绑定到action模式的一个离散范围"
+"内。行为类型不仅限制输入和输出的结构，而且还限制在不同条件下通信和（可能"
+"地）并发进程之间允许的输入和输出的顺序。"
+
+#: ../../contracts/contract-design.rst:190
+msgid ""
+"Behavioral types are specific to the mobile process calculi particularly "
+"because of the non-determinism the mobile calculi introduce and "
+"accommodate. More specifically, a concurrent model may introduce multiple "
+"scenarios under which data may be accessed, yet possess no knowledge as to "
+"the sequence in which those scenarios occur. Data may be shareable at a "
+"certain stage of a protocol but not in a subsequent stage. In that sense, "
+"resource competition is problematic; if a system does not respect precise "
+"sharing constraints on objects, mutations may result. Therefore we require "
+"that network resources are used according to a strict discipline which "
+"describes and specifies sets of processes that demonstrate a similar, "
+"“safe” behavior."
+msgstr ""
+"行为类型特定于移动过程计算，特别是由于非确定性移动计算的引入和适。更具体地"
+"说，并发模型可以引入多个场景，在这些场景下可以访问数据，但并不知道这些场景"
+"发生的顺序。数据可以在协议的某个阶段被共享，但不能在后续阶段共享。从这个意"
+"义上说，资源竞争是有问题的。如果系统不遵守对象的精确共享约束，则可能导致系"
+"统改变。因此，我们要求网络资源严格按照规定使用，这些规定描述和详细说明了一"
+"系列过程（这些过程表现出了类似的“安全”行为）。"
+
+#: ../../contracts/contract-design.rst:192
+msgid ""
+"The Rholang behavioral type system will iteratively decorate terms with "
+"modal logical operators, which are propositions about the behavior of "
+"those terms. Ultimately properties data information flow, resource access, "
+"will be concretized in a type system that can be checked at compile-time."
+msgstr ""
+"Rholang 行为类型系统将用模态逻辑运算符迭代地修饰相关条件, 它是关于这些条件"
+"行为的命题。最终属性数据信息流和资源访问将在类型系统中具体化，该系统支持编"
+"译时检查。"
+
+#: ../../contracts/contract-design.rst:194
+msgid ""
+"The behavioral type systems Rholang will support make it possible to "
+"evaluate collections of contracts against how their code is shaped and how "
+"it behaves. As such, Rholang contracts elevate semantics to a type-level "
+"vantage point, where we are able to scope how entire protocols can safely "
+"interface."
+msgstr ""
+"行为类型系统Rholang将支持根据其具体代码和行为方式来评估合约集合。因此, "
+"Rholang合约将语义提升到类型级别的优势项, 在这里我们能够确定整个协议如何安全"
+"地进行衔接。"
+
+#: ../../contracts/contract-design.rst:196
+msgid ""
+"In their seminal paper, `Logic as a Distributive Law`_, Mike Stay & "
+"Gregory Meredith, develop an algorithm to iteratively generate a spatial-"
+"behavioral logic from any monadic data structure."
+msgstr ""
+"在他们的开创性论文 `Logic as a Distributive Law`_ 中，Mike Stay和Gregory "
+"Meredith提出了一种用于从任何一元数据迭代生成空间行为逻辑的算法。"
+
+#: ../../contracts/contract-design.rst:201
+msgid "Significance"
+msgstr "意义"
+
+#: ../../contracts/contract-design.rst:203
+msgid ""
+"This model has been peer reviewed multiple times over the last ten years. "
+"Prototypes demonstrating its soundness have been available for nearly a "
+"decade. The minimal rho-calculus syntax expresses six primitives - far "
+"fewer than found in Solidity, Ethereum’s smart contracting language, yet "
+"the model is far more expressive than Solidity. In particular, Solidity-"
+"based smart contracts do not enjoy internal concurrency, while Rholang-"
+"based contracts assume it."
+msgstr ""
+"这个模型在过去的十年里多次被同行评审过。证明其可靠性的原型已经有近十年的历"
+"史了。最小的rho-calculus语法表达了六个原语 - 远远低于以太坊智能合约语言"
+"Solidity中的原语，然而这个模型比Solidity能表达的更丰富。特别是，基于"
+"Solidity的智能合约不具备内部并发的特性，而基于Rholang的合约则支持内部并发。"
+
+#: ../../contracts/contract-design.rst:205
+msgid ""
+"To summarize, the rho-calculus formalism is the first computational model "
+"to:"
+msgstr "总而言之，rho演算的形式化模型是第一个计算模型："
+
+#: ../../contracts/contract-design.rst:207
+msgid ""
+"Realize maximal code mobility via ‘reflection’, which permits full-form, "
+"quoted processes to be passed as first-class-citizens to other network "
+"processes."
+msgstr ""
+"通过“反射”来实现最大化的代码可移植性，这允许将完整形式的流程作为一级公民来"
+"传递给其他网络过程。"
+
+#: ../../contracts/contract-design.rst:209
+msgid ""
+"Lend a framework to mathematically verify the behavior of reflective, "
+"communicating processes and fundamentally concurrent systems of dynamic "
+"network topology."
+msgstr ""
+"借用一个框架，以数学方式来验证反射、通信过程和动态拓扑网络的基本并发系统的"
+"行为。"
+
+#: ../../contracts/contract-design.rst:211
+msgid ""
+"Denote a fully scalable design which naturally accommodates industry "
+"trends in structural pattern matching, process continuation, Reactive "
+"API’s, parallelism, asynchronicity, and behavioral types."
+msgstr ""
+"表示一个完全可扩展的设计，自然适应结构化模式匹配、流程延续、响应式API、并行"
+"性，异步性和行为类型的行业趋势。"
+
+#: ../../contracts/contract-design.rst:214
+msgid "RhoLang - A Concurrent Language"
+msgstr "RhoLang — 一种并发语言"
+
+#: ../../contracts/contract-design.rst:216
+msgid ""
+"Rholang is a fully featured, general purpose, Turing-complete programming "
+"language built from the rho-calculus. It is a behaviorally typed, **r**-"
+"eflective, **h**-igher **o**-rder process language and the official smart "
+"contracting language of RChain. Its purpose is to concretize fine-grained, "
+"programmatic concurrency."
+msgstr ""
+"Rholang是一个功能全面的图灵完整的通用编程语言，它使用rho演算来进行构建。它"
+"是一个具备行为类型和反射机制的高阶进程语言（**r**-eflective, **h**-igher "
+"**o**-rder process language），也是 RChain官方智能合约所使用的语言。其目的"
+"是具体化细粒度的并发编程。"
+
+#: ../../contracts/contract-design.rst:221
+msgid ""
+"Necessarily, the language is concurrency-oriented, with a focus on message-"
+"passing through input-guarded channels. Channels are statically typed and "
+"can be used as single message-pipes, streams, or data stores. Similar to "
+"typed functional languages, Rholang will support immutable data structures."
+msgstr ""
+"语言必然是面向并发的，重点是通过保护输入信道来传递消息。通道是静态类型的，"
+"可以用作单个消息管道、流或数据存储。与类型化的函数式语言类似，Rholang将支持"
+"不可变的数据结构。"
+
+#: ../../contracts/contract-design.rst:223
+msgid ""
+"To get a taste of Rholang, here’s a contract named :code:`Cell` that holds "
+"a value and allows clients to get and set it:"
+msgstr ""
+"为了体验Rholang，下面是一个名为`Cell’的合约，它只有一个值并允许客户端获取和"
+"设置该参数："
+
+#: ../../contracts/contract-design.rst:239
+msgid ""
+"This contract takes a channel for :code:`get` requests, a channel for :"
+"code:`set` requests, and a :code:`state` channel where we will hold a data "
+"resource. It waits on the :code:`get` and :code:`set` channels for client "
+"requests. Client requests are pattern matched via :code:`case` classes "
+"[#]_."
+msgstr ""
+"该合约需要一个 :code:`get` 请求信道，一个 :code:`set`请求信道，以及一个 :"
+"code:`state` 信道，我们将在状态信道中保存一个数据资源。它等待 :code:`get` "
+"和 :code:`set` 信道的客户端请求。客户端请求通过 :code:`case` 类来进行模式匹"
+"配 [#]_。"
+
+#: ../../contracts/contract-design.rst:241
+msgid ""
+"Upon receiving a request, the contract joins :code:`;` an incoming client "
+"with a request against the :code:`state` channel. This join does two "
+"things. Firstly, it removes the internal :code:`state` from access while "
+"this, in turn, sequentializes :code:`get` and :code:`set` actions, so that "
+"they are always operating against a single consistent copy of the resource "
+"- simultaneously providing a data resource synchronization mechanism and a "
+"memory of accesses and updates against the :code:`state`."
+msgstr ""
+"收到一个请求后，合约加入 :code:`;` 到一个刚达到的请求 :code:`state` 信道的"
+"客户端。这个连接做了两件事。首先，它从访问中删除内部的 :code:`state`。同"
+"时，又会依次执行 :code:`get` 和 :code:`set` 操作，所以它们总是对一个单一的"
+"资源副本进行操作 - 同时提供一个数据资源同步机制和一个访问和在 :code:"
+"`state` 更新的操作。"
+
+#: ../../contracts/contract-design.rst:243
+msgid ""
+"In the case of :code:`get`, a request comes in with a :code:`rtn` address "
+"where the value, :code:`v`, in :code:`state` will be sent. Since :code:`v` "
+"has been taken from the :code:`state` channel, it is put back, and the :"
+"code:`Cell` behavior is recursively invoked."
+msgstr ""
+"在 :code:`get` 的情况下，一个请求带有一个 :code:`rtn` 地址，:code:`state` "
+"中的值 :code:`v` 将被发往该地址。由于 :code:`v` 已经从 :code:`state` 信道中"
+"被取回，它被放回，且 :code:`Cell` 操作将被递归地调用。"
+
+#: ../../contracts/contract-design.rst:245
+msgid ""
+"In the case of :code:`set`, a request comes in with a :code:`newValue`, "
+"which is published to the :code:`state` channel (the old value having been "
+"stolen by the join). Meanwhile, the :code:`Cell` behavior is recursively "
+"invoked."
+msgstr ""
+"在 :code:`set` 的情况下，一个请求带有一个 :code:`newValue`，它被发布到 :"
+"code:`state` 信道（旧值被连接操作所拿走）。同时，:code:`Cell` 操作将被递归"
+"调用。"
+
+#: ../../contracts/contract-design.rst:247
+msgid ""
+"Confirmed by :code:`select`, only one of the threads in :code:`Cell` can "
+"respond to the client request. It’s a race, and the losing thread, be it "
+"getter or setter, is killed. This way, when the recursive invocation of :"
+"code:`Cell` is called, the losing thread is not hanging around, yet the "
+"new :code:`Cell` process is still able to respond to either type of client "
+"request."
+msgstr ""
+"通过 :code:`select` 确认，在 :code:`Cell` 中只有一个线程可以响应客户端请"
+"求。这是一场竞赛，失败的线索，无论是getter还是setter操作，都会被杀死。这"
+"样，当调用 :code:`Cell` 的递归调用时，失败的线程不会被挂起，而新的 :code:"
+"`Cell` 进程仍然能够响应客户端的这两种请求。"
+
+#: ../../contracts/contract-design.rst:249
+msgid ""
+"For a more complete historical narrative leading up to Rholang, see "
+"`Mobile Process Calculi for Programming the Blockchain`_."
+msgstr ""
+"有关Rholang的更完整的历史叙述，请参阅 `Mobile Process Calculi for "
+"Programming the Blockchain`_。"
+
+#: ../../contracts/contract-design.rst:253
+msgid ""
+"Lawford, M., Wassyng, A.: Formal Verification of Nuclear Systems: Past, "
+"Present, and Future. Information & Security: An International Journal. 28, "
+"223–235 (2012)."
+msgstr ""
+"Lawford, M., Wassyng, A.: Formal Verification of Nuclear Systems: Past, "
+"Present, and Future. Information & Security: An International Journal. 28, "
+"223–235 (2012)."
+
+#: ../../contracts/contract-design.rst:254
+msgid ""
+"In addition to selecting a formally verifiable model of computation,  are "
+"investigating a few verification frameworks such as the `K-Framework`_ to "
+"achieve this."
+msgstr ""
+"In addition to selecting a formally verifiable model of computation, are "
+"investigating a few verification frameworks such as the K-Framework to "
+"achieve this."
+
+#: ../../contracts/contract-design.rst:256
+msgid "See Scala Documentation: Reflection"
+msgstr "查看Scala文档：Reflection"
+
+#: ../../contracts/contract-design.rst:257
+msgid "See Scala Documentation: For-Comprehensions"
+msgstr "查看Scala文档：For-Comprehensions"
+
+#: ../../contracts/contract-design.rst:258
+msgid "See Scala Documentation: Delimited Continuations"
+msgstr "查看Scala文档：Delimited Continuations"
+
+#: ../../contracts/contract-design.rst:259
+msgid "See Scala Documentation: Case Classes"
+msgstr "查看Scala文档：Case Classes"

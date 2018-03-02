@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, RChain Cooperative
+# This file is distributed under the same license as the RChain Architecture
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: RChain Architecture 0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-18 16:26+0800\n"
+"PO-Revision-Date: 2018-01-23 14:19+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.5\n"
+
+#: ../../execution_model/applications.rst:5
+msgid "Applications"
+msgstr "应用"
+
+#: ../../execution_model/applications.rst:7
+msgid ""
+"Any number and variety of applications can be built on top of the RChain "
+"Platform that provide a decentralized public compute utility. These "
+"include, for example:"
+msgstr ""
+"任何数量和种类的应用都可以构建在RChain平台的顶层，平台提供了一个分布式的"
+"公共计算工具。这些应用包括："
+
+#: ../../execution_model/applications.rst:9
+msgid "Wallets"
+msgstr "钱包"
+
+#: ../../execution_model/applications.rst:10
+msgid "Exchanges"
+msgstr "交易所"
+
+#: ../../execution_model/applications.rst:11
+msgid "Oracles & External Adapters"
+msgstr "Oracles & 外部适配器"
+
+#: ../../execution_model/applications.rst:12
+msgid "Custom Protocols"
+msgstr "定制协议"
+
+#: ../../execution_model/applications.rst:13
+msgid "Smart Contracts"
+msgstr "智能合约"
+
+#: ../../execution_model/applications.rst:14
+msgid "Smart Properties"
+msgstr "智能财产"
+
+#: ../../execution_model/applications.rst:15
+msgid "DAOs"
+msgstr "DAOs"
+
+#: ../../execution_model/applications.rst:16
+msgid "Social Networks"
+msgstr "社交网络"
+
+#: ../../execution_model/applications.rst:17
+msgid "Marketplaces"
+msgstr "市场"
+
+#: ../../execution_model/applications.rst:20
+msgid "Contract Development & Deployment"
+msgstr "智能合约开发和部署"
+
+#: ../../execution_model/applications.rst:22
+msgid ""
+"The purpose of this next discussion is to illustrate how namespaces "
+"allow for heterogeneous deployment of contracts and contract state. "
+"Namespaces is one of the crucial features for sharding, and with that we "
+"get the benefits analogous of sidechains, private chains, consortium "
+"chains, as well as the distinction between test and production, all "
+"under one rubric."
+msgstr ""
+"接下来的讨论是为了说明命名空间如何允许异构部署合同和合同状态。命名空间是"
+"分片的关键特征之一，我们从中得到的好处类似于侧链、私有链和联盟链以及测试"
+"与生产之间的区别，所有这些都在一个说明中。"
+
+#: ../../execution_model/applications.rst:24
+msgid ""
+"For example, the following diagram depicts some of the possible "
+"development, test, and deployment configurations and considerations, and "
+"how release management is enabled using namespaces and sharding."
+msgstr ""
+"例如，下图描述了一些可能的开发、测试、部署配置和注意事项，以及如何使用命"
+"名空间和分片来启用版本管理。"
+
+#: ../../execution_model/applications.rst:31
+msgid "*Figure - Development & Deployment Possibilities*"
+msgstr "*图 - 开发和部署的可能性*"
+
+#: ../../execution_model/applications.rst:34
+msgid ""
+"We’ll collaborate with IDE tool vendors to integrate Rholang and "
+"validation tools."
+msgstr "我们将与IDE工具提供商合作来整合Rholang平台和验证工具。"
