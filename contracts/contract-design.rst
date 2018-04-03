@@ -160,7 +160,7 @@ The next term is structural, describing concurrency:
 
 Two additional terms are introduced to provide reflection:
 
-* :code:`@P` , the “Reflect" term introduces the notion of a “quoted process”, which is the code ofa process that is serialized and sent over a channel.
+* :code:`@P` , the “Reflect" term introduces the notion of a “quoted process”, which is the code of a process that is serialized and sent over a channel.
 
 * :code:`x` , the “Reify” term, allows a quoted process to be deserialized from a channel.
 
