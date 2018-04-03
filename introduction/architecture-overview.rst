@@ -22,7 +22,7 @@ Describing the remaining layers depicted, from the bottom-up:
 
 **Storage** is via MongoDB, a key-value datastore. The primary in-memory data structure is a radix tree (trie).
 
-**Data Abastraction Layer** provides monadic access to data and other nodes consistently, as if they were local. This layer is an evolution of the SpecialK technology (including its decentralized content delivery, key-value database, inter-node messaging, and data access patterns). This layer is being implemented in Rholang, and so it relies on the RhoVM-EE and Rholang’s **Foreign Function Interface** to access P2P Communication and Storage.
+**Data Abstraction Layer** provides monadic access to data and other nodes consistently, as if they were local. This layer is an evolution of the SpecialK technology (including its decentralized content delivery, key-value database, inter-node messaging, and data access patterns). This layer is being implemented in Rholang, and so it relies on the RhoVM-EE and Rholang’s **Foreign Function Interface** to access P2P Communication and Storage.
 
 **Consensus** (Casper Proof-of-Stake validation/consensus Protocol) assures node consensus on the state of each blockchain.
 
@@ -33,11 +33,11 @@ The Token system contracts include those required to run protocols that interact
 
  + **Application tokens** are optional and may be required to run certain dApps. New application tokens can be introduced at any time by a dApp developer, and are similar to Ethereum's ERC20 tokens.
 
-The **Rho API** provides access to Execution Environment and the Node. **Language Bindings** will be available for programming languages written against the JVM, and potentially others.  A **REPL** (Read, Execute, Print, and Loop) development tool will be provided. Each node will have a **Command Line Interface** CLI.  A **Node API** will expose features via http and json RPC.
+The **Rho API** provides access to Execution Environment and the Node. **Language Bindings** will be available for programming languages written against the JVM, and potentially others.  A **REPL** (Read, Execute, Print, and Loop) development tool will be provided. Each node will have a **Command Line Interface** CLI.  A **Node API** will expose features via HTTP and json RPC.
 
 Concurrency vs. Parallelism
 ----------------------------------------
-It is essential the reader understand the implications of concurrent execution. When we say, “concurrency”, we are not referring to the simultaneous execution of multiple processes. That is parallelism. *Concurrency* is a structural property which allows independent processes to compose into complex processes. Processes are considered independent if they do not compete for resources.
+It is essential the reader understands the implications of concurrent execution. When we say, “concurrency”, we are not referring to the simultaneous execution of multiple processes. That is parallelism. *Concurrency* is a structural property which allows independent processes to compose into complex processes. Processes are considered independent if they do not compete for resources.
 
 Since RChain has committed to concurrency in Rholang and RhoVM, we'll see that we will get parallelism and asynchronicity as “free” emergent properties. Whether the platform is running on one processor or 1,000,000 processors, the RChain design is scalable. Having said that, the reader of this document will notice design patterns of concurrent computation throughout.
 
