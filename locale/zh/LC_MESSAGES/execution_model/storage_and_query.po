@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: RChain Architecture 0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-18 16:26+0800\n"
-"PO-Revision-Date: 2018-01-24 20:54+0800\n"
+"PO-Revision-Date: 2018-04-04 15:08+0800\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -41,14 +41,14 @@ msgid ""
 "lease duration. Consumers may also be required to pay for retrieval "
 "access. Data producers and consumers indirectly pay node operators."
 msgstr ""
-"对存储层与网络查询层来说，每个节点都被视为一个本地节点，都是通过异步的方"
-"式访问在区块链上租借存储区域来实现访问数据库的目的。不过实际上，存储与查"
-"询是完全分离的，但是两者的数据是完全一致的。根据区块链固有的微观交易能"
-"力，RChain上的dApp用户使用代币来支付他们使用的区块链资源（计算，内存，存"
-"储和网络）。在RChain的设计中，所有的数据会被存储，只不过并不是所有的数据"
-"都是永远存储的。RChain的数据存储区域是可以租借的，存储资源的价格由数据的"
-"大小，复杂度，存储时长决定。数据的消费者每次访问数据都需要付费。数据的生"
-"产者以及消费者间接地向RChain节点的运营者付费。"
+"对存储层与网络查询层来说，每个节点都被视为一个本地节点，通过异步的方式来"
+"访问租借存储区域的数据库。不过实际上，存储与查询是完全分离的，共同服从于"
+"共识算法。根据区块链固有的微交易能力，RChain上的dApp用户使用代币来支付他"
+"们使用的区块链资源（计算，内存，存储和网络）。在RChain的设计中，所有的数"
+"据会被存储，只不过并不是所有的数据都是永远存储的。RChain的数据存储区域是"
+"可以租借的，存储资源的价格由数据的大小，复杂度，存储时长决定。消费者每次"
+"访问数据都可能被要求付费。数据的生产者以及消费者间接地向RChain节点的运营"
+"者付费。"
 
 #: ../../execution_model/storage_and_query.rst:12
 msgid ""
@@ -62,12 +62,11 @@ msgid ""
 "reduce \"attack\" storage i.e the storage of illegal content to "
 "discredit the technology."
 msgstr ""
-"从经济学的角度来看，租赁存储空间时用户必须进行付费是合理的。没有经济的驱"
-"动，数据很难能够被可靠地或者永久的存储。我们选择直接定制经济规则。假设存"
-"储是免费的而仅仅通过一些其他的流程来补贴存储的开销，那么这对于环境来说其"
-"实是不友好的。真实成本的其中一小部分可以在数据中心的热量特征中测量出来。"
-"对数据访问需要付费的机制也有利于减少针对于存储的攻击，即存储非法的内容来"
-"诋毁区块链技术。"
+"从经济学的角度来看，租赁存储空间时用户必须付费是合理的。否则用户的数据很"
+"难被可靠地或永久地存储。我们选择直接定制经济规则。假设存储是免费的，仅通"
+"过一些不相关的措施来补贴存储的开销，这并不是一个环境友好型的想法。真实成"
+"本的其中一小部分可以在数据中心的热签名中测量出来。对数据访问需要付费的机"
+"制也有利于减少针对于存储的攻击，即存储非法的内容来抹黑相关技术。"
 
 #: ../../execution_model/storage_and_query.rst:14
 msgid ""
@@ -77,8 +76,8 @@ msgid ""
 "or consortium locations and formats."
 msgstr ""
 "RChain支持多种格式的数据，包括公开未加密的json格式的数据，加密的大文件或"
-"者混合的数据格式。这些数据可以是一些指向区块链外私有、公开或者联盟式存储"
-"的文件的指针或者内容哈希的简单数据"
+"者混合的数据格式。这些数据可以是简单的指针或是存储于私有/公有/联盟链中的"
+"内容哈希。"
 
 #: ../../execution_model/storage_and_query.rst:17
 msgid "Data Semantics"
@@ -97,10 +96,11 @@ msgid ""
 "Cyclic Lambda Calculi`_."
 msgstr ""
 "状态数据、本地交易记录以及相关的合约数据将会被存储在RChain区块链上。与以"
-"太坊类似，RChain也将实现密码经济可验证的交易以便于记录在区块链上进行运算"
-"的信息。请注意，区块链语义结构下的数学被称作可追溯的范畴论。如果想了解更"
-"多的细节，请参阅Masahito Hasegawa发表的该主题的论文Recursion from Cyclic "
-"Sharing:Traced Monoidal Categories and Models of Cyclic Lambda Calculi"
+"太坊类似，RChain也将实现加密-经济型的可验证的交易语义，以便于创建在区块链"
+"上进行运算的线性时间历史记录。请注意，区块链语义结构下的数学被称作可追溯"
+"的范畴论。如果想了解更多的细节，请参阅Masahito Hasegawa发表的该主题的论文"
+"Recursion from Cyclic Sharing:Traced Monoidal Categories and Models of "
+"Cyclic Lambda Calculi。"
 
 #: ../../execution_model/storage_and_query.rst:25
 msgid "Data Access Layer and Domain Specific Language"
@@ -112,8 +112,8 @@ msgid ""
 "data structure behind the DSL. SpecialK defines distributed data-access "
 "patterns in a consistent way, as shown below:"
 msgstr ""
-"SpecialK是用于数据访问的领域专属语言，而KVDB是DSL背后的分布式内存数据结"
-"构。SpecialK以一致的方式定义分布式数据访问模式，如下所示："
+"SpecialK是用于数据访问的DSL，而KVDB是DSL背后的分布式内存数据结构。"
+"SpecialK以一致的方式定义了分布式数据访问模式，如下所示："
 
 #: ../../execution_model/storage_and_query.rst:32
 msgid "**Item-level read and write (distributed locking)**"
@@ -121,19 +121,19 @@ msgstr "数据项级别的读写（分布式锁定）"
 
 #: ../../execution_model/storage_and_query.rst:32
 msgid "**Database read and write**"
-msgstr "数据库读写"
+msgstr "**数据库读写**"
 
 #: ../../execution_model/storage_and_query.rst:32
 msgid "**Publish / Subscribe messaging**"
-msgstr "消息发布与订阅"
+msgstr "**消息发布与订阅**"
 
 #: ../../execution_model/storage_and_query.rst:32
 msgid "**Publish / Subscribe with history**"
-msgstr "历史信息发布与订阅"
+msgstr "**历史信息发布与订阅**"
 
 #: ../../execution_model/storage_and_query.rst:34
 msgid "**Data**"
-msgstr "数据"
+msgstr "**数据**"
 
 #: ../../execution_model/storage_and_query.rst:34
 #: ../../execution_model/storage_and_query.rst:36
@@ -147,11 +147,11 @@ msgstr "持久化的"
 
 #: ../../execution_model/storage_and_query.rst:36
 msgid "**Continuation(K)** [#]_"
-msgstr "延续(K)"
+msgstr "**连续(K)**[1]"
 
 #: ../../execution_model/storage_and_query.rst:38
 msgid "**Producer Verb** [#]_"
-msgstr "生产者动词"
+msgstr "**生产者动作**[2]"
 
 #: ../../execution_model/storage_and_query.rst:38
 msgid "Put"
@@ -171,7 +171,7 @@ msgstr "携带历史发布"
 
 #: ../../execution_model/storage_and_query.rst:40
 msgid "**Consumer Verb**"
-msgstr "消费者动词"
+msgstr "**用户动作**"
 
 #: ../../execution_model/storage_and_query.rst:40
 msgid "Get"
@@ -187,7 +187,7 @@ msgstr "订阅"
 
 #: ../../execution_model/storage_and_query.rst:44
 msgid "*Figure - SpecialK’s Data Access Patterns*"
-msgstr "SpecialK式的数据访问模式图"
+msgstr "*SpecialK的数据访问模式图*"
 
 #: ../../execution_model/storage_and_query.rst:46
 msgid ""
@@ -196,9 +196,9 @@ msgid ""
 "indifferent to whether that data it is stored locally or remotely i.e on "
 "some other network node. There is a single query mechanism regardless."
 msgstr ""
-"从SpecialK领域专属语言和API的角度来看，当它执行一个数据访问动作，比如"
-"Get（带有一个请求模式）请求时，对于这个数据是存储在本地还是在远程是不做区"
-"分的。这里有一个单独的查询机制"
+"从SpecialK的DSL和API角度来看，当它执行一个数据访问动作，比如Get（带有一个"
+"请求模式）请求时，对于这个数据是存储在本地还是在远程（即存储在其他网络"
+"节）是不做区分的。无论如何都有一个单一的查询机制。"
 
 #: ../../execution_model/storage_and_query.rst:48
 msgid ""
@@ -212,10 +212,10 @@ msgid ""
 "and are in `GitHub`_."
 msgstr ""
 "在2016年之前，SpecialK的技术栈（包括代理服务，SpecialK，KV数据库，"
-"RabbitMQ以及MongoDB）提供了一个分散的内容交付网络，尽管其中不包含资源计量"
-"或者资源货币化的内容。SpecialK和KVDB组件基于底层数据库MongoDB以及一个高级"
-"的消息队列协议（ZeroMQ）搭建，以创建用于本地和远程存储和检索内容的去中心"
-"化逻辑。目前SpecialK和KVDB的1.0实现都是用Scala编写的"
+"RabbitMQ以及MongoDB）提供了一个分散的内容交付网络，尽管它不是资源计量或者"
+"资源货币化的方式。SpecialK和KVDB组件基于底层数据库MongoDB以及一个优化的消"
+"息队列协议（ZeroMQ），以创建用于存储和检索内容（包括本地和远程内容）的去"
+"中心化逻辑。目前SpecialK和KVDB的1.0实现都是用Scala编写的。"
 
 #: ../../execution_model/storage_and_query.rst:52
 msgid ""
@@ -238,11 +238,11 @@ msgstr ""
 msgid ""
 "For more information, see `SpecialK & KVDB`_ – A Pattern Language for "
 "the Web."
-msgstr "有关更多信息，请参阅SpecialK＆KVDB - 一种Web的模式语言。"
+msgstr "更多相关信息，请参阅SpecialK＆KVDB - 一种Web的模式语言。"
 
 #: ../../execution_model/storage_and_query.rst:60
 msgid "KVDB - Data & Continuation Access, Cache"
-msgstr "KVDB - 数据，延续访问和缓存"
+msgstr "KVDB - 数据，连续访问和缓存"
 
 #: ../../execution_model/storage_and_query.rst:62
 msgid ""
@@ -252,23 +252,23 @@ msgid ""
 "below:"
 msgstr ""
 "数据将使用SpecialK语义进行访问，存储在去中心化的键值数据库（KVDB）中。下"
-"图显示了两个节点如何协作响应一个GET请求。"
+"图显示了两个节点如何协作响应一个GET请求："
 
 #: ../../execution_model/storage_and_query.rst:70
 msgid "*Figure - Decentralized Data Access in SpecialK*"
-msgstr "使用SpecialK进行去中心化数据访问的示意图"
+msgstr "*SpecialK的去中心化数据访问方式*"
 
 #: ../../execution_model/storage_and_query.rst:73
 msgid ""
 "The node first queries its in-memory cache for the requested data. Then "
 "if it is not found it,"
-msgstr "节点首先在内存缓存中查找所请求的数据。如果没有在缓存中命中"
+msgstr "节点首先在内存缓存中查找所请求的数据。如果没有在缓存中命中,"
 
 #: ../../execution_model/storage_and_query.rst:75
 msgid ""
 "queries its local store, and, if it is not found, stores a delimited "
 "continuation at that location, and"
-msgstr "在本地存储中进行查询，如果没有命中，在该位置存储有界连续"
+msgstr "在本地存储中进行查询，如果没有命中，则在该位置存储一个定界符"
 
 #: ../../execution_model/storage_and_query.rst:77
 msgid ""
@@ -276,8 +276,8 @@ msgid ""
 "data, the delimited continuation is brought back in scope with the "
 "retrieved data as its parameter."
 msgstr ""
-"在网络中进行查询，如果在网络中查找到了合适的值，将有界连续带回范围并且将"
-"检索到的数据作为参数返回"
+"在网络中进行查询，如果在网络中查找到了合适的值，定界符将在范围内返回并且"
+"将检索到的数据作为参数返回。"
 
 #: ../../execution_model/storage_and_query.rst:79
 msgid ""
@@ -293,11 +293,10 @@ msgid ""
 "the data."
 msgstr ""
 "为什么RChain没有选择分布式存储的IPFS（星际文件系统）？除了存在集中化风险"
-"之外，IPFS使用内容路径来访问内容，而SpecialK使用整颗树（和其中有孔的树）"
-"来访问内容。IPFS有一个直观的路径模型，但是这个设计存在如何进行查询的问"
-"题。 SpecialK从寻址开始。现在一旦SpecialK查询语义设计完成，RChain项目可以"
-"借鉴IPFS的成果，例如利用哈希来完成内容的路由。SpecialK还可以利用一个随机"
-"生成的键，与数据无关。"
+"之外，IPFS使用内容路径来访问内容，而SpecialK使用完整树来访问内容。IPFS有"
+"一个直观的路径模型，但是这个设计存在如何进行查询的问题。 SpecialK从寻址开"
+"始。一旦SpecialK查询语义设计完成，RChain项目还可以借鉴IPFS的成果，例如利"
+"用哈希来完成内容的路由。SpecialK还可以利用一个随机生成的数据无关的键。"
 
 #: ../../execution_model/storage_and_query.rst:82
 msgid "P2P Node Communications"
@@ -311,10 +310,10 @@ msgid ""
 "discovery, inter-node trust, and communication. The current "
 "implementation uses RabbitMQ, although ZeroMQ is being considered."
 msgstr ""
-"SpecialK去中心化存储语义需要节点通信的基础设施。与其他去中心化应用相似，"
-"在RChain中P2P通信组件还是处理节点发现，节点间信任以及节点间通信等问题。现"
-"在的实现方案采用了基于RabbitMQ的P2P架构，尽管我们同时也在考虑是否采用"
-"ZeroMQ。"
+"SpecialK去中心化存储语义需要节点通信的基础设施。与其他去中心化实现相似，"
+"在RChain中P2P通信组件还是处理节点的发现、节点间的信任以及节点间的通信等问"
+"题。现在的实现方案采用了基于RabbitMQ的P2P架构，尽管我们同时也在考虑是否采"
+"用ZeroMQ。"
 
 #: ../../execution_model/storage_and_query.rst:86
 msgid ""
