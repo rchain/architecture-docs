@@ -110,7 +110,7 @@ msgid ""
 "There are two types of PATs:"
 msgstr ""
 "代币系统合约包括了那些需要运行和本地节点之外进行交互的协议的合约，这些是"
-"协议访问代币，他们可以分为以下两类："
+"*协议访问代币*，他们可以分为以下两类："
 
 #: ../../introduction/architecture-overview.rst:32
 msgid ""
