@@ -147,11 +147,11 @@ msgstr "持久化的"
 
 #: ../../execution_model/storage_and_query.rst:36
 msgid "**Continuation(K)** [#]_"
-msgstr "**连续(K)**[1]"
+msgstr "**连续(K)**[#]_"
 
 #: ../../execution_model/storage_and_query.rst:38
 msgid "**Producer Verb** [#]_"
-msgstr "**生产者动作**[2]"
+msgstr "**生产者动作**[#]_"
 
 #: ../../execution_model/storage_and_query.rst:38
 msgid "Put"
