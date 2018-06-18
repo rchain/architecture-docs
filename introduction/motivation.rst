@@ -15,15 +15,15 @@ Approach
 #######################################
 We began by admitting the following minimal requirements:
 
-* Dynamic, responsive, and provably correct smart contracts.
+* Dynamic, responsive, and provably correct smart contracts
 
-* Concurrent execution of independent smart contracts.
+* Concurrent execution of independent smart contracts
 
-* Data separation to reduce unnecessary data replication of otherwise independent tokens and smart contracts.
+* Data separation to reduce unnecessary data replication of otherwise independent tokens and smart contracts
 
-* Dynamic and responsive node-to-node communication.
+* Dynamic and responsive node-to-node communication
 
-* Computationally non-intensive consensus/validation protocol.
+* Computationally non-intensive consensus/validation protocol
 
 Building quality software is challenging. It is easier to build "clever" software; however, the resulting software is often of poor quality, riddled with bugs, difficult to maintain, and difficult to evolve. Inheriting and working on such software can be hellish for development teams, not to mention their customers. When building an open-source system to support a mission-critical economy, we reject a minimal-success mindset in favor of end-to-end correctness. 
 
