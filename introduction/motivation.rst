@@ -29,12 +29,12 @@ Building quality software is challenging. It is easier to build "clever" softwar
 
 To accomplish the requirements above, our design approach is committed to:
 
-* A computational model that assumes fine-grained concurrency and dynamic network topology.
+* A computational model that assumes fine-grained concurrency and dynamic network topology;
 
-* A composable and dynamic resource addressing scheme.
+* A composable and dynamic resource addressing scheme;
 
-* The functional programming paradigm, as it more naturally accommodates distributed and parallel processing.
+* The functional programming paradigm, as it more naturally accommodates distributed and parallel processing;
 
-* Formally verified, correct-by-construction protocols which leverage model checking and theorem proving.
+* Formally verified, correct-by-construction protocols which leverage model checking and theorem proving;
 
 * The principles of intension and compositionality.
