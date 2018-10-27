@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 ###############################################
-RChain Platform Architecture
+RChain Platform Architecture Vision
 ###############################################
 
 :Authors: Ed Eykholt, Lucius Meredith, Joseph Denman
@@ -14,22 +14,28 @@ RChain Platform Architecture
 
 .. _Creative Commons Attribution 4.0 International (CC BY 4.0) License: https://creativecommons.org/licenses/by/4.0/
 
-Notice: Updated Details Available
-=================================
-
-For details on the platform as it is built, see `developer.rchain.coop`__ including
-`rchain/rchain`__ open source github repository, Rholang tutorial, and project status.
-
-__ https://developer.rchain.coop/
-__ https://github.com/rchain/rchain
-
 
 Abstract
 ===============================================
 
-The RChain Platform Architecture description provides a high-level blueprint of the RChain decentralized, economically sustainable public compute infrastructure. While the RChain design is inspired by that of earlier blockchains, it also realizes decades of research across the fields of concurrent and distributed computation, mathematics, and programming language design. The platform includes a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility. 
+The RChain Platform Architecture Vision provides a high-level blueprint of the RChain decentralized, economically sustainable, public compute infrastructure. While the RChain design is inspired by earlier blockchains, it also realizes decades of research across the fields of concurrent and distributed computation, mathematics, and programming language design. The platform includes a modular, end-to-end design that commits to correct-by-construction software and industrial extensibility.
 
-**Intended audience:** This document is written for software developers and innovators who are interested in decentralized systems.
+
+Forward (November 2018)
+=================================
+
+Much has changed in the fifteen months since this architecture document first laid out the vision of RChain. At that time `rchain/rchain`__ had only a few dozen commits. There are now over 7,000 commits and the project is approaching its first release.
+
+This revised document maintains the purpose as the original, a high-level blueprint of the RChain Vision. Many of the ideas are already implemented. Others are month or years down the roadmap. And some of the original ideas have been improved over the development cycle.
+
+For details on RChain's current implementation, see `developer.rchain.coop`__ including
+ open source github repository, Rholang tutorial, and project status.
+
+ __ https://github.com/rchain/rchain
+__ https://developer.rchain.coop/
+
+This document is written for innovators, software developers, and enthusiasts who are interested in bootstrapping coordination at scale through decentralized systems.
+
 
 .. toctree::
    :maxdepth: 2
