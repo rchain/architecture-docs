@@ -14,13 +14,6 @@ RChain Platform Architecture
 
 .. _Creative Commons Attribution 4.0 International (CC BY 4.0) License: https://creativecommons.org/licenses/by/4.0/
 
-Notice: Updated Details Available
-=================================
-
-For details on the platform as it is built, see `developer.rchain.coop`__ including
-`rchain/rchain`__ open source github repository, Rholang tutorial, and project status.
-
-__ https://developer.rchain.coop/
 __ https://github.com/rchain/rchain
 
 
